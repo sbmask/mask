@@ -1,0 +1,2186 @@
+function GiocaCouponPrecompilato(idCouponPrecompilato) {
+    if (idCouponPrecompilato != -1) {
+        var btn = document.getElementById(sCouponPrecompilatoButtonClientID);
+        var txt = document.getElementById(sCouponPrecompilatoIDClientID);
+
+        txt.value = idCouponPrecompilato;
+        btn.click()
+    }
+}
+
+function GiocaCouponPrecompilatoConImporto(idCouponPrecompilato, Importo) {
+    if (idCouponPrecompilato != -1) {
+        var btn = document.getElementById(sCouponPrecompilatoButtonClientID);
+        var txt = document.getElementById(sCouponPrecompilatoIDClientID);
+        var txtImporto = document.getElementById(sCouponPrecompilatoIDClientImporto);
+
+        txtImporto.value = Importo
+
+        if (sepDec == ",") {
+            txtImporto.value = txtImporto.value.replace(".", sepDec);
+        }
+
+        txt.value = idCouponPrecompilato;
+        btn.click()
+    }
+}
+
+function arrotonda(importo, decimali) {
+    if (decimali == null) decimali = "2";
+    
+    var fImportoDI;
+    switch (decimali.toString()) {
+        case "0":
+            fImportoDI = Math.round(importo);
+            break;
+        case "1":
+            fImportoDI = Math.round(importo * 10) / 10;
+            break;
+        case "2":
+            fImportoDI = Math.round(importo * 100) / 100;
+            break;
+        case "3":
+            fImportoDI = Math.round(importo * 1000) / 1000;
+            break;
+        case "4":
+            fImportoDI = Math.round(importo * 10000) / 10000;
+            break;
+    }
+    
+    return fImportoDI;
+}
+
+function calcVpSingolaMultipla(fQuotaTotale, fQuotaBonus, sObjImportoGiocato, sObjVincitaPotenziale, sObjImgAlert, sObjBonus) {
+    var sDecimalSeparator = sepDec;
+    var oImportoGiocato = document.getElementById(sObjImportoGiocato);
+    var oVincitaPotenziale = document.getElementById(sObjVincitaPotenziale);
+    var oImgCaution = document.getElementById(sObjImgAlert);
+    var oBonus = document.getElementById(sObjBonus);
+
+    oImgCaution.style.visibility = "hidden";
+
+    if (oImportoGiocato.value == "") {
+        oVincitaPotenziale.innerHTML = "";
+        if (oBonus != null) oBonus.innerHTML = "";
+        return;
+    } else {
+        if (isNaN(parseFloat(oImportoGiocato.value.replace(",", ".")))) oImgCaution.style.visibility = "";
+    }
+
+    oVincitaPotenziale.innerHTML = arrotonda(fQuotaTotale * fQuotaBonus * parseFloat(oImportoGiocato.value.replace(",", ".")));
+    if (oBonus != null) oBonus.innerHTML = arrotonda(fQuotaTotale * (fQuotaBonus - 1) * parseFloat(oImportoGiocato.value.replace(",", ".")));
+
+    if (sDecimalSeparator == ",") {
+        oVincitaPotenziale.innerHTML = oVincitaPotenziale.innerHTML.replace(".", sepDec);
+        if (oBonus != null) oBonus.innerHTML = oBonus.innerHTML.replace(".", sepDec);
+    }
+
+    $.event.trigger('CouponChanged');
+}
+
+var splitImp = 0;
+
+function splitImportoDI() {
+    splitImp = 1;
+    var oTxtTotaleDI = document.getElementById(sTxtTotaleDI);
+    var oTxtImportoDI = document.getElementById(sTxtImportoDI);
+    var oImportoDICombinazioni = document.getElementById(sLblImportoDICombinazioni);
+    if (oTxtTotaleDI == null) return;
+    if (oTxtImportoDI == null) return;
+    if (oImportoDICombinazioni == null) return;
+
+    if (oTxtTotaleDI.value == "") {
+        oTxtImportoDI.value = "";
+        splitImp = 0;
+        return;
+    }
+    var fTotaleDI = parseFloat(oTxtTotaleDI.value.replace(sepDec, '.'));
+    var fnumComb = parseFloat(oImportoDICombinazioni.innerHTML.replace(sepDec, '.'));
+    if (isNaN(fTotaleDI)) {
+        oTxtImportoDI.value = "";
+        splitImp = 0;
+        return;
+    }
+
+    //Arrotondo max a 4 decimali
+    var fImportoDI = parseFloat((fTotaleDI / fnumComb));
+    fImportoDI = Math.round(fImportoDI * 10000) / 10000;
+    oTxtImportoDI.value = fImportoDI.toString().replace(".", sepDec);
+
+    var oTxtImportoDI = document.getElementById(sTxtImportoDI);
+    if (oTxtImportoDI != null) oTxtImportoDI.onkeyup();
+    splitImp = 0;
+}
+
+function calcVpDI(fQuotaTotaleConBonus, fQuotaTotaleMaxComb, fQuotaTotaleMinComb, sObjImportoGiocato, sObjVincitaPotenziale, sObjImportoDIGiocato, sObjImportoDICombinazioni, fBonusMax, fBonusMin, fTotalVincitaBonusPotenciale) {
+    var sDecimalSeparator = sepDec;
+    var oImportoGiocato = document.getElementById(sObjImportoGiocato);
+    var oVincitaPotenziale = document.getElementById(sObjVincitaPotenziale);
+    var oVincitaPotenzialeMin = document.getElementById("spanVincitaPotMin").getElementsByClassName("lblVincitaPotMin")[0];
+    var oVincitaPotenzialeMaxComb = document.getElementById("spanVincitaPotMaxComb").getElementsByClassName("lblVincitaPotMaxComb")[0];
+    var oImportoDIGiocato = document.getElementById(sObjImportoDIGiocato);
+    var oImportoDICombinazioni = document.getElementById(sObjImportoDICombinazioni);
+    var oImgCaution = document.getElementById("spanCautionDI").getElementsByClassName("imgtxtImportoDI")[0];
+    var oBonusMinDI;
+    if (document.getElementById("spanBonusMinDI") != null) oBonusMinDI = document.getElementById("spanBonusMinDI").getElementsByClassName("lblBonusMinDI")[0];
+    var oBonusMaxDI;
+    if (document.getElementById("spanBonusMaxDI") != null) oBonusMaxDI = document.getElementById("spanBonusMaxDI").getElementsByClassName("lblBonusMaxDI")[0];
+    var oBonusAllDI;
+    if (document.getElementById("spanBonusAllDI") != null) oBonusAllDI = document.getElementById("spanBonusAllDI").getElementsByClassName("lblBonusAllDI")[0];
+
+    oImgCaution.style.display = "none";
+
+    if (oImportoGiocato.value == "") {
+        oVincitaPotenziale.innerHTML = "";
+        oVincitaPotenzialeMin.innerHTML = "";
+        oVincitaPotenzialeMaxComb.innerHTML = "";
+        if (oBonusMinDI != null) oBonusMinDI.innerHTML = "";
+        if (oBonusMaxDI != null) oBonusMaxDI.innerHTML = "";
+        if (oBonusAllDI != null) oBonusAllDI.innerHTML = "";
+        if (oImportoDIGiocato != null) oImportoDIGiocato.value = "";
+        return;
+    } else {
+        if (isNaN(parseFloat(oImportoGiocato.value.replace(",", ".")))) oImgCaution.style.display = "inline";
+    }
+
+    oVincitaPotenziale.innerHTML = arrotonda(fQuotaTotaleConBonus * parseFloat(oImportoGiocato.value.replace(",", ".")));
+    oVincitaPotenzialeMin.innerHTML = arrotonda(fQuotaTotaleMinComb * fBonusMin * parseFloat(oImportoGiocato.value.replace(",", ".")));
+    oVincitaPotenzialeMaxComb.innerHTML = arrotonda(fQuotaTotaleMaxComb * fBonusMax * parseFloat(oImportoGiocato.value.replace(",", ".")));
+    if (oBonusMinDI != null) oBonusMinDI.innerHTML = arrotonda(fQuotaTotaleMinComb * (fBonusMin - 1) * parseFloat(oImportoGiocato.value.replace(",", ".")));
+    if (oBonusMaxDI != null) oBonusMaxDI.innerHTML = arrotonda(fQuotaTotaleMaxComb * (fBonusMax - 1) * parseFloat(oImportoGiocato.value.replace(",", ".")));
+    if (oBonusAllDI != null) oBonusAllDI.innerHTML = arrotonda(fTotalVincitaBonusPotenciale * parseFloat(oImportoGiocato.value.replace(",", ".")));
+
+    if (splitImp == 0) {
+        oImportoDIGiocato.value = arrotonda(parseFloat(oImportoDICombinazioni.innerHTML.replace(",", ".")) * parseFloat(oImportoGiocato.value.replace(",", ".")));
+    }
+
+    if (sDecimalSeparator == ",") {
+        oVincitaPotenziale.innerHTML = oVincitaPotenziale.innerHTML.replace(".", sepDec);
+        oVincitaPotenzialeMin.innerHTML = oVincitaPotenzialeMin.innerHTML.replace(".", sepDec);
+        oVincitaPotenzialeMaxComb.innerHTML = oVincitaPotenzialeMaxComb.innerHTML.replace(".", sepDec);
+        if (oBonusMinDI != null) oBonusMinDI.innerHTML = oBonusMinDI.innerHTML.replace(".", sepDec);
+        if (oBonusMaxDI != null) oBonusMaxDI.innerHTML = oBonusMaxDI.innerHTML.replace(".", sepDec);
+        if (oBonusAllDI != null) oBonusAllDI.innerHTML = oBonusAllDI.innerHTML.replace(".", sepDec);
+
+        if (oImportoDIGiocato != null) oImportoDIGiocato.value = oImportoDIGiocato.value.replace(".", sepDec);
+    }
+
+    $.event.trigger('CouponChanged');
+}
+
+
+function calcVpSistema(iTipoComb, iNComb, fQuotaTotale, setImportoSis) {
+    var sDecimalSeparator = sepDec;
+    var oImportoGiocato = document.getElementById("spanTxtSis" + iTipoComb).getElementsByClassName("txtSistema")[0];
+    var oVincitaPotenziale = document.getElementById("spanVincitaPotSis").getElementsByClassName("litVincitaPotSis")[0];
+    var oVPComb = document.getElementById("spanTxtSisTot" + iTipoComb).getElementsByClassName("txtSistemaTotale")[0];
+    var oImgCaution = document.getElementById("spanTxtSisTot" + iTipoComb).getElementsByClassName("Img1")[0];
+    var oImportoBonus;
+    if (document.getElementById("spanBonusSisMax") != null) oImportoBonus = document.getElementById("spanBonusSisMax").getElementsByClassName("lblBonusSisMax")[0];
+
+    oImgCaution.style.visibility = "hidden";
+
+    if (oImportoGiocato.value == "") {
+        oVPComb.innerHTML = "";
+        oVincitaPotenziale.innerHTML = "";
+        if (oImportoBonus != null) oImportoBonus.innerHTML = "";
+    } else {
+        if (isNaN(parseFloat(oImportoGiocato.value.replace(",", ".")))) oImgCaution.style.visibility = "";
+    }
+    if (oImportoGiocato.value != "") {
+        oVPComb.innerHTML = (iNComb * parseFloat(oImportoGiocato.value.replace(",", "."))); 
+    }
+
+    if (sDecimalSeparator == ",") {
+        oVPComb.innerHTML = oVPComb.innerHTML.replace(".", sepDec);
+        oVPComb.innerHTML = oVPComb.innerHTML.replace(".", sepDec);
+    }
+
+    calcolaTotaliSistema(sDecimalSeparator, setImportoSis);
+
+    $.event.trigger('CouponChanged');
+}
+
+function calcolaTotaliSistema(sDecimalSeparator, setImportoSis) {
+    var oVincitaPotenziale = document.getElementById("spanVincitaPotSis").getElementsByClassName("litVincitaPotSis")[0];
+    var oVincitaPotenzialeMin = document.getElementById("spanVincitaMinSis").getElementsByClassName("litVincitaMinSis")[0];
+    var oImportoBonus;
+    if (document.getElementById("spanBonusSisMax") != null) oImportoBonus = document.getElementById("spanBonusSisMax").getElementsByClassName("lblBonusSisMax")[0];
+    var oImportoBonusMin;
+    if (document.getElementById("spanBonusSisMin") != null) oImportoBonusMin = document.getElementById("spanBonusSisMin").getElementsByClassName("lblBonusSisMin")[0];
+    var oImportoSis = document.getElementById("spanImportoSis").getElementsByClassName("txtImportoSis")[0];
+
+    oVincitaPotenziale.innerHTML = "";
+    oVincitaPotenzialeMin.innerHTML = "";
+    if (setImportoSis == 1) oImportoSis.value = "";
+
+    if (oImportoBonus != null) oImportoBonus.innerHTML = "";
+    if (oImportoBonusMin != null) oImportoBonusMin.innerHTML = "";
+
+    var oTxtSistema, spanSistema, oTxtSistemaTotale;
+    var oQuotaTotale, oQuotaTotaleConBonus, oQuotaMin, oQuotaMinConBonus;
+    var importoMinBonus = 0;
+    var TotaleGiocata = 0;
+    var fVincitaPotCoupon = 0;
+    var fVincitaMinCoupon = 0;
+    var fImportoBonus = 0;
+    var IDValutaSel = $('#' + getIDDDLValuta()).val();
+    var zeroBonusExist = false;
+
+    for (var i = 1; i <= maxNumRaggruppamenti; i++) {
+        spanSistema = document.getElementById("spanTxtSis" + i);
+        if (spanSistema != null) {
+            oTxtSistema = spanSistema.getElementsByClassName("txtSistema")[0];
+            oTxtSistemaTotale = document.getElementById("spanTxtSisTot" + i).getElementsByClassName("txtSistemaTotale")[0];
+
+            var spanHidQuota = document.getElementById("spanHidQuota" + i);
+            oQuotaTotale = spanHidQuota.getElementsByClassName("hidQuotaTotale")[0];
+            oQuotaTotaleConBonus = spanHidQuota.getElementsByClassName("hidQuotaTotaleConBonus")[0];
+            oQuotaMinConBonus = spanHidQuota.getElementsByClassName("hidQuotaMinConBonus")[0];
+            oQuotaMin = spanHidQuota.getElementsByClassName("hidQuotaMin")[0];
+
+            var oVincitaPotenzialeComb = document.getElementById("spanTxtSisVin" + i).getElementsByClassName("lblVincitaPot")[0];
+
+            var oVincitaPotenzialeCombMin = document.getElementById("spanTxtSisVinMin" + i).getElementsByClassName("lblVincitaPotMin")[0];
+            var oVincitaPotenzialeCombMax = document.getElementById("spanTxtSisVinMax" + i).getElementsByClassName("lblVincitaPotMax")[0];
+
+            oVincitaPotenzialeComb.innerHTML = '0';
+            oVincitaPotenzialeCombMin.innerHTML = '0';
+            oVincitaPotenzialeCombMax.innerHTML = '0';
+
+            if (oTxtSistema != null && oTxtSistema.value != "" && oTxtSistema.value != "0" && oTxtSistemaTotale != null && oTxtSistemaTotale.innerHTML != "") {
+               
+                //Importo inserito dall'utente
+                var fImporto = parseFloat(oTxtSistema.value.replace(",", "."));
+                //Quota totale SENZA bonus del raggruppamento
+                var fQuotaTotale = parseFloat(oQuotaTotale.value);
+                //Quota totale CON bonus del raggruppamento
+                var fQuotaTotaleConBonus = parseFloat(oQuotaTotaleConBonus.value);
+                //Quota min del raggruppamento SENZA bonus
+                var fQuotaMin = parseFloat(oQuotaMin.value);
+                //Quota min del raggruppamento CON bonus
+                var fQuotaMinConBonus = parseFloat(oQuotaMinConBonus.value);
+
+                //Calcolo importo minimo del bonus del raggr.
+                var fImportoBonusMin = parseFloat((fQuotaMinConBonus - fQuotaMin) * fImporto);
+                var fImportoBonusMax = parseFloat((fQuotaTotaleConBonus - fQuotaTotale) * fImporto);
+
+                //Calcolo vincita min e max del raggruppamento
+                var fVincitaMin = parseFloat(fQuotaMinConBonus * fImporto);
+                var fVincitaMax = parseFloat(fQuotaTotaleConBonus * fImporto);
+
+                if (fImportoBonusMin == 0)
+                {
+                    zeroBonusExist = true;
+                    importoMinBonus = 0;
+                }
+
+                if (!zeroBonusExist) {
+                    if (importoMinBonus == 0) {
+                        importoMinBonus = fImportoBonusMin
+                    }
+                    else {
+                        if (importoMinBonus > fImportoBonusMin) {
+                            importoMinBonus = fImportoBonusMin;
+                        }
+                    }
+                }
+
+                fVincitaPotCoupon += fVincitaMax;
+                fImportoBonus += fImportoBonusMax;
+
+                if (fVincitaMinCoupon == 0) {
+                    fVincitaMinCoupon = fVincitaMin;
+                } else {
+                    if (fVincitaMinCoupon > fVincitaMin) {
+                        fVincitaMinCoupon = fVincitaMin;
+                    }
+                }
+
+               
+                if (setImportoSis == 1) TotaleGiocata += parseFloat(oTxtSistemaTotale.innerHTML.replace(",", "."));
+
+                if (fImporto == 0) {
+                    oVincitaPotenzialeComb.innerHTML = '0';
+                    oVincitaPotenzialeCombMin.innerHTML = '0';
+                    oVincitaPotenzialeCombMax.innerHTML = '0';
+                } else {
+                    oVincitaPotenzialeComb.innerHTML = arrotonda(fVincitaMin).toString().replace(".", sepDec) + '&nbsp;/&nbsp;' + arrotonda(fVincitaMax).toString().replace(".", sepDec);
+                    oVincitaPotenzialeCombMin.innerHTML = (arrotonda(fVincitaMin).toString().replace(".", sepDec));
+                    oVincitaPotenzialeCombMax.innerHTML = (arrotonda(fVincitaMax).toString().replace(".", sepDec));
+                }
+
+            }
+        }
+    }
+    if (oImportoBonusMin != null) oImportoBonusMin.innerHTML = arrotonda(importoMinBonus).toString().replace(".", sepDec);
+    if (fVincitaPotCoupon > 0) oVincitaPotenziale.innerHTML = arrotonda(fVincitaPotCoupon).toString().replace(".", sepDec);
+    if (fVincitaMinCoupon > 0) oVincitaPotenzialeMin.innerHTML = arrotonda(fVincitaMinCoupon).toString().replace(".", sepDec);
+    if (oImportoBonus != null) oImportoBonus.innerHTML = arrotonda(fImportoBonus).toString().replace(".", sepDec);
+
+    if (setImportoSis == 1) {
+        oImportoSis.value = truncate(parseFloat(TotaleGiocata), 2).replace(".", sepDec);
+        
+        //Se abilitata la funzione di cassa valuta devo convertire
+        if (valCassa == 1) {
+            if (IDValutaUtente == IDValutaSel) {
+                $('#txtImportoSisValuta').val("");
+            } else {
+                //Trovo il valore del cambio (il valore della dropdown)
+                var fCambio = getCambio();
+                if (isNaN(fCambio)) return;
+
+                //In base alla vlauta cambia il numero di decimali da usare per arrotondare
+                var nDec = getNumeroDecimali();
+
+                var fImportoSisValuta = arrotonda((parseFloat(TotaleGiocata) * fCambio), nDec);
+
+                $('#txtImportoSisValuta').val(fImportoSisValuta.toString().replace(".", sepDec));
+            }
+        }
+    }
+}
+
+function truncate(numero, cifre) {
+    return (Math.floor(numero * Math.pow(10, cifre)) / Math.pow(10, cifre)).toFixed(cifre);
+}
+
+//funzione chimata dalle coupon per controllare se espandere o mendo il dettaglio combinazine (solo se abilitato da UIConfig)
+function mainCheckRaggr(){
+    $(".TSChk").each(function () {
+        if ($(this).children("INPUT").is(':checked')) {
+            $(this).parent(".CpnTipoSisRiep").addClass("sel")
+        }
+    });
+}
+
+//funzione chimata dalle chkbox delle combinazioni
+function checkRaggr(chk, evt, NumRaggr) {
+    var oTxtSistema;
+    oTxtSistema = document.getElementById("spanTxtSis" + NumRaggr);
+    if (oTxtSistema == null) return
+
+    oTxtSistema = oTxtSistema.getElementsByClassName("txtSistema")[0];
+    if (oTxtSistema == undefined) return
+
+    if (chk.checked == false) oTxtSistema.value = "";
+    DistribuisciImportoSistema(evt);
+    SwitchSelectUnselect();
+    if (chk.checked == false) {
+        if ($("#divSis input:checkbox:checked").length == 0) {
+            var oVincitaPotenzialeComb = document.getElementById("spanTxtSisVin" + NumRaggr).getElementsByClassName("lblVincitaPot")[0];
+
+            var oVincitaPotenzialeCombMin = document.getElementById("spanTxtSisVinMin" + NumRaggr).getElementsByClassName("lblVincitaPotMin")[0];
+            var oVincitaPotenzialeCombMax = document.getElementById("spanTxtSisVinMax" + NumRaggr).getElementsByClassName("lblVincitaPotMax")[0];
+
+            oVincitaPotenzialeComb.innerHTML = '0';
+            oVincitaPotenzialeCombMin.innerHTML = '0';
+            oVincitaPotenzialeCombMax.innerHTML = '0';
+
+            var oImportoBonusMin = document.getElementById("spanBonusSisMin").getElementsByClassName("lblBonusSisMin")[0];
+            var oImportoBonusMax = document.getElementById("spanBonusSisMax").getElementsByClassName("lblBonusSisMax")[0];
+
+            if (oImportoBonusMax != null) oImportoBonusMax.innerHTML = "0";
+            if (oImportoBonusMin != null) oImportoBonusMin.innerHTML = "0";
+
+            var oVincitaPotenzialeMax = document.getElementById("spanVincitaPotSis").getElementsByClassName("litVincitaPotSis")[0];
+            var oVincitaPotenzialeMin = document.getElementById("spanVincitaMinSis").getElementsByClassName("litVincitaMinSis")[0];
+
+            if (oVincitaPotenzialeMax != null) oVincitaPotenzialeMax.innerHTML = "0";
+            if (oVincitaPotenzialeMin != null) oVincitaPotenzialeMin.innerHTML = "0";
+
+        }
+        $(chk).parents(".CpnTipoSisRiep").removeClass("sel")
+    } else {
+        $(chk).parents(".CpnTipoSisRiep").addClass("sel")
+    }
+}
+
+function SetCheckRaggr(NumRaggr) {
+    var oChkSistema = document.getElementById("spanChkQuota" + NumRaggr);
+    if (oChkSistema == null) return
+    oChkSistema = oChkSistema.getElementsByClassName("chkRaggruppamentoQuota")[0];
+    if (oChkSistema == undefined) return
+
+    if (oChkSistema.checked == false) {
+        oChkSistema.checked = true
+        $(oChkSistema).parents(".CpnTipoSisRiep").addClass("sel")
+    } else {
+        if (! ($(oChkSistema).parents(".CpnTipoSisRiep").hasClass("sel"))) {
+            $(oChkSistema).parents(".CpnTipoSisRiep").addClass("sel")
+        }
+    }
+}
+
+
+
+
+function DistribuisciImportoSistema(evt) {
+    
+    if (getKeyPress(evt) == 9 || getKeyPress(evt) == 13) return
+    var sDecimalSeparator = sepDec;
+    var oNumCom, oQuotaComb, oTxtSistema, oTxtImportoTot, oImportoGiocato, oChkSistema, oGiocaSuTutte
+    var totComb, numRaggr, importoTot, importoGiocaSuTutte, importoGio;
+
+    oGiocaSuTutte = document.getElementById(sTxtGiocaSuTutte)
+    oTxtImportoTot = document.getElementById("spanImportoSis").getElementsByClassName("txtImportoSis")[0];
+
+    if (oTxtImportoTot == null && oGiocaSuTutte == null) return
+
+    if (oTxtImportoTot.value == "") {
+        $("#divSis input:checkbox:checked").each(function () {
+            restartWinningsForGropu(this);
+        });
+        restartBonus();
+        if (sTxtImportoSis === evt.currentTarget.id) return
+    }
+
+    if (isNaN(parseFloat(oGiocaSuTutte.value.replace(",", ".")))) {
+        importoGio = 0;
+    } else {
+        importoGio = parseFloat(oGiocaSuTutte.value.replace(",", "."));
+    }
+    
+    if(isNaN(parseFloat(oTxtImportoTot.value.replace(",", ".")))){
+        importoTot = 0;
+    } else {
+        importoTot = parseFloat(oTxtImportoTot.value.replace(",", "."))
+    }
+
+    if (sTxtImportoSis !== evt.currentTarget.id && importoGio > 0) {
+        oTxtImportoTot.value = "";
+        importoTot = 0;
+    }
+
+    if (importoTot > 0 || ((sTxtImportoSis === evt.currentTarget.id || "checkbox" === evt.currentTarget.type) && oTxtImportoTot.value !== "")) {
+        //Prima di tutto calcolo la somma del numero di combinazioni
+        totComb = 0;
+        numRaggr = 0;
+
+        for (var i = 1; i <= maxNumRaggruppamenti; i++) {
+            oTxtSistema = document.getElementById("spanTxtSis" + i);
+            oChkSistema = document.getElementById("spanChkQuota" + i);
+
+            if (oTxtSistema == null || oChkSistema == null) continue
+
+            oTxtSistema = oTxtSistema.getElementsByClassName("txtSistema")[0];
+            oChkSistema = oChkSistema.getElementsByClassName("chkRaggruppamentoQuota")[0];
+
+            if (oTxtSistema == undefined || oChkSistema == undefined) continue
+
+            oNumCom = document.getElementById("spanLbl2Sistema" + i)
+
+            if (oNumCom == null) continue
+            if (oChkSistema.checked == false) continue
+
+            oNumCom = oNumCom.getElementsByClassName("lbl2Sistema")[0];
+
+            if (oNumCom.innerHTML != "") {
+                totComb += parseFloat(oNumCom.innerHTML);
+                numRaggr += 1;
+            }
+        }
+
+        var importoRagg = 0;
+        var countRagg = 1;
+        var resto = importoTot;
+        var importoComb = parseFloat(importoTot / totComb);
+
+        //Trovo il valore del cambio (il valore della dropdown)
+        var fCambio = getCambio();
+        var IDValutaSel = $('#' + getIDDDLValuta()).val();
+
+
+
+        for (var i = 1; i <= maxNumRaggruppamenti; i++) {
+            oTxtSistema = document.getElementById("spanTxtSis" + i);
+            oChkSistema = document.getElementById("spanChkQuota" + i);
+
+            if (oTxtSistema == null || oChkSistema == null) continue
+
+            oTxtSistema = oTxtSistema.getElementsByClassName("txtSistema")[0];
+            oChkSistema = oChkSistema.getElementsByClassName("chkRaggruppamentoQuota")[0];
+
+            if (oTxtSistema == undefined || oChkSistema == undefined) continue
+
+            oNumCom = document.getElementById("spanLbl2Sistema" + i);
+
+            if (oNumCom == null) continue
+            if (oChkSistema.checked == false) continue
+
+            oNumCom = oNumCom.getElementsByClassName("lbl2Sistema")[0];
+
+            oQuotaComb = document.getElementById("spanHidQuota" + i);
+            if (oQuotaComb == null) continue
+            oQuotaComb = oQuotaComb.getElementsByClassName("hidQuotaTotale")[0];
+
+   
+
+            if (oNumCom.innerHTML != "") {
+                //Imposto l'importo del raggruppamento (se sono nell'ultimo raggruppamento faccio la differenza)
+                if (numRaggr == countRagg) {
+                    oTxtSistema.value = truncate((resto / parseInt(oNumCom.innerHTML)), 4);
+                } else {
+                    oTxtSistema.value = truncate(importoComb, 4);
+
+                    importoRagg = importoComb * parseInt(oNumCom.innerHTML);
+                    resto = resto - importoRagg;
+                }
+                
+                //Se abilitata la funzione di cassa valuta devo convertire
+                if (valCassa == 1) {
+                    if (IDValutaUtente == IDValutaSel) {
+                        $('#txtSisValuta' + i).val("");
+                    } else {
+                        //In base alla vlauta cambia il numero di decimali da usare per arrotondare
+                        var nDec = getNumeroDecimali();
+
+                        var fImportoValuta = arrotonda((parseFloat(oTxtSistema.value) * fCambio), nDec);
+
+                        $("#txtSisValuta" + i).val(fImportoValuta.toString().replace(".", sepDec));
+                    }
+                }
+                //Sostituisco l'eventuale separatore decimale
+                if (sDecimalSeparator == ",") oTxtSistema.value = oTxtSistema.value.replace(".", sepDec);
+
+                calcVpSistema(i, oNumCom.innerHTML, oQuotaComb.value, 0);
+
+                countRagg += 1;
+            } else {
+                oTxtSistema.value = "";
+            }
+        }
+    } else {
+
+        if (importoGio > 0) { CopyAmount(); }
+    }
+
+    $.event.trigger('CouponChanged');
+}
+
+function NewBet() {
+    var objSpanCodPub = document.getElementById("spanCodPub");
+    if (objSpanCodPub != null) {
+        var objTxtCodPub = objSpanCodPub.getElementsByClassName("TxtBox")[0];
+        if (objTxtCodPub != null) objTxtCodPub.focus();
+    }
+}
+
+function defaultPressed() {
+    var objStato = $get(sHidStatoCoupon);
+    if (objStato == null) return;
+
+    //Stato Coupon Nuovo
+    if (objStato.value == '0') return false;
+
+    //CouponInCompilazione
+    if (objStato.value == '10') {
+        __doPostBack(slnkAvantiUniqueID, '')
+
+        return false;
+    }
+
+    //CouponInConferma
+    if (objStato.value == '20') {
+
+        return false;
+    }
+
+
+    //CouponRegistrato
+    if (objStato.value == '30') {
+
+        return false;
+    }
+
+    //CouponRegistrato in riserva
+    if (objStato.value == '40') {
+
+        return false;
+    }
+}
+function trapNextBet(e, btnNewBet) {
+    //ottengo il codice del tasto
+    if (e == null) var e = window.event;
+    if (e.keyCode != null) code = e.keyCode;
+    else if (e.which) code = e.which;
+
+    //Se cliccato + del tastierino numerico (107) o il + della tastiera (187)
+    //Imposto il fuoco sul cod.Pub.
+    if ((code == 107) || (code == 187)) document.getElementById(btnNewBet).click();
+}
+
+function CopyAmount() {
+
+    
+
+    var sDecimalSeparator = sepDec;
+    var oTxtAmount = document.getElementById(sTxtGiocaSuTutte);
+    var oTxtSistema;
+    var amount = 0;
+    if (oTxtAmount != null) {
+        
+
+        if (oTxtAmount != null && oTxtAmount.value != "") {
+            amount = parseFloat(oTxtAmount.value.replace(",", "."));
+            if (isNaN(amount)) {
+                amount = 0;
+            }
+        } else {
+            amount = 0;
+        }
+
+        if (sDecimalSeparator == ",") {
+            oTxtAmount.value = oTxtAmount.value.replace(".", ",");
+        } else {
+            oTxtAmount.value = oTxtAmount.value.replace(",", ".");
+        }
+        var importoTot = 0;
+
+        if ($("#divSis input:checkbox:checked").length > 0) {
+            for (var i = 1; i <= maxNumRaggruppamenti; i++) {
+                oTxtSistema = document.getElementById("spanTxtSis" + i);
+                oChkSistema = document.getElementById("spanChkQuota" + i);
+
+
+
+                if (oTxtSistema == null || oChkSistema == null) continue
+                oTxtSistema = oTxtSistema.getElementsByClassName("txtSistema")[0];
+                oChkSistema = oChkSistema.getElementsByClassName("chkRaggruppamentoQuota")[0];
+
+                if (oTxtSistema == undefined || oChkSistema == undefined) continue
+
+
+
+                oNumCom = document.getElementById("spanLbl2Sistema" + i);
+
+                if (oNumCom == null) continue
+                if (oChkSistema.checked == false) continue
+
+                oNumCom = oNumCom.getElementsByClassName("lbl2Sistema")[0];
+                if (oNumCom == null) continue
+
+                oQuotaComb = document.getElementById("spanHidQuota" + i);
+                if (oQuotaComb == null) continue
+                oQuotaComb = oQuotaComb.getElementsByClassName("hidQuotaTotale")[0];
+                if (oQuotaComb == null) continue
+
+                if (oNumCom.innerHTML != "") {
+                    oTxtSistema.value = amount;
+
+                    //Sostituisco l'eventuale separatore decimale
+                    oTxtSistema.value = oTxtSistema.value.replace(".", sepDec);
+
+                    calcVpSistema(i, oNumCom.innerHTML, oQuotaComb.value, 0);
+                } else {
+                    oTxtSistema.value = "";
+                }
+            }
+            calcolaTotaliSistema(sDecimalSeparator, 1);
+        }
+    }
+}
+
+function ImportiTrapEnter(lnkAvantiClientID, evt) {
+    var keyCode = null;
+
+    if (evt.which) {
+        keyCode = evt.which;
+    } else if (evt.keyCode) {
+        keyCode = evt.keyCode;
+    }
+
+    if (keyCode == 13) {
+        evt.returnValue = false;
+        evt.cancel = true;
+
+        var btn = $get(lnkAvantiClientID);
+        btn.click()
+    }
+}
+
+function LoadButtonEnter(lnkLoadClienId, e) {
+    var keyCode = null;
+
+    if (e.which) {
+        keyCode = e.which;
+    } else if (e.keyCode) {
+        keyCode = e.keyCode;
+    }
+
+    if (keyCode == 13) {
+        e.returnValue = false;
+        e.cancel = true;
+
+        var btn = $get(lnkLoadClienId);
+        btn.click();
+    }
+}
+function findUser() {
+    var ddlUtenti = $get(sCboUtente);
+    if (ddlUtenti == null) return;
+    var txtUtente = $get(sTxtUtente);
+    if (txtUtente == null) return;
+    var strUidSelected = txtUtente.value;
+    if (strUidSelected == "") {
+
+        ddlUtenti.selectedIndex = 0;
+        showSaldoUtente();
+        return;
+    }
+
+    for (i = 0; i < ddlUtenti.length; i++) {
+        var cboText = ddlUtenti.options[i].text;
+        if (cboText.indexOf("-") > 0) {
+            var strUid = ddlUtenti.options[i].text.split("-")[1];
+
+            if (strUid.substring(0, strUidSelected.length).toLowerCase() == strUidSelected.toLowerCase()) {
+                ddlUtenti.selectedIndex = i;
+                showSaldoUtente();
+                return;
+            }
+        }
+    }
+
+    ddlUtenti.selectedIndex = 0;
+    showSaldoUtente();
+}
+function refreshShouldStopCountDown() {
+    var objHid = document.getElementById(sHidAttesa);
+
+    ISBets.WebPages.Controls.CouponWS.ShouldStopCountDown(objHid.value, OnShouldStopCountDown);
+}
+
+function OnShouldStopCountDown(results) {
+    if (results != null) {
+        var objHid = document.getElementById(sHidAttesa);
+
+        console.log("OnShouldStopCountDown() " + results);
+        // 1 stop count down
+        // 0 continue
+        if (results == 1) {
+            var objBtnRefresh = document.getElementById(sBtnRefreshAttesa);
+            objBtnRefresh.click();
+        } else {
+            CheckAttesa();
+        }
+    }
+}
+
+function refreshStatoCouponAsync() {
+    var objHid = $('#' + sHidCouponAsincrono);
+    ISBets.WebPages.Controls.CouponWS.GetStatoCouponAsincrono(objHid.val(), OnStatoCouponAsync);
+}
+
+function OnStatoCouponAsync(results) {
+    if (results != null) {
+        var objHid = $('#' + sHidCouponAsincrono);
+        if (results != 99) {
+            var objBtnRefresh = document.getElementById(sBtnRefreshAsincrono);
+            objBtnRefresh.click();
+        } else {
+            CheckAsincrono(1);
+        }
+    }
+}
+
+function CheckAttesa() {
+    var objHid = document.getElementById(sHidAttesa);
+    var objdivAttesa = document.getElementById('divAttesa');
+    var objdivCoupon = document.getElementById('divInserimentoScommesse');
+    
+    if (objHid.value != '0') {
+        objdivAttesa.style.display = "block";
+        objdivCoupon.style.display = "none";
+        setTimeout('refreshShouldStopCountDown()', 2000);
+    }
+    else {
+        objdivAttesa.style.display = "none";
+        objdivCoupon.style.display = "block";
+    }
+}
+
+function CheckERB() {
+    var objHidErb = document.getElementById(sHidERB);
+
+    //console.log('CheckERB()' + objHidErb.value);
+    if (objHidErb.value != '0') {
+
+        ERBShowPopUp();
+
+        var objErbReCheck = document.getElementById(sHidErbReCheck);
+        //we are checking state changes only if there is a need for that
+        if (objErbReCheck.value == '1')
+            setTimeout('GetERBStatoID()', 2000);
+    }
+    else {
+        ERBHidePopUp();
+    }
+}
+var elementNeedToChangePosition;
+function changeElementsCssPosition(cssPosition) {
+    elementNeedToChangePosition = new Array(
+        document.getElementById('divHeader'),
+        document.getElementsByClassName('SXTitleMarket')[0],
+        document.getElementsByClassName('SXTitleHotWin')[0],
+        document.getElementsByClassName('SXContentHotWin')[0],
+        document.getElementsByClassName('SXTitleInfo')[0],
+        document.getElementsByClassName('SXTitleCheck')[0],
+        //document.getElementsByClassName('ui-slider-handle')[0],
+        document.getElementById('oddsPanelTimeSlider')       
+    );
+    for (var i = 0; i < elementNeedToChangePosition.length; i++) {
+        if (typeof (elementNeedToChangePosition[i]) != 'undefined' && elementNeedToChangePosition[i] != null) {
+            elementNeedToChangePosition[i].style.position = cssPosition;
+        }
+    }
+}
+
+function ERBShowPopUp() {
+    var objdivERB = document.getElementById('popUpModalERB');
+    var objPopUpBackGround = document.getElementById('backgroundPopupERB');
+    var objPopUpCloseBtn = document.getElementById('popupCCClose');
+    initializeModalPopup(objPopUpCloseBtn.id, objdivERB.id, objPopUpBackGround.id);
+    centerPopup(objdivERB.id, objPopUpBackGround.id);
+    loadPopup(objdivERB.id, objPopUpBackGround.id);
+
+    changeElementsCssPosition("static");
+    ERBShowHideInnerControls();
+}
+
+function ERBHidePopUp() {
+    document.getElementById('popUpModalERB').style.display = "none";
+
+    changeElementsCssPosition("relative");
+}
+
+function GetERBStatoID() {
+    ISBets.WebPages.Controls.ScoRiservaWS.GetScoRiserva(sHidErbStatoCheckCode, OnGetERBStatoID);
+}
+
+function OnGetERBStatoID(results) {
+    if (results != null) {
+        var objLastStatoId = document.getElementById(sHidErbLastStatoChangeId);
+        console.log('OnGetERBStatoID()' + results + ' current: ' + objLastStatoId.value);
+       
+        if (results != objLastStatoId.value || sErbRetryNo % 5 == 0) {
+            objLastStatoId.value = results;
+            sErbRetryNo = 1;
+            var objBtnErbRefresh = document.getElementById(sBtnErbRefresh);
+            console.log('objBtnErbRefresh.Click()');
+            objBtnErbRefresh.click();
+        } else {
+            sErbRetryNo = sErbRetryNo + 1;
+            CheckERB();
+        }
+    }
+}
+
+function ShowErbWaiting() {
+    document.getElementById('ErbMainMsg').style.display = "block";
+    document.getElementById(sdivErbParzErrore).style.display = "none";
+    document.getElementById('tblErbParzButtons').style.display = "none";
+    document.getElementById(stblErbPrintDone).style.display = "none";
+}
+
+function ERBShowHideInnerControls() {
+    var objErbStato = document.getElementById(sHidErbStato);
+    var objErbReCheck = document.getElementById(sHidErbReCheck);
+
+    if (objErbStato.value == "Waiting") {
+
+        ShowErbWaiting();
+
+        objErbReCheck.value = '1';
+    }
+    else if (objErbStato.value == "ParzRiserva") {
+        document.getElementById('ErbMainMsg').style.display = "none";
+        document.getElementById(sdivErbParzErrore).style.display = "none";
+        document.getElementById('tblErbParzButtons').style.display = "block";
+        document.getElementById(stblErbPrintDone).style.display = "none";
+
+        objErbReCheck.value = '0';
+    }
+    else if (objErbStato.value == "ParzRiservaError") {
+        document.getElementById('ErbMainMsg').style.display = "none";
+        document.getElementById(sdivErbParzErrore).style.display = "block";
+        document.getElementById('tblErbParzButtons').style.display = "none";
+        document.getElementById(stblErbPrintDone).style.display = "block";
+
+        objErbReCheck.value = '0';
+    }
+    else if (objErbStato.value == "ErbDone") {
+
+        document.getElementById('ErbMainMsg').style.display = "block";
+        document.getElementById(sdivErbParzErrore).style.display = "none";
+        document.getElementById('tblErbParzButtons').style.display = "none";
+        document.getElementById(stblErbPrintDone).style.display = "block";
+
+        objErbReCheck.value = '0';
+    }
+    else  {//this is probably some error happend
+
+        document.getElementById('ErbMainMsg').style.display = "block";
+        document.getElementById(sdivErbParzErrore).style.display = "none";
+        document.getElementById('tblErbParzButtons').style.display = "none";
+        document.getElementById(stblErbPrintDone).style.display = "block";
+
+        objErbReCheck.value = '0';
+    }
+
+}
+
+function CheckAsincrono(enableSetTimeout) {
+    var objHid = $('#' + sHidCouponAsincrono);
+
+    var objdivAsync = $('#divCouponAsync');
+    var objdivCoupon = $('#divInserimentoScommesse');
+
+    
+
+    if (objHid.val() != '0') {
+        objdivAsync.show();
+        objdivCoupon.hide();
+
+        console.log('CheckAsincrono');
+        if (enableSetTimeout == 1) { setTimeout('refreshStatoCouponAsync()', 3000); } else { refreshStatoCouponAsync(); checkScoRiserva(); }
+
+    } else {
+        objdivAsync.hide();
+        objdivCoupon.show();
+       
+    }
+
+}
+function resetActiveCssClass() {
+    //$('#live-grouped-odds table > tbody td.Bet .Odds .Trend').parent().parent().siblings().children().children().removeClass('active');
+    $('body').find('.active').removeClass('active');
+    $('body').find('.activeMM').removeClass('activeMM');
+}
+$("body").on("click", '.CDelete', function () {
+    var idOfDeletedMatch = $(this).siblings(":last").attr('id').substring(4);
+    $('[quoteid="' + idOfDeletedMatch + '"]').children().children().removeClass('active');
+    $('[quoteid="' + idOfDeletedMatch + '"]').removeClass('active');
+    $('[quoteid="' + idOfDeletedMatch + '"]').children().children().removeClass('activeMM');
+    $('[quoteid="' + idOfDeletedMatch + '"]').removeClass('activeMM');
+});
+
+function selezionaQuote(forzaReload) {
+    $.event.trigger('couponSelectOdds');
+    
+    selezionaQuoteLMSport();
+    selezionaQuoteLMultiSport();
+    selezionaQuotePG();
+    selezionaQuoteMMSport();
+    selezionaQuotePG1X2();
+    selezionaQuoteStatsSco();
+    //selezionaQuoteLessThan();
+    //Per verificare che sia nella pagina Odds.aspx verifico la presenza della hidden OddsASPX
+    if (document.getElementById('OddsASPX') == null) return;  
+   
+    //Verifico se il popup del dettaglio Ã¨ visibile
+    try {
+        if (popupStatusDett == 1) {
+            window.top.frames["iframeDett"].selezionaQuoteDettaglio()
+        }
+    } catch (e) { }
+
+    var objModificatoQuote = $get(sHidModificatoQuote);
+    if (objModificatoQuote.value != "1" && forzaReload == "1") return;
+
+    //Hidden contenente gli IDQuota separati da pipe |
+    var objHidQuote = document.getElementById(sHidIDQuote);
+    if (objHidQuote == null) return;
+    var quote = objHidQuote.value.split("|");
+        
+    //Azzero tutte le combo
+    // $("select[class*=dropdownQuote]").each(function(i) {
+    //     $(this).val("-1");
+    // });
+
+    //Resetto tutte le td quote quelli selezionate
+    $("td[class*=OddGB_]").removeClass("QuotaSel");
+    $(".divOdds .SEs .item .odd[id*=td_]").removeClass("QuotaSel");
+
+    //Resetto tutte le combo
+    $("div[class*='divCmb']").removeClass("Sel");
+    $("div[class*='divCmb']").html(sCmbSpecials);  
+
+    for (var i = 0; i < quote.length; i++) {
+        var IDQuota = quote[i].split("&")[0];
+        var IDSottoEvento = quote[i].split("&")[1];
+        
+        var objTd = $("#td_" + IDQuota);
+
+        if (objTd.html() != null) {
+            objTd.addClass("QuotaSel");
+        } else { 
+           
+            var objHidInfoQuota = $("#DIQ_" + IDQuota)
+            if (objHidInfoQuota.html() != null) {
+                var valoriQuota = objHidInfoQuota.html().split("|");
+                if (valoriQuota.length == 4) {
+                    var strHNDsel = ""
+                    if (valoriQuota[3] != 0) { strHNDsel = "&nbsp;" + valoriQuota[3] }
+
+                    //$("div[class*='divCmb'][onclick*='" + IDSottoEvento + "']").html(valoriQuota[0] + strHNDsel + "<span>" + valoriQuota[1] + "&nbsp;" + valoriQuota[2] + "</span>");
+                    $("div[class*='divCmb'][onclick*='" + IDSottoEvento + "']").addClass("Sel");
+                    
+                }
+            }
+        }
+
+    }
+
+    objModificatoQuote.value = "0";
+
+}
+
+function selezionaQuoteDettaglio() {
+    var objHidQuote = document.getElementById(sHidIDQuote);
+    if (objHidQuote == null) return;
+    var quote = objHidQuote.value.split("|");
+    $('#divDett .SEOdd').removeClass("sel");
+
+    for (var i = 0; i < quote.length; i++) {
+        var IDQuota = quote[i].split("&")[0];
+        if (IDQuota != '') {  $('#divDett #div_' + IDQuota).addClass("sel");}
+    }
+
+   
+}
+
+//seleziona le quote nel LastMinute
+function selezionaQuoteLMSport() {
+    if ($('#NESportCnt').length == 0) return;
+
+    //Hidden contenente gli IDQuota separati da pipe |
+    var objHidQuote = document.getElementById(sHidIDQuote);
+    if (objHidQuote == null) return;
+    var quote = objHidQuote.value.split("|");
+    
+    $('a[idLM]').parent().removeClass("sel");
+
+    for (var i = 0; i < quote.length; i++) {
+        var IDQuota = quote[i].split("&")[0];
+        var IDSottoEvento = quote[i].split("&")[1];
+ 
+        //Per LastMinutes
+        $('a[idLM=' + IDQuota + ']').parent().addClass("sel")
+    }
+}
+
+function selezionaQuoteLMultiSport() {
+    if ($('.LiveBettingSportMain').length == 0) return;
+
+    //Hidden contenente gli IDQuota separati da pipe |
+    var objHidQuote = document.getElementById(sHidIDQuote);
+    if (objHidQuote == null) return;
+    var quote = objHidQuote.value.split("|");
+
+    $('a[idLMulti]').removeClass("sel");
+
+    for (var i = 0; i < quote.length; i++) {
+        var IDQuota = quote[i].split("&")[0];
+        var IDSottoEvento = quote[i].split("&")[1];
+
+        //Per LastMinutes
+        $('a[idLMulti=' + IDQuota + ']').addClass("sel")
+    }
+}
+
+
+//seleziona le quote nelle PiuGiocate
+function selezionaQuotePG() {
+    if ($('#PGContent').length == 0) return;
+
+    //Hidden contenente gli IDQuota separati da pipe |
+    var objHidQuote = document.getElementById(sHidIDQuote);
+    if (objHidQuote == null) return;
+    var quote = objHidQuote.value.split("|");
+
+    $('a[idPG]').parent().removeClass("sel");
+
+    for (var i = 0; i < quote.length; i++) {
+        var IDQuota = quote[i].split("&")[0];
+        var IDSottoEvento = quote[i].split("&")[1];
+
+        //Per LastMinutes
+        $('a[idPG=' + IDQuota + ']').parent().addClass("sel")
+    }
+}
+
+//seleziona le quote nei MarketMovers
+function selezionaQuoteMMSport() {
+    if ($('#MMCarousel').length == 0) return;
+
+    //Hidden contenente gli IDQuota separati da pipe |
+    var objHidQuote = document.getElementById(sHidIDQuote);
+    if (objHidQuote == null) return;
+    var quote = objHidQuote.value.split("|");
+
+    $('a[idMM]').parent().removeClass("sel");
+
+    for (var i = 0; i < quote.length; i++) {
+        var IDQuota = quote[i].split("&")[0];
+        var IDSottoEvento = quote[i].split("&")[1];
+
+        //Per LastMinutes
+        $('a[idMM=' + IDQuota + ']').parent().addClass("sel")
+    }
+}
+
+function selezionaQuoteStatsSco() {
+    if ($('#statsScoMain').length == 0) return;
+    //Hidden contenente gli IDQuota separati da pipe |
+    var objHidQuote = document.getElementById(sHidIDQuote);
+    if (objHidQuote == null) return;
+    var quote = objHidQuote.value.split("|");
+
+    $('div[idSS]').removeClass("sel");
+
+    for (var i = 0; i < quote.length; i++) {
+        var IDQuota = quote[i].split("&")[0];
+        var IDSottoEvento = quote[i].split("&")[1];
+
+        //Per LastMinutes
+        $('div[idSS=' + IDQuota + ']').addClass("sel")
+    }
+}
+
+
+function selezionaQuotePG1X2() {
+    if ($('#PGContent1X2').length == 0) return;
+
+    //Hidden contenente gli IDQuota separati da pipe |
+    var objHidQuote = document.getElementById(sHidIDQuote);
+    if (objHidQuote == null) return;
+    var quote = objHidQuote.value.split("|");
+
+    $('a[idPG1X2]').parent().removeClass("sel");
+
+    for (var i = 0; i < quote.length; i++) {
+        var IDQuota = quote[i].split("&")[0];
+        var IDSottoEvento = quote[i].split("&")[1];
+
+        //Per LastMinutes
+        $('a[idPG1X2=' + IDQuota + ']').parent().addClass("sel")
+    }
+}
+
+function setFocus() {
+    var objHidStato = document.getElementById(sHidStatoCoupon);
+    if (objHidStato == null) return;
+
+    if (objHidStato.value == "20") {
+        //Coupon in conferma
+        var objLnkBtn = document.getElementById(sLnkConferma);
+        if (objLnkBtn != null) objLnkBtn.focus();
+    }
+
+    if ((objHidStato.value == "30")) {
+        var objBtnScoAncora = document.getElementById(sBtnScoAncora);
+        if (objBtnScoAncora != null) objBtnScoAncora.focus();
+    }
+}
+
+function selectedUser(source, eventArgs) {
+    var ddlUtenti = $get(sCboUtente);
+    if (ddlUtenti == null) return;
+    var txtUtente = document.getElementById(sTxtUtente);
+    if (txtUtente == null) return;
+    var txtUidSelected = txtUtente.value;
+
+    for (i = 0; i < ddlUtenti.length; i++) {
+        var strUid = ddlUtenti.options[i].text.split("-")[0];
+        if (strUid == txtUidSelected) {
+            ddlUtenti.selectedIndex = i;
+            return;
+        }
+    }
+}
+function SetFocusImporto() {
+    // In base al tipo di coupon trovo su quale textbox impostare il fuoco
+    var hidTipoCoupon = $get(sHidTipoCoupon);
+    if (hidTipoCoupon == null) return false;
+
+    var objTxtImporto;
+    if (hidTipoCoupon.value == 1) objTxtImporto = $get(sTxtImporto);       //Singola
+    if (hidTipoCoupon.value == 2) objTxtImporto = $get(sTxtImportoDI);       //DI
+    if (hidTipoCoupon.value == 3) objTxtImporto = $get(sTxtImportoSis);       //Sistemi
+    if (hidTipoCoupon.value == 4) objTxtImporto = $get(sTxtImporto);       //Multipla
+    if (objTxtImporto == null) return false;
+
+    objTxtImporto.focus();
+
+    return true;
+}
+function RicaricaTrapEnter() {
+    //Verifico se Ã¨ stato cliccato invio
+    if (document.all) {
+        if (event.keyCode == 13) {
+            event.returnValue = false;
+            event.cancel = true;
+
+            SetFocusImporto();
+
+            return;
+        }
+    }
+}
+
+function UserTrapEnter(evt) {
+    //Verifico se Ã¨ stato cliccato invio
+
+    if (evt.keyCode == 13) {
+        evt.returnValue = false;
+        evt.cancel = true;
+
+        SetFocusImporto();
+
+        return;
+    }
+
+    //Se viene premuto il piu del tastierino numerico oil piu normale vado su ricarica
+    if ((evt.keyCode == 107) || (evt.keyCode == 187)) {
+        var objTxtRicarica = $get(sTxtRicarica);
+        if (objTxtRicarica != null) objTxtRicarica.focus();
+
+        var objTxtRicarica = $get(sChkRicarica);
+        if (objTxtRicarica != null) objTxtRicarica.checked = true;
+
+        evt.returnValue = false;
+        evt.cancel = true;
+
+        return;
+    }
+    //Se viene premuto il piu del tastierino numerico oil piu normale vado su ricarica
+    if ((evt.keyCode == 109) || (evt.keyCode == 189)) {
+        var objTxtRicarica = $get(sChkRicarica);
+        if (objTxtRicarica != null) objTxtRicarica.checked = false;
+
+        evt.returnValue = false;
+        evt.cancel = true;
+
+        return;
+    }
+}
+/*Aggiunge in fondo il separatore solamente se non giÃ  presente*/
+function addSep(valore) {
+    if (valore.indexOf(sepDec) < 0)
+        return valore + sepDec;
+    else
+        return valore;
+}
+function replaceSepTxt() {
+    $('#divContentCoupon input').not($('#divContentCoupon #'+sTxtUtente)).not($('#divContentCoupon #'+sTxtCouponCode)).keydown(function(e) {
+        var key = e.charCode || e.keyCode || 0;
+
+        // Enter BackSpace, Tab, Numeri e KeyPad
+        if (key == 13 || key == 8 || key == 9 || (key >= 37 && key <= 40) || (key >= 48 && key <= 57) || (key >= 96 && key <= 105)) return true;
+        //Alt, CTRL, SHIFT
+        if ((key == 18) || (key == 17) || (key == 16)) return true;
+        //Home End Canc
+        if ((key == 36) || (key == 35) || (key == 46)) return true;
+
+        //tasti funzione (per evitare di bloccare F5
+        if (key > 111 && key < 124) return true;
+
+        /* 110 punto numpad 188 virgola 190 punto normale */
+        if ((key == 110) || (key == 188) || (key == 190)) { $(this).val(addSep($(this).val())); return false; };
+
+        return false;
+    })
+}
+
+function CouponEndRequestHandler(sender, args) {
+    replaceSepTxt();
+    importoCassa();
+
+    $.event.trigger('CouponChanged');
+
+    if (args.get_error() == undefined) {
+
+        CheckAttesa();
+        countdownLiveCpn(countdownTime);
+
+        CheckERB();
+
+        //console.log('CouponEndRequestHandler() radim nesto drugo');
+        //CheckAsincrono(0);
+
+        //Verifica scommesse con riserva
+        var objRiserva = document.getElementById(sHidRiserva);
+        var objAsync = $('#' + sHidPrintAsincrono);
+
+        if (objRiserva != null) {
+            if (objRiserva.value == '1') {
+                checkScoRiserva();
+                objRiserva.value = '-1';
+            }
+            if (objRiserva.value == '0') {
+              if (objAsync.val() != '1') { printCoupon(); }
+            }
+        }else{
+           if (objAsync.val() != '1') { printCoupon(); }
+        }
+
+        setFocus();
+    }
+}
+
+function showOnlySaldoUtente() {
+
+    var objTxtSaldo = $get(sLblOnlySaldo);
+    if (objTxtSaldo == null) return;
+    var ddlUtenti = $get(sCboUtente);
+    if (ddlUtenti == null) return;
+    objTxtSaldo.innerHTML = "";
+    if (ddlUtenti.selectedIndex == 0) return;
+
+    //Chiamata al webservice che popola i dettagli del saldo
+    ISBets.WebPages.Controls.CouponWS.GetSaldo(ddlUtenti.value, OnWSRequestOnlySaldoComplete);
+}
+
+//Viene chiamata al termine della chiamata asincrona al webservice che restituisce i dati
+function OnWSRequestOnlySaldoComplete(results) {
+    if (results != null) {
+        var objTxtSaldo = $get(sLblOnlySaldo);
+        if (objTxtSaldo == null) return;
+
+        objTxtSaldo.innerHTML = results;
+    }
+}
+
+function showSaldoUtente() {
+
+    var objTxtSaldo = $get(sLblSaldo);
+    if (objTxtSaldo == null) return;
+    var ddlUtenti = $get(sCboUtente);
+    if (ddlUtenti == null) return;
+    objTxtSaldo.innerHTML = "";
+    if (ddlUtenti.selectedIndex == 0) return;
+
+    //Chiamata al webservice che popola i dettagli del saldo
+    ISBets.WebPages.Controls.CouponWS.GetSaldo(ddlUtenti.value, OnWSRequestComplete);
+
+    ISBets.WebPages.Controls.CouponWS.GetDisbilitazioneGiroconti(ddlUtenti.value, OnWSRequestGirocontiComplete);
+}
+        
+//Viene chiamata al termine della chiamata asincrona al webservice che restituisce i dati
+function OnWSRequestComplete(results) {
+    if (results != null) {
+        var objTxtSaldo = $get(sLblSaldo);
+        if (objTxtSaldo == null) return;
+
+        objTxtSaldo.innerHTML = results;
+    }
+}
+
+//Viene chiamata al termine della chiamata asincrona al webservice che restituisce l'abilitazione
+function OnWSRequestGirocontiComplete(results) {
+
+    if (results == '1') {
+        var objTxtRicarica = document.getElementById(sTxtRicarica);
+        if (objTxtRicarica) objTxtRicarica.value ='0';
+        document.getElementById(sDivRicMan).style.visibility = 'hidden';
+    } else {
+        document.getElementById(sDivRicMan).style.visibility = 'visible';
+    }
+}
+
+function showSaldoUtenteRicAuto() {
+
+    var objTxtSaldo = $get(sLblRicAutoSaldo);
+    if (objTxtSaldo == null) return;
+    var ddlUtenti = $get(sCboUtente);
+    if (ddlUtenti == null) return;
+    objTxtSaldo.innerHTML = "";
+    if (ddlUtenti.selectedIndex == 0) return;
+
+    //Chiamata al webservice che popola i dettagli del saldo
+    ISBets.WebPages.Controls.CouponWS.GetSaldo(ddlUtenti.value, OnWSRicAutoRequestComplete);
+
+    ISBets.WebPages.Controls.CouponWS.GetDisbilitazioneGiroconti(ddlUtenti.value, OnWSRicAutoRequestGirocontiComplete);
+
+}
+
+//Viene chiamata al termine della chiamata asincrona al webservice che restituisce l'abilitazione
+function OnWSRicAutoRequestGirocontiComplete(results) {
+
+    if (results == '1') {
+        var objChkRicarica = $get(sChkRicarica);
+        if (objChkRicarica != null) objChkRicarica.checked = false;
+        document.getElementById(sDivRicAuto).style.visibility = 'hidden';
+    } else {
+        document.getElementById(sDivRicAuto).style.visibility = 'visible';
+    }
+}
+
+//Viene chiamata al termine della chiamata asincrona al webservice che restituisce i dati
+function OnWSRicAutoRequestComplete(results) {
+    if (results != null) {
+    var objTxtSaldo = $get(sLblRicAutoSaldo);
+    if (objTxtSaldo == null) return;
+
+        objTxtSaldo.innerHTML = results;
+    }
+}
+
+function selRaggr(evt) {
+
+    var oTxtImportoTot, importoTot;
+    var oGiocaSuTutte = document.getElementById(sTxtGiocaSuTutte);
+    if (oGiocaSuTutte != null) {
+        if (oGiocaSuTutte.value === "") {
+            oTxtImportoTot = document.getElementById("spanImportoSis").getElementsByClassName("txtImportoSis")[0];
+            if (oTxtImportoTot != null) {
+                if (!isNaN(parseFloat(oTxtImportoTot.value.replace(",", ".")))) {
+                    importoTot = parseFloat(oTxtImportoTot.value.replace(",", "."));
+                }
+            }
+        }
+    }
+
+    var chkStatus = $("#divSis input:checkbox:checked").length !== $("#divSis input:checkbox").length;
+    $("#divSis").find("input:checkbox").each(function () {
+        if (this.checked !== chkStatus) {
+            this.checked = chkStatus;
+        }
+        if (this.checked == true) {
+            $(this).parents(".CpnTipoSisRiep").addClass("sel");
+        } else {
+            restartWinningsForGropu(this);
+
+            if ($("#divSis input:checkbox:checked").length == 0) {
+                var oTxtImpTot = document.getElementById("spanImportoSis").getElementsByClassName("txtImportoSis")[0];
+                if (oTxtImpTot != null) {
+                    oTxtImpTot.value = "";
+                }
+                var oImportoBonusMin = document.getElementById("spanBonusSisMin").getElementsByClassName("lblBonusSisMin")[0];
+                var oImportoBonusMax = document.getElementById("spanBonusSisMax").getElementsByClassName("lblBonusSisMax")[0];
+
+                if (oImportoBonusMax != null) oImportoBonusMax.innerHTML = "0";
+                if (oImportoBonusMin != null) oImportoBonusMin.innerHTML = "0";
+
+                var oVincitaPotenzialeMax = document.getElementById("spanVincitaPotSis").getElementsByClassName("litVincitaPotSis")[0];
+                var oVincitaPotenzialeMin = document.getElementById("spanVincitaMinSis").getElementsByClassName("litVincitaMinSis")[0];
+
+                if (oVincitaPotenzialeMax != null) oVincitaPotenzialeMax.innerHTML = "0";
+                if (oVincitaPotenzialeMin != null) oVincitaPotenzialeMin.innerHTML = "0";
+                oGiocaSuTutte.value = "";
+            }
+
+            $(this).parents(".CpnTipoSisRiep").removeClass("sel");
+        }
+    });
+
+    if (oGiocaSuTutte != null && oGiocaSuTutte.value === "") {
+        DistribuisciImportoSistema(evt);
+    } else {
+        CopyAmount();
+    }
+
+    SwitchSelectUnselect();
+}
+
+function SwitchSelectUnselect() {
+    var select = document.getElementById("selectalllink");
+    var unselect = document.getElementById("unselectalllink");
+    if (select != null && unselect != null) {
+        if ($("#divSis input:checkbox:checked").length == $("#divSis input:checkbox").length) {
+            select.style.display = 'none';
+            unselect.removeAttribute("style");
+        } else {
+            select.removeAttribute("style");
+            unselect.style.display = 'none';
+        }
+    }
+}
+
+//ABILITA IL DRAG DEL COUPON
+function SetCpnDraggable() {
+    $("#divCoupon").draggable({ axis: 'x' });
+    //imposto la funzione di salvataggio nel cookie della posizione quando termino il drag
+    $('#divCoupon').bind('dragstop', function(event, ui) {
+        $.cookie('LeftPositionCookie', $("#divCoupon").css('left'), { path: '/' });
+    });
+    //leggo i valori salvati nel cookie per posizione e apertura
+    var oldLeftPosition = $.cookie('LeftPositionCookie');
+    var oldHeight = $.cookie('LeftExpandedCookie');
+    //se ho valori nei cookie imposto il coupon
+    if (oldLeftPosition != null) {
+        $("#divCoupon").css('left', oldLeftPosition);
+    }
+    if (oldHeight != null) {
+        if (oldHeight != '1px') {
+            $('#divContentCoupon').slideToggle();
+        }
+    }
+}
+
+function ItemVisualizzabili(numEventi) {
+    var hItem = $('#divCoupon #listticker .divScomm:first').height();   //altezza singolo Item
+    var hCoupon = $('#divCoupon').height();                                   //altezza coupon
+    var hItems = $('#listticker').height();                                          //altezza di tutti gli Items
+    var hWindow = $(window).height();                                          //altezza finestra
+    var SpazioVuoto = hWindow - $('#divCoupon').height();               //altezza spazio libero
+
+    numItemOrig = numEventi;
+
+    if (hCoupon > hWindow) {
+        var diffH = hCoupon - hWindow;
+        var numItemEccesso = Math.floor(diffH / hItem);
+        if (numItemEccesso >= 0) {
+            var hCouponInserimento = hCoupon - hItems;
+            numItemVis = Math.floor((hWindow - hCouponInserimento) / hItem)
+            if (numItemVis > 1) { numItemVis = numItemVis - 1 }
+        }
+    } else { numItemVis = numEventi + 1 }
+}
+
+//RICALCOLA ITEM VISUALIZZABILI IN RESIZE (chiamata due volte in IE...)
+function SetCpnScrollableRes() {
+    if (varResize == 0) { varResize = 1; }
+    else {
+        var hCoupon = $('#divCoupon').height();
+        var hWindow = $(window).height();
+        if (hCoupon > hWindow) { SetCpnScrollable(numItemOrig + 1); }
+        varResize = 0;
+    }
+}
+//ESPANDE CONTRAE COUPON
+function OpenCloseCpn() {
+    $('#divContentCoupon').slideToggle();
+    var hContentCoupon = $("#divContentCoupon").css('height')
+    //salvo nel cookie l'altezza per sapere se il coupon era aperto o chiuso
+    $.cookie('LeftExpandedCookie', hContentCoupon, { path: '/' });
+    if (hContentCoupon != '1px') {
+        $('#' + sImgBtmOpwnClose).attr("src", sImgOpen);
+    } else {
+        $('#' + sImgBtmOpwnClose).attr("src", sImgClose);
+    }
+}
+
+//INIZIALIZZA IL COUPON QUANDO E' BLOCCATO
+//This is obsolete because BloccaSbloccaCoupon() do the same thing
+/*function setCpnBlocked() {
+    divCouponTopPosition = 0;
+    $('#divCoupon').css('position', 'relative');
+    $('#divCoupon').css('padding-bottom', '0');
+    $('#divCoupon').css('top', divCouponTopPosition);
+}*/
+
+//BLOCCA O SBLOCCA IL COUPON QUANDO SCROLLA CON LA PAGINA
+function BloccaSbloccaCoupon() {
+    var lnkID = '#' + sLnkBlocca;
+
+    if (divCouponTopPosition != 0) {
+        divCouponTopPosition = 0;
+        $('#divCoupon').css('position', 'relative');
+        $('#divCoupon').css('padding-bottom', '0');
+        $('#divCoupon').css('top', divCouponTopPosition);
+        $(lnkID).addClass('lnkBlocca');
+        $(lnkID).removeClass('lnkSblocca');
+        $(lnkID).attr('title', sTooltipSblocca);
+        $.cookie('BlockedCookie', '1', { path: '/' });
+    } else {
+        divCouponTopPosition = divCouponOldTopPosition;
+        $('#divCoupon').css('position', 'absolute');
+        //$('#divCoupon').css('padding-bottom', heightFooter + 'px');
+        $(lnkID).addClass('lnkSblocca');
+        $(lnkID).removeClass('lnkBlocca');
+        $(lnkID).attr('title', sTooltipBlocca);
+        $.cookie('BlockedCookie', '0', { path: '/' });
+        checkLocation();
+    }
+}
+
+function printCoupon(idCoupon, force) {
+    var objHid = document.getElementById('hidConferma');
+
+    if (objHid != null) {
+        var lnkPrint = ''
+        //console.log(objHid.value)
+        //console.log(force)
+
+        if (typeof (idCoupon) != 'undefined') {
+            lnkPrint = sUrlPrintCoupon + idCoupon
+        } else {
+            lnkPrint = sUrlPrintCoupon + $('#' + sHidIDCoupon).val()
+        }
+
+        if (objHid.value == '1' || typeof (force) != 'undefined') {
+            setTimeout(function () { $.event.trigger('ViewChanged'); }, 250);
+            showPopUpCentered(lnkPrint, 300, 350);
+            NewBet();
+
+            // Imposto il valore a -1 perchÃ¨ altrimenti ad ogni postback mi rilancia la stampa
+            objHid.value = -1;
+        }
+
+    } 
+
+}
+
+function printCodiceAnonimo(Codice) {
+    var objHid = document.getElementById('hidConferma');
+
+    if (objHid != null) {
+
+        var lnkPrint = "";
+
+        if (typeof (Codice) != 'undefined') {
+            lnkPrint = sUrlPrintCodiceAnonimo + Codice
+        }
+
+        if (objHid.value == '0') {
+            if (Codice.indexOf("Codice") !== -1) {
+                codiceWebSession.removeCodes(); // if we printed all
+            } else {
+                codiceWebSession.saveCode(Codice); //if we printed single code
+            }
+            setTimeout(function () {$.event.trigger('ViewChanged');}, 250);
+            
+            showPopUpCentered(lnkPrint, 300, 350);
+            NewBet();
+            
+            // Imposto il valore a -1 perchÃ¨ altrimenti ad ogni postback mi rilancia la stampa
+            objHid.value = -1;
+            
+        }
+    }
+}
+
+var codiceWebSession = (function () {
+    var savedCodes;
+    var codesArr = [];
+    var sessionKey = "CodAnonimo";
+
+    function readSession(key) {
+        return sessionStorage.getItem(key);
+    }
+
+    function writeSession(key, val) {
+        sessionStorage.setItem(sessionKey, val);
+    }
+
+    function removeSession(key) {
+        sessionStorage.removeItem(sessionKey);
+    }
+
+    function init() {
+        savedCodes = readSession(sessionKey);
+
+        if (savedCodes !== null) {
+            codesArr = savedCodes.split(","); //fill ctrl object
+            writeCodiceInHidden(codesArr);
+        }
+        createCodiceCounter(codesArr);
+        watchCpnChanges('divCoupon');
+    }
+
+    function saveCode(Codice) {
+
+        var coddIdx = codesArr.indexOf(Codice);
+
+        if (coddIdx === -1) {
+            codesArr.push(Codice);
+            writeCodiceInHidden(codesArr);
+            writeSession(sessionKey, codesArr);
+        } else {
+            if (codesArr.length === 1) {
+                removeCodes();
+            } else {
+                codesArr.splice(coddIdx, 1);
+                writeCodiceInHidden(codesArr);
+                writeSession(sessionKey, codesArr);
+            }
+        }
+            createCodiceCounter(codesArr);
+    }
+
+    function removeCodes() {
+        codesArr = [];
+        clearCodiceinHidden();
+        removeSession(sessionKey);
+    }
+    
+    function createCodiceCounter(codesArr) {
+        $('#' + sbtnListAnonCodice).hide();
+
+        var numOfCodices = codesArr.length;
+        if (numOfCodices > 0) {
+            $('#numOfCodices').remove();
+            $('#' + scpnTop).removeClass('Top');
+            $('#' + scpnTop).addClass('Top Anonimo');
+            $('#' + sbtnListAnonCodice).append("<div id='numOfCodices' class='numOfCodices'>" + numOfCodices + "</div>");
+            $('#' + sbtnListAnonCodice).show();
+        } else {
+            $('#' + sbtnListAnonCodice).hide();
+        }
+    }
+
+    function writeCodiceInHidden(codesArr) {
+        $('#' + shidCoddAnonimo).val(codesArr);
+    }
+
+    function clearCodiceinHidden() {
+        $('#' + shidCoddAnonimo).val("");
+    }
+
+    function watchCpnChanges(element) {
+        $('#' + element).on('ViewChanged', function () {
+            createCodiceCounter(codesArr);
+        });
+    }
+
+    return {
+        init: init,
+
+        saveCode: saveCode,
+        removeCodes: removeCodes
+    };
+
+})();
+
+function printCouponPayoutReceipt(idCoupon) {
+    var lnkPrint = ''
+
+    if (typeof (idCoupon) != 'undefined') {
+        lnkPrint = sUrlPrintCouponPayoutReceipt + idCoupon
+    }
+
+    showPopUpCentered(lnkPrint, 300, 350);
+}
+
+/****************************************************************************************************/
+/** ***Funzioni usate nel sistema valuta cassa ***/
+/****************************************************************************************************/
+function objValuta(IDValuta, Simbolo, CodiceHTML, Cambio, NumeroDecimali) {
+    this.IDValuta = IDValuta;
+    this.Simbolo = Simbolo;
+    this.CodiceHTML = CodiceHTML;
+    this.Cambio = Cambio;
+    this.NumeroDecimali = NumeroDecimali;
+}
+function getIDDDLValuta() {
+    if (valCassa != 1) return;
+
+    // In base al tipo di coupon trovo su quale textbox impostare la conversione
+    var hidTipoCoupon = $get(sHidTipoCoupon);
+    if (hidTipoCoupon == null) return false;
+
+    switch (hidTipoCoupon.value) {
+        case "1": //Singola
+            return sDdlValuta;
+            break;
+        case "2": //DI
+            return sDdlValutaDI;
+            break;
+        case "3": //Sistema
+            return sDdlValutaSis;
+            break;
+        case "4": //Multipla
+            return sDdlValuta;
+            break;
+    }
+}
+function getNumeroDecimali() {
+    if (valCassa != 1) return 2;
+    try {
+        return listaValute[$('#' + getIDDDLValuta()).attr("selectedIndex")].NumeroDecimali;
+    } catch (e) { return 2; }
+}
+
+function getCambio() {
+    if (valCassa != 1) return 1;
+    try {
+        return listaValute[$('#' + getIDDDLValuta()).attr("selectedIndex")].Cambio;
+    } catch (e) {return 1;}
+}
+function getSimboloValSel() {
+    if (valCassa != 1) return "";
+    try {
+        return listaValute[$('#' + getIDDDLValuta()).attr("selectedIndex")].Simbolo;
+    } catch (e) {return "";}
+}
+function getCodiceHTMLValSel() {
+    if (valCassa != 1) return "";
+    try {
+        return listaValute[$('#' + getIDDDLValuta()).attr("selectedIndex")].CodiceHTML;
+    } catch (e) { return "";}
+}
+function importoCassa() {
+    if (valCassa != 1) return;
+    // In base al tipo di coupon trovo su quale textbox impostare la conversione
+    var hidTipoCoupon = $get(sHidTipoCoupon);
+    if (hidTipoCoupon == null) return false;
+
+    switch (hidTipoCoupon.value) {
+        case "1": //Singola
+            selValutaS();
+            importoCassaSingola();
+            break;
+        case "2": //DI
+            selValutaDI();
+            importoCassaDI();
+            break;
+        case "3": //Sistema
+            selValutaSis();
+            break;
+        case "4": //Multipla
+            selValutaS();
+            importoCassaSingola();
+            break;
+    }
+}
+function importoCassaSingola() {
+    if (valCassa != 1) return;
+    if (!$("#" + sTxtImportoValuta).length) return;
+
+    $('#' + sTxtImportoValuta).keyup(function(e) {
+        //Verifico che l'importo inserito sia un numero e faccio eventuale strip di separatori
+        var sImportoCassa = $(this).val().replace(",", ".");
+        if (isNaN(parseFloat(sImportoCassa))) return;
+        var fImportoCassa = parseFloat(sImportoCassa);
+
+        //Trovo il valore del cambio (il valore della dropdown)
+        var fCambio = getCambio();
+
+        //Calcolo il controvalore nella valuta specificata
+        var fValoreCassa = arrotonda(fImportoCassa / fCambio);
+
+        //Imposto textbox importo
+        $('#' + sTxtImporto).val(fValoreCassa.toString().replace(".", sepDec));
+
+        //Eseguo refresh vincitaPot
+        $('#' + sTxtImporto).keyup();
+
+        return true;
+    })
+}
+function importoCassaDI() {
+    if (valCassa != 1) return;
+    if (! $("#" + sTxtImportoCassaDI).length) return;
+    
+    $('#' + sTxtImportoCassaDI).keyup(function(e) {
+        //Verifico che l'importo inserito sia un numero e faccio eventuale strip di separatori
+        var sImportoCassa = $(this).val().replace(",", ".");
+        if (isNaN(parseFloat(sImportoCassa))) return;
+        var fImportoCassa = parseFloat(sImportoCassa);
+
+        //Trovo il valore del cambio (il valore della dropdown)
+        var fCambio = getCambio();
+
+        //Calcolo il controvalore nella valuta specificata
+        var fValoreCassa = arrotonda(fImportoCassa / fCambio);
+
+        //Imposto textbox importo
+        $('#' + sTxtImportoDI).val(fValoreCassa.toString().replace(".", sepDec));
+
+        //Eseguo refresh vincitaPot
+        $('#' + sTxtImportoDI).keyup();
+
+        var fnumComb = parseFloat($("#" + sLblImportoDICombinazioni).html().replace(sepDec, '.'));
+
+        var fImportoCassaTotale = arrotonda(sImportoCassa * fnumComb);
+        $('#' + sTxtTotaleDIValuta).val(fImportoCassaTotale.toString().replace(".", sepDec));
+
+        return true;
+    })
+    $('#' + sTxtTotaleDIValuta).keyup(function(e) {
+        //Verifico che l'importo inserito sia un numero e faccio eventuale strip di separatori
+        var sImportoCassa = $(this).val().replace(",", ".");
+        if (isNaN(parseFloat(sImportoCassa))) return;
+        var fImportoCassa = parseFloat(sImportoCassa);
+
+        //Trovo il valore del cambio (il valore della dropdown)
+        var fCambio = getCambio();
+
+        //Calcolo il controvalore nella valuta specificata
+        var fValoreCassa = arrotonda(fImportoCassa / fCambio);
+        
+        //Imposto textbox importo
+        $('#' + sTxtTotaleDI).val(fValoreCassa.toString().replace(".", sepDec));
+
+        //Eseguo refresh vincitaPot
+        $('#' + sTxtTotaleDI).keyup();
+
+        //Aggiorno la textbox del valore singolo in base al numero di combinazioni
+        var fnumComb = parseFloat($("#" + sLblImportoDICombinazioni).html().replace(sepDec, '.'));
+
+        var fImportoCassaTotale = arrotonda(sImportoCassa / fnumComb);
+        $('#' + sTxtImportoCassaDI).val(fImportoCassaTotale.toString().replace(".", sepDec));
+
+        return true;
+    })
+}
+function selValutaSis() {
+    if (valCassa != 1) return;
+    if (!$('#' + sTxtGiocaSuTutte).length) return;
+    
+    var IDValutaSel = $('#' + getIDDDLValuta()).val();
+    if (IDValutaUtente == IDValutaSel) {
+        $("#divSis .TextBoxValuta").attr('disabled', true);
+        $("#divSis .TextBox").attr('disabled', false);
+        $("#txtGiocaSuTutteValuta").attr('disabled', true);
+        $('#' + sTxtGiocaSuTutte).attr('disabled', false);
+        $("#spanImportoSis .TextBoxValuta").attr('disabled', true);
+        $("#spanImportoSis .TextBox").attr('disabled', false);
+    } else {
+        $("#divSis .TextBoxValuta").attr('disabled', false);
+        $("#divSis .TextBox").attr('disabled', true);
+        $("#txtGiocaSuTutteValuta").attr('disabled', false);
+        $('#' + sTxtGiocaSuTutte).attr('disabled', true);
+        $("#spanImportoSis .TextBoxValuta").attr('disabled', false);
+        $("#spanImportoSis .TextBox").attr('disabled', true);
+
+        //Trovo il valore del cambio (il valore della dropdown)
+        var fCambio = getCambio();
+        
+        //In base alla vlauta cambia il numero di decimali da usare per arrotondare
+        var nDec = getNumeroDecimali();
+
+        //Valuta selezionata
+        var IDValutaSel = $('#' + getIDDDLValuta()).val();
+        
+        /*Importo Totale coupon*/
+        //Verifico che l'importo inserito sia un numero e faccio eventuale strip di separatori
+        var sImportoCassa = $('#' + sTxtImportoSis).val().replace(",", ".");
+        if (isNaN(parseFloat(sImportoCassa))) return;
+        var fImportoCassa = parseFloat(sImportoCassa);
+
+        //Calcolo il controvalore nella valuta specificata
+        var fValoreCassa = arrotonda((fImportoCassa * fCambio), nDec);
+        
+        //Imposto il valore nella valuta desiderata
+        $('#txtImportoSisValuta').val(fValoreCassa.toString().replace(".", sepDec));
+
+        /*Singoli valori dei raggruppamenti*/        
+        var txtSisValuta;
+        for (var i = 1; i <= maxNumRaggruppamenti; i++) {
+            if ($("#txtSisValuta" + i).length) {
+                if (IDValutaUtente == IDValutaSel) {                   
+                    $("txtSisValuta" + i).val("");
+                } else {
+                    var oTxtSistemaTotale = document.getElementById("spanTxtSis" + i).getElementsByClassName("txtSistema")[0];
+                
+                    if ((oTxtSistemaTotale != null) && (isNaN($(oTxtSistemaTotale).val()))) {
+                        var fImportoSis = parseFloat($(oTxtSistemaTotale).val().replace(",", "."));
+                 
+                        var fImportoSisValuta =  arrotonda((fImportoSis * fCambio), nDec);
+
+                        $("#txtSisValuta" + i).val(fImportoSisValuta.toString().replace(".", sepDec));
+                    }
+                }
+            } 
+        }
+    }
+}
+//Selezionata la valuta nel caso Singola
+function selValutaS() {
+    if (valCassa != 1) return;
+    if (!$("#" + sTxtImportoValuta).length) return;
+    
+    var IDValutaSel = $('#' + getIDDDLValuta()).val();
+    if (IDValutaUtente == IDValutaSel) {
+        $('#' + sTxtImportoValuta).val("");
+        $('#' + sTxtImportoValuta).attr('disabled', true);
+        $('#' + sTxtImporto).attr('disabled', false);
+    } else {
+        $('#' + sTxtImportoValuta).attr('disabled', false);
+        $('#' + sTxtImporto).attr('disabled', true);
+    
+        //Verifico che l'importo inserito sia un numero e faccio eventuale strip di separatori
+        var sImportoCassa = $('#' + sTxtImporto).val().replace(",", ".");
+        if (isNaN(parseFloat(sImportoCassa))) return;
+        var fImportoCassa = parseFloat(sImportoCassa);
+    
+        //Trovo il valore del cambio (il valore della dropdown)
+        var fCambio = getCambio();
+
+        //Calcolo il controvalore nella valuta specificata
+        var fValoreCassa = arrotonda(fImportoCassa * fCambio);
+
+        //Imposto il valore nella valuta desiderata
+        $('#' + sTxtImportoValuta).val(fValoreCassa.toString().replace(".", sepDec));
+
+    }
+}
+
+//Selezionata la valuta nel caso Singola
+function selValutaDI() {
+    if (valCassa != 1) return;
+    if (!$("#" + sTxtTotaleDIValuta).length) return;
+    
+    var IDValutaSel = $('#' + getIDDDLValuta()).val();
+    if (IDValutaUtente == IDValutaSel) {
+        $('#' + sTxtImportoCassaDI).val("");
+        $('#' + sTxtTotaleDIValuta).val("");
+
+        $('#' + sTxtImportoCassaDI).attr('disabled', true);
+        $('#' + sTxtTotaleDIValuta).attr('disabled', true);
+        $('#' + sTxtImportoDI).attr('disabled', false);
+        $('#' + sTxtTotaleDI).attr('disabled', false);
+    } else {
+        $('#' + sTxtImportoCassaDI).attr('disabled', false);
+        $('#' + sTxtTotaleDIValuta).attr('disabled', false);
+        $('#' + sTxtImportoDI).attr('disabled', true);
+        $('#' + sTxtTotaleDI).attr('disabled', true);
+
+        //Trovo il valore del cambio (il valore della dropdown)
+        var fCambio = getCambio();
+        
+        //Verifico che l'importo inserito sia un numero e faccio eventuale strip di separatori
+        var sImportoCassa = $('#' + sTxtImportoDI).val().replace(",", ".");
+        if (isNaN(parseFloat(sImportoCassa))) return;
+        var fImportoCassa = parseFloat(sImportoCassa);
+
+        //Calcolo il controvalore nella valuta specificata
+        var fValoreCassa = arrotonda(fImportoCassa * fCambio);
+
+        //Imposto il valore nella valuta desiderata
+        $('#' + sTxtImportoCassaDI).val(fValoreCassa.toString().replace(".", sepDec));
+
+        //Numero di combinazione della integrale
+        var fnumComb = parseFloat($("#" + sLblImportoDICombinazioni).html().replace(sepDec, '.'));
+
+        //Calcolo il controvalore nella valuta specificata
+        var fValoreCassaTot = arrotonda(fValoreCassa * fnumComb);
+        
+        //Imposto il valore nella valuta desiderata
+        $('#' + sTxtTotaleDIValuta).val(fValoreCassaTot.toString().replace(".", sepDec));
+    }
+}
+
+/* Eseguito sul keyup della textbox "Gioca Su Tutte" in valuta*/
+function giocaTutteValuta() {
+    if (valCassa != 1) return;
+    //Trovo il valore del cambio (il valore della dropdown)
+    var fCambio = getCambio();
+
+    //Verifico che l'importo inserito sia un numero e faccio eventuale strip di separatori
+    var sImportoValuta = $('#' + sTxtGiocaSuTutte).val().replace(",", ".");
+    if (isNaN(parseFloat(sImportoValuta))) return;
+    var fImportoValuta = parseFloat(sImportoValuta);
+
+    var txtSisValuta;
+    for (var i = 1; i <= maxNumRaggruppamenti; i++) {
+        txtSisValuta  = document.getElementById("txtSisValuta" + i);
+        if (txtSisValuta != null) {
+            $(txtSisValuta).val(sImportoValuta.replace(".", sepDec));
+            giocaRaggValuta(txtSisValuta);
+        }
+    }
+}
+
+/* funzione chiamata sul keyup della textbox del raggruppamento */
+function giocaRaggValuta(e) {
+    if (valCassa != 1) return;
+    //Trovo il valore del cambio (il valore della dropdown)
+    var fCambio = getCambio();
+
+    var sImportoValuta = $(e).val().replace(",", ".");
+    if (isNaN(parseFloat(sImportoValuta))) return;
+    var fImportoValuta = parseFloat(sImportoValuta);
+
+    //Calcolo il controvalore nella valuta specificata
+    var fImporto = arrotonda((fImportoValuta / fCambio), 4);
+
+    $(e).siblings(".TextBox").val(fImporto.toString().replace(".", sepDec));
+    $(e).siblings(".TextBox").keyup();
+}
+
+function giocaSisValuta(e) {
+    if (valCassa != 1) return;
+    //Trovo il valore del cambio (il valore della dropdown)
+    var fCambio = getCambio();
+
+    var sImportoValuta = $(e).val().replace(",", ".");
+    if (isNaN(parseFloat(sImportoValuta))) return;
+    var fImportoValuta = parseFloat(sImportoValuta);
+
+    //Calcolo il controvalore nella valuta specificata
+    var fImporto = arrotonda(fImportoValuta / fCambio);
+
+    $(e).siblings(".TextBox").val(fImporto.toString().replace(".", sepDec));
+    $(e).siblings(".TextBox").keyup();
+}
+
+function countdownLiveCpn(seconds) {
+    if ($('#divAttesa:visible') == false) { } else {
+        var secs = seconds;
+        var animClass = 'secs' + secs;
+        $('#countdowntimer').addClass('cpncounter');
+        $('#countdowntimer').addClass(animClass);
+    }
+}
+
+function restartWinningsForGropu(checkbox) {
+    var txtSistema = $(checkbox).closest(".CpnTipoSisRiep").find(".TSTxt").children().eq(1);
+    if (txtSistema.length > 0) txtSistema.val("");
+    var oVincitaPotenzialeComb = $(checkbox).closest(".CpnTipoSisRiep").find(".TSVin").children().eq(0);
+    if (oVincitaPotenzialeComb.length > 0) oVincitaPotenzialeComb.text("0");
+    var oVincitaPotenzialeCombMin = $(checkbox).closest(".CpnTipoSisRiep").find(".TSVinMin").children().eq(0);
+    if (oVincitaPotenzialeCombMin.length > 0) oVincitaPotenzialeCombMin.text("0");
+    var oVincitaPotenzialeCombMax = $(checkbox).closest(".CpnTipoSisRiep").find(".TSVinMax").children().eq(0);
+    if (oVincitaPotenzialeCombMax.length > 0) oVincitaPotenzialeCombMax.text("0");
+}
+
+function restartBonus() {
+    var oImportoBonusMin = document.getElementById("spanBonusSisMin").getElementsByClassName("lblBonusSisMin")[0];
+    var oImportoBonusMax = document.getElementById("spanBonusSisMax").getElementsByClassName("lblBonusSisMax")[0];
+
+    if (oImportoBonusMin != null) oImportoBonusMin.innerHTML = "0";
+    if (oImportoBonusMax != null) oImportoBonusMax.innerHTML = "0";
+
+    var oVincitaPotenzialeMax = document.getElementById("spanVincitaPotSis").getElementsByClassName("litVincitaPotSis")[0];
+    var oVincitaPotenzialeMin = document.getElementById("spanVincitaMinSis").getElementsByClassName("litVincitaMinSis")[0];
+
+    if (oVincitaPotenzialeMax != null) oVincitaPotenzialeMax.innerHTML = "0";
+    if (oVincitaPotenzialeMin != null) oVincitaPotenzialeMin.innerHTML = "0";
+}
+
+
+function blinkElement(element, delay, itemDelay, numberOfTimes) {
+    /*
+    element = css selector for the element,
+    delay = speed of fadeIn/fadeOut,
+    itemDelay = if there are multiple itmes, delay between each fade,
+    numberOfTimes = number of times to repeat blink
+    */
+
+    var that = $(element);
+
+    function hideElem(element, fadeSpeed) {
+        $(element).css({ 'opacity': '0', 'transition': 'opacity ' + fadeSpeed + 's ease-in-out' });
+    }
+
+    function showElem(element) {
+        $(element).css('opacity', '1');
+    }
+
+    function setHidingTime(element, delay) {
+        setTimeout(function () { showElem(element); }, delay * 1000);
+    }
+
+    function blink(element, delay) {
+        hideElem(element, delay);
+        setHidingTime(element, delay);
+    }
+
+    function startBlinking() {
+        that.each(function (index, elem) {
+            setTimeout(function () { blink(that[index], delay); }, (index + 1) * itemDelay * 1000);
+        });
+    }
+
+    for (var i = 0; i < numberOfTimes; i++) {
+        (function (index) {
+            setTimeout(function () { startBlinking(); }, 1000 * index + 1);
+        })(i);
+    }
+
+    return that;
+};
