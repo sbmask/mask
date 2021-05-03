@@ -1,0 +1,20 @@
+/* -------------------- INIZIO STILI CALENDARIO --------------------- */
+.popupControl{ z-index:10;}
+.CalendarExternalTableStyle{ background-color:#000; font-weight:bold; color:#FFF; border:1px solid #000; border-bottom:1px solid #eba917; border-bottom-left-radius:5px; border-bottom-right-radius:5px; box-shadow:3px 3px 20px #111;}
+
+.CalendarLinkButStyle, 
+.CalendarLinkButStyleW{ font-weight:bold; color:Black; background-image:url(images/box_bg.png);}
+.CalendarLinkButStyleW{ color:White;}
+.CalendarLinkButStyle:hover,
+.CalendarLinkButStyleW:hover{ font-weight:bold; color:Black; text-decoration:none;}
+.CalendarLinkButStyleW:hover{color:White;}
+
+.CalendarStyle{ background-color:#FFF;}
+.CalendarSelectedDayStyle{}
+.CalendarTodayStyle{ background-color:#ffbb03;}
+.CalendarSelectorStyle{ background-color:#ffbb03;}
+.CalendarWeekendDayStyle{}
+.CalendarNextPrevStyle{}
+.CalendarDayHeaderStyle{ background-color:#e2e0e0; color:#000;}
+.CalendarTitleStyle{ background-color:#ffbb03; color:#000; font-weight:bold;}
+/* -------------------- FINE STILI CALENDARIO --------------------- */

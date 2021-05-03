@@ -1,0 +1,2026 @@
+/*--------- Balkans-sr-Latn-CS ---------*/
+.bodyMain.sr-Latn-CS .divCoupon .Top H3,
+.bodyMain.sr-Latn-CS .divCouponHome .Top H3,
+.bodyMain.sr-Latn-CS .CpnPuls .btnCoupon,
+.bodyMain.sr-Latn-CS .divCpnTipoRic,
+.bodyMain.sr-Latn-CS .RiquadroDXUnderCpn .TopDX H3 {
+    font-family: open_sansbold, Tahoma, Arial;
+}
+/*--------- Български-bg-BG ---------*/
+.bodyMain.bg-BG .divCoupon .Top H3,
+.bodyMain.bg-BG .divCouponHome .Top H3,
+.bodyMain.bg-BG .CpnPuls .btnCoupon,
+.bodyMain.bg-BG .divCpnTipoRic,
+.bodyMain.bg-BG .RiquadroDXUnderCpn .TopDX H3 {
+    font-family: open_sansbold, Tahoma, Arial;
+}
+/*------------------------------*/
+
+.divCoupon {
+    position: absolute;
+    z-index: 2;
+    width: 235px;
+    font-family: Tahoma, Arial, Sans-Serif;
+}
+
+.divCouponHome { /*z-index: 1;*/ /*position: absolute;*/
+    width: 235px;
+}
+
+.LiveCoupon {
+    z-index: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 250px;
+    padding-right: 2px;
+}
+
+.divCouponContent {
+    width: 235px;
+    margin-bottom: 15px;
+}
+
+.couponFixed {
+    position: fixed;
+    top: 0px;
+}
+
+/*HEADER COUPON*/
+.divCoupon .Top,
+.divCouponHome .Top {
+    height: 51px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: -23px;
+    z-index: 10;
+    background-image: url(dx_title_bg.png);
+    background-position: center top;
+    background-repeat: no-repeat;
+    color: #000;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 0px;
+    font-size: 13px;
+    padding-left: 8px;
+    margin-top: -5px;
+}
+
+.divCoupon .Top.Anonimo,
+.divCouponHome .Top.Anonimo {
+    height: 30px;
+    background-position: center -218px;
+}
+
+.divCoupon .Top.Anonimo + #divContentCoupon,
+.divCouponHome .Top.Anonimo + #divContentCoupon {
+    margin-top: 21px;
+}
+
+.bodyMainLive .divCoupon .Top.Anonimo + #divContentCoupon,
+.bodyMainLive .divCouponHome .Top.Anonimo + #divContentCoupon {
+    margin-top: 0px;
+}
+
+.divCoupon .Top .listCodicePrint,
+.divCouponHome .Top .listCodicePrint {
+    width: 30px;
+    display: none;
+    height: 20px;
+    background-image: url(printcodice.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    top: 8px;
+    right: 5px;
+    border-left: 1px solid #e9a315;
+}
+
+.bodyMainLive .divCouponHome .Top.Anonimo .listCodicePrint,
+.bodyMainLive .divCouponHome .Top .listCodicePrint {
+    display: none !important;
+}
+
+.bodyMainLive .divCouponHome .Top.Anonimo {
+    background-position: center top;
+    height: 51px;
+}
+
+.bodyMainLive .divCoupon .Top.Anonimo {
+    height: 51px;
+}
+
+    .divCoupon .Top H3,
+    .divCouponHome .Top H3 {
+        margin: 0;
+        padding: 0;
+        line-height: 36px;
+        height: 31px;
+        font-weight: normal;
+        color: #000;
+        font-size: 14px;
+        text-transform: uppercase;
+        font-family: open_sansbold, Tahoma, Arial;
+    }
+
+        .divCouponHome .Top H3:hover {
+            cursor: default;
+        }
+
+    .divCoupon .Top SPAN,
+    .divCouponHome .Top SPAN {
+        color: #000;
+        white-space: nowrap;
+        font-size: 10px;
+        font-weight: normal;
+        text-transform: none;
+    }
+
+    .divCoupon .Top .lnkBlocca,
+    .divCoupon .Top .lnkSblocca {
+        position: absolute;
+        right: 44px;
+        top: 9px;
+        width: 25px;
+        height: 14px;
+        display: block;
+        background-image: url(coupon_pin.png);
+        background-position: bottom center;
+        background-repeat: no-repeat;
+    }
+
+    .divCoupon .Top .lnkSblocca {
+        background-position: top center;
+    }
+
+.divCoupon .numOfCodices,
+.divCouponHome .numOfCodices {
+    display: block;
+    position: relative;
+    right: -19px;
+    width: 12px;
+    height: 12px;
+    color: #fff;
+    font-family: open_sansbold, Tahoma, Arial;
+    font-weight: normal;
+    font-size: 9px;
+    line-height: 12px;
+    text-align: center;
+    background-color: #cd0000;
+    border-radius: 5px;
+}
+
+.divCoupon .coddItem,
+.divCouponHome .coddItem {
+    display: block;
+    font-size: 30px;
+    line-height: 33px;
+    padding-bottom: 0;
+    font-family: open_sansbold, Tahoma, Arial;
+    font-weight: normal;
+}
+
+.divCoupon strong.codiceBlock,
+.divCouponHome strong.codiceBlock {
+    display: block;
+    padding: 0;
+    margin-bottom: -8px;
+    font-size: 30px;
+    line-height: 33px;
+    padding-bottom: 0;
+}
+
+.divCoupon .Btm,
+.divCouponHome .Btm {
+    height: 0;
+}
+
+.bodyMainLive.Logged .divCouponHome .Btm {
+    height: 10px;
+}
+
+#divInserimentoScommesse {
+    position:relative;
+}
+
+/*CONTENT*/
+.divCoupon .Cnt,
+.divCouponHome .Cnt {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 11px;
+    border-bottom: 1px solid #eba917;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    overflow: hidden;
+}
+
+.CouponMainEmpty {
+    padding: 2px 19px 2px 15px;
+    color: #000000;
+}
+
+.lcNumEventi {
+    position: absolute;
+    left: 7px;
+    top: 4px;
+    color: #000;
+    white-space: nowrap;
+    font-size: 10px;
+    font-weight: normal;
+    text-transform: none;
+}
+
+.bodyMainLive .lcNumEventi {
+    position: relative;
+    top: 4px;
+}
+
+/*COUPON IN ATTESA LIVE*/
+.cpnDivAttesa {
+    padding: 0 14px 0 13px;
+    background-color: #ecad19;
+    height: 100px;
+}
+
+/*COUPON IN COMPILAZIONE*/
+.CouponMainIns,
+.CouponMainConf {
+    padding: 21px 6px 18px 6px;
+    background-color: #ecad19;
+}
+
+.bodyMainLive .CouponMainIns,
+.bodyMainLive .CouponMainConf {
+    margin-top: -12px;
+}
+
+.couponempty {
+    color: #d6d6d6;
+    font-size: 12px;
+    line-height: 14px;
+    padding: 10px;
+    text-align: center;
+    background-image: url(box_bg.png);
+}
+
+/*scommessa inserimento/conferma*/
+.CouponMainIns .CItems,
+.CouponMainConf .CItems {
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.CouponMainIns .CItem,
+.CouponMainConf .CItem {
+    position: relative;
+    color: #000;
+    font-size: 11px;
+    background-image: url(coupon_items_bg.png);
+    background-position: left top;
+    background-repeat: repeat-x;
+    background-color: #f3f3f3;
+    border: 1px solid #b3b3b3;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 3px;
+    min-height: 33px;
+}
+
+.CItem .CInfo {
+    background-image: url(divCouponIcons.png);
+    background-position: left -42px;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    cursor: help;
+}
+
+.CItem .Cerror {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    right: 50px;
+    top: 1px;
+    background-image: url(Error_small.png);
+    background-repeat: no-repeat;
+}
+
+.CItem .CCodPub {
+    position: absolute;
+    left: 3px;
+    top: 0;
+    height: 16px;
+    line-height: 16px;
+}
+
+.CItem .CEvento {
+    display: none;
+}
+
+.CItem .CFissa {
+    position: absolute;
+    right: 18px;
+    top: -15px;
+}
+
+.CItem .CSubEv {
+    cursor: help;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 140px;
+    padding: 0 0 0 31px;
+    height: 16px;
+    line-height: 16px;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.CItem .CSegno {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 137px;
+    height: 14px;
+    position: absolute;
+    left: 18px;
+    top: 1px;
+    font-weight: bold;
+}
+
+.CItem .CDelete {
+    position: absolute;
+    left: 3px;
+    top: 2px;
+    width: 12px;
+    height: 12px;
+    display: block;
+    background-image: url(divCouponIcons.png);
+    background-repeat: no-repeat;
+    background-position: left 0;
+}
+
+.CItem .COdds {
+    position: relative;
+}
+
+.CItem .CFissa .lnkFissaOff,
+.CItem .CFissa .lnkFissaOn {
+    display: block;
+    width: 15px;
+    height: 15px;
+    background-image: url(divCouponIcons.png);
+    background-position: center -27px;
+    background-repeat: no-repeat;
+}
+
+.CItem .CFissa .lnkFissaOff {
+    background-position: center -12px;
+}
+
+.CItem .ClblSegno {
+    font-weight: normal;
+    padding-right: 5px;
+    color: #000000;
+}
+
+.CItem .valQuota,
+.CItem .valQuota_0,
+.CItem .valQuota_1,
+.CItem .valQuota_2,
+.CItem .valQuota_3,
+.CItem .valQuota_4,
+.CItem .valQuota_5,
+.CItem .valQuota_10 {
+    text-align: right;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: bold;
+    padding-right: 3px;
+}
+
+.valQuota_0 {
+    color: #FACC2E;
+}
+
+.valQuota_1 {
+    color: #535e64;
+}
+
+.valQuota_2 {
+    color: #000000;
+}
+
+.valQuota_3 {
+    color: #009900;
+}
+
+.valQuota_4 {
+    color: #2fcecc;
+}
+
+.valQuota_5 {
+    color: #cc0000;
+}
+
+.valQuota_10 {
+    color: #ffcd7d;
+}
+
+/*items Live e Antepost*/
+.CItem.te10 .CEvento, .CItem.te6 .CEvento {
+    display: block;
+    position: absolute;
+    left: 35px;
+    top: 0;
+    height: 14px;
+    line-height: 14px;
+    width: 140px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.CItem.te10 .CSubEv, .CItem.te6 .CSubEv {
+    padding-top: 12px;
+    padding-left: 35px;
+}
+
+.CItem.te10 .CFissa, .CItem.te6 .CFissa {
+    top: -27px;
+}
+
+/*items in Conferma*/
+.CouponMainConf .CItem .CSubEv {
+    width: 170px;
+}
+
+.CouponMainConf .CItem .CSegno {
+    left: 4px;
+    width: 157px;
+}
+
+.CouponMainConf .CItem .CFissa {
+    right: 1px;
+    height: 11px;
+    font-size: 0px;
+}
+
+/*items in errore "True"*/
+.CouponMainIns .COdds.True {
+    background-color: #f1a593;
+}
+
+    .CouponMainIns .COdds.True .valQuota,
+    .CouponMainIns .COdds.True .valQuota_0,
+    .CouponMainIns .COdds.True .valQuota_1,
+    .CouponMainIns .COdds.True .valQuota_2,
+    .CouponMainIns .COdds.True .valQuota_3,
+    .CouponMainIns .COdds.True .valQuota_4,
+    .CouponMainIns .COdds.True .valQuota_5,
+    .CouponMainIns .COdds.True .valQuota_10 {
+        border-top: 1px solid #e57359;
+        padding-right: 15px;
+    }
+
+    .CouponMainIns .COdds.True .Cerror {
+        cursor: help;
+        width: 12px;
+        height: 11px;
+        position: absolute;
+        right: 2px;
+        top: 4px;
+        background-image: url(divCouponIcons.png);
+        background-position: left -57px;
+        background-repeat: no-repeat;
+    }
+
+    .CouponMainIns .COdds.True .CSubEv {
+        width: 137px;
+    }
+
+    .CouponMainIns .COdds.True .CFissa {
+    }
+
+    .CouponMainIns .COdds.True .CInfo {
+        top: 1px;
+    }
+
+/*dati utente*/
+.CouponUserData {
+    border: 1px solid #c39007;
+    background-color: #ffd155;
+    margin: 3px;
+    padding: 0 5px 5px 5px;
+    position: relative;
+    text-align: center;
+    color: #000000;
+}
+
+.CouponUserDataHdr {
+    height: 15px;
+    font-size: 10px;
+    font-weight: bold;
+    border-bottom: 2px solid #f2b100;
+    margin: 0;
+    line-height: 15px;
+    color: #000000;
+    text-align: center;
+}
+
+.CouponUserData .Saldo {
+    background-color: #f2b100;
+    text-align: center;
+    margin: 3px 0;
+    padding: 0 0 3px 0;
+}
+
+.dropdown.CpnUser {
+    width: 135px;
+}
+/*riepilogo importi tipiscommessa*/
+.divCoupon .TextBox,
+.divCouponHome .TextBox {
+    height: 15px;
+    line-height: 15px;
+    padding: 0 5px;
+    border: 1px solid #666;
+    border-radius: 5px;
+    background-image: url(textbox_bg.png);
+    background-position: center;
+    background-repeat: repeat-x;
+    font-size: 11px;
+}
+
+    .divCoupon .TextBox[style],
+    .divCouponHome .TextBox[style] {
+        width: 53px !important;
+    }
+
+.CouponMainIns .divCpnTipi {
+    position: relative;
+    padding-top: 23px;
+}
+
+.CouponMainConf .divCpnTipi {
+    border: 1px solid #888;
+    border-radius: 5px;
+    font-size: 11px;
+    margin: 0;
+    color: #000000;
+    background-color: #fff;
+    padding: 3px 10px;
+}
+
+.CouponMainIns .divCpnTipi .divCpnTipo {
+    position: absolute;
+    z-index: 1;
+    width: 110px;
+    padding: 0;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0;
+    height: 27px;
+    line-height: 22px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #141414;
+    background-image: url(CouponDiv_TipiSco_bg.png);
+    background-repeat: repeat-x;
+    background-position: 0 0;
+    overflow: hidden;
+    border: 1px solid #888;
+    border-bottom: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+    .CouponMainIns .divCpnTipi .divCpnTipo.Mul {
+        left: 0px;
+        top: 0;
+    }
+
+    .CouponMainIns .divCpnTipi .divCpnTipo.Sis {
+        right: 0px;
+        top: 0;
+    }
+
+    .CouponMainIns .divCpnTipi .divCpnTipo.DI {
+        left: 0px;
+        top: 0;
+        width: 221px;
+        height: 27px;
+    }
+
+.CouponMainIns .divCpnTipi .sel .divCpnTipo {
+    background-position: 0 -27px;
+    z-index: 100;
+    height: 23px;
+}
+
+.CouponMainIns .divCpnTipi .sel .Mul ~ .divCpnTipoCnt {
+    border-top-right-radius: 5px;
+}
+
+.CouponMainIns .divCpnTipi .sel .Sis ~ .divCpnTipoCnt {
+    border-top-left-radius: 5px;
+}
+
+.CouponMainIns .divCpnTipi .divCpnTipo a {
+    color: #7c6212;
+    text-decoration: none;
+    display: block;
+}
+
+.CouponMainIns .divCpnTipi .sel .divCpnTipo a {
+    color: #141414;
+    text-decoration: none;
+}
+
+    .CouponMainIns .divCpnTipi .sel .divCpnTipo a:hover {
+        cursor: default;
+    }
+
+.CouponMainIns .divCpnTipi .sel.singola .divCpnTipo {
+    left: 0px;
+    top: 0;
+    width: 221px;
+    height: 27px;
+}
+
+.CouponMainIns .divCpnTipo img {
+    display: none;
+}
+
+.CouponMainIns .divCpnTipoCnt {
+    position: relative;
+    z-index: 10;
+    margin: 0;
+    font-size: 11px;
+    border: 1px solid #888;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    color: #000000;
+    background-color: #ccc;
+    padding: 0 8px 2px 8px;
+    background-image: url(couponDivCnt.jpg);
+    background-position: left top;
+    background-repeat: no-repeat;
+    display: table-cell;
+    width: 205px;
+    }
+
+.CpnTipoBonus {
+    background-color: #f2b100;
+    margin-top: 5px;
+    border-radius: 5px;
+    line-height: 18px;
+    text-align: center;
+    font-weight: bold;
+    border: 1px solid #ffde85;
+}
+
+.CpnTipoRiep {
+    padding-top: 3px;
+}
+
+
+.CpnTipoRiep,
+.CpnTipoRiepRagg {
+    /*height: 23px;*/
+    line-height: 22px;
+    border-bottom: 1px solid #151515;
+    position: relative;
+    clear: both;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    width: 100%;
+    display: inline-block;
+}
+
+.CpnTipoRiepRagg {
+    height: 23px;
+    line-height: 23px;
+}
+
+.CpnTipoRiepRagg .RiepSX,
+.CpnTipoRiepRagg .RiepSX + div {
+    height: 23px;
+    position: relative;
+}
+
+.CpnTipoRiepRagg .RiepSX {
+    width: 47%;
+    margin-right: -12px;
+}
+
+.CpnTipoRiepRagg .RiepSX + div {
+    float: right;
+    width: 57%;
+}
+
+.CpnTipoRiepRagg .RiepDX {
+    top: 3px;
+}
+
+    .RiepSX {
+        margin-right: 5px;
+    }
+
+     .RiepSX, .RiepDX {
+        line-height: 14px;
+    }
+     
+    .CpnTipoRiep .RiepSX,
+    .CpnTipoRiepRagg .RiepSX {
+        float: left;
+        font-weight: bold;
+        position: relative;
+        left: -2px;
+    }
+
+    .CpnTipoRiep .RiepDX,
+    .CpnTipoRiepRagg .RiepDX {
+        float: right;
+        text-align: right;
+        font-weight: bold;
+        font-size: 12px;
+        position: relative;
+        right: -2px;
+    }
+
+.CpnTipoRiep .lnkRefresh {
+    float: left;
+    background-image: url(Refresh_cpn_ico.png);
+    width: 20px;
+    height: 20px;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.CpnTipoRiepRagg .RiepSX A {
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding-left: 15px;
+    display: block;
+    line-height: 12px;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.selectall { 
+    background-image:url(coupon_selezionaTutti.gif);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 87px;
+}
+.unselectall { 
+    background-image:url(coupon_selezionaNessuno.gif);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 87px;
+}
+
+.CpnTipoRiepDbl {
+    height: 35px;
+    border-bottom: 1px solid #151515;
+    position: relative;
+    clear: both;
+}
+
+    .CpnTipoRiepDbl .RiepSX {
+        float: left;
+        font-weight: bold;
+        line-height: 35px;
+    }
+
+    .CpnTipoRiepDbl .RiepDX {
+        float: right;
+        text-align: right;
+        line-height: 17px;
+    }
+
+    .CpnTipoRiepDbl .lnkRefresh {
+        float: left;
+        background-image: url(Refresh_cpn_ico.png);
+        width: 20px;
+        height: 35px;
+        background-position: center center;
+        background-repeat: no-repeat;
+        margin-right: -20px;
+        margin-left: 2px;
+    }
+
+    .CpnTipoRiep.High,
+    .CpnTipoRiepDbl.High {
+        font-weight: bold;
+        color: #860404;
+        border: 0;
+    }
+
+    .CpnTipoRiep.HighImp,
+    .CpnTipoRiepDbl.HighImp {
+        font-weight: bold;
+    }
+
+
+    .CpnTipoRiepDbl.High {
+        height: 50px;
+    }
+
+        .CpnTipoRiepDbl.High .RiepDX {
+            display: block;
+            float: none;
+            clear: both;
+            width: auto;
+            height: 15px;
+            line-height: 15px;
+        }
+
+            .CpnTipoRiepDbl.High .RiepDX > div {
+                position: relative;
+            }
+
+                .CpnTipoRiepDbl.High .RiepDX > div > span {
+                }
+
+        .CpnTipoRiepDbl.High .RiepSX {
+            display: block;
+            float: none;
+            clear: both;
+            width: auto;
+            height: 20px;
+            line-height: 20px;
+            border-bottom: 1px dotted #860404;
+        }
+
+        .CpnTipoRiepDbl.High .lnkRefresh {
+            position: absolute;
+            left: 0;
+            top: 18px;
+        }
+
+/*Importo Scommessa Sistema*/
+.CpnTipoSisRiep,
+.CpnTipoSisRiepHdr {
+    position: relative;
+    border-bottom: 1px solid #151515;
+    height: 40px;
+    margin-top: 3px;
+}
+
+.CpnTipoSisRiepHdr {
+    height: 20px;
+    font-size: 10px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.CpnTipoSisRiep {
+    height: 20px;
+}
+
+
+    .CpnTipoSisRiep.sel {
+        height: 52px;
+    }
+
+        .CpnTipoSisRiep.sel .TSVinMin {
+            display: block;
+            position: absolute;
+            right: 0px;
+            top: 20px;
+            height: 17px;
+            line-height: 17px;
+        }
+
+        .CpnTipoSisRiep.sel .TSVinMax {
+            display: block;
+            position: absolute;
+            right: 0px;
+            top: 34px;
+            height: 17px;
+            line-height: 17px;
+        }
+
+        .CpnTipoSisRiep.sel .TSVinMinLbl {
+            display: block;
+            position: absolute;
+            left: 5px;
+            top: 20px;
+            height: 17px;
+            line-height: 17px;
+            white-space: nowrap;
+        }
+
+        .CpnTipoSisRiep.sel .TSVinMaxLbl {
+            display: block;
+            position: absolute;
+            left: 5px;
+            top: 34px;
+            height: 17px;
+            line-height: 17px;
+            white-space: nowrap;
+        }
+
+    .CpnTipoSisRiep .TSChk {
+        display: block;
+        position: absolute;
+        left: -5px;
+        top: 0;
+        height: 20px;
+        line-height: 20px;
+        width: 20px;
+    }
+
+    .CpnTipoSisRiep .TSHid {
+        display: block;
+        display: none;
+    }
+
+    .CpnTipoSisRiep .TSTipo {
+        display: block;
+        position: absolute;
+        left: 15px;
+        top: 0;
+        height: 20px;
+        line-height: 20px;
+        width: 87px;
+    }
+
+    .CpnTipoSisRiep .TSNComb {
+        display: block;
+        position: absolute;
+        left: 104px;
+        top: 0;
+        height: 20px;
+        line-height: 20px;
+        width: 30px;
+    }
+
+    .valLen3 .CpnTipoSisRiep .TSNComb {
+        left: 95px;
+        width: 15px;
+        text-align: right;
+    }
+
+    .CpnTipoSisRiep .TSTxt {
+        display: block;
+        position: absolute;
+        right: 0px;
+        top: 0;
+    }
+
+    .valLen3 .CpnTipoSisRiep .TSTxt {
+        min-width: 91px;
+        text-align: right;
+    }
+
+    .valLen3 .CpnTipoSisRiep .TSTxt > .TextBox {
+        float: left;
+    }
+
+    .CpnTipoSisRiep .TSVinLbl {
+        display: none;
+    }
+
+    .CpnTipoSisRiep .TSVin {
+        display: none;
+    }
+
+    .CpnTipoSisRiep .TSVinMin {
+        display: none;
+    }
+
+    .CpnTipoSisRiep .TSVinMax {
+        display: none;
+    }
+
+    .CpnTipoSisRiep .TSVinMinLbl {
+        display: none;
+    }
+
+    .CpnTipoSisRiep .TSVinMaxLbl {
+        display: none;
+    }
+
+.CpnTipoSisRiepHdr .TSTipo {
+    display: block;
+    position: absolute;
+    left: 20px;
+    top: 0;
+    height: 20px;
+    line-height: 20px;
+    width: 50px;
+}
+
+.CpnTipoSisRiepHdr .TSNComb {
+    display: block;
+    position: absolute;
+    left: 70px;
+    top: 0;
+    height: 20px;
+    line-height: 20px;
+    width: 30px;
+    white-space: nowrap;
+}
+
+.CpnTipoSisRiepHdr .TSTxt {
+    display: block;
+    position: absolute;
+    right: 0px;
+    top: 0;
+    height: 20px;
+    line-height: 20px;
+}
+
+.CpnAccetaCambioQuote {
+    border: 1px solid #000;
+    border-radius: 5px;
+    margin-top:8px;
+    background-color: #767675;
+    color:#FFFFFF;
+    box-shadow: inset 0px -12px 23px #141414;
+    height: 23px !important;
+    font-size: 11px;
+    font-weight: bold;
+}
+.CpnAccetaCambioQuote input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-top: -1px;
+}
+.CpnAccetaCambioQuote label {
+    padding: 8px 4px;
+    position: relative;
+    top: -6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 185px;
+    float: right;
+}
+/*Pulsanti*/
+.CpnPuls {
+    height: 25px;
+    clear: both;
+    padding-top: 5px;
+}
+
+    .CpnPuls .btnCoupon.three {
+        width: 69px;
+        height: 36px;
+        font-size: 11px;
+        line-height: 17px;
+    }
+
+    .CpnPuls .btnCoupon.two {
+        width: 106px;
+        height: 36px;
+        font-size: 13px;
+        line-height: 17px;
+    }
+
+    .CpnPuls .btnCoupon.sx {
+        float: left;
+        background: #ff5647;
+        background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmNTY0NyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ZmNzc2YiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ZmMTUwMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZjU2NDciIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+        background: -moz-linear-gradient(top, #ff5647 0, #ff776b 50%, #ff1500 50%, #ff5647 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0,#ff5647), color-stop(50%,#ff776b), color-stop(50%,#ff1500), color-stop(100%,#ff5647));
+        background: -webkit-linear-gradient(top, #ff5647 0,#ff776b 50%,#ff1500 50%,#ff5647 100%);
+        background: -o-linear-gradient(top, #ff5647 0,#ff776b 50%,#ff1500 50%,#ff5647 100%);
+        background: -ms-linear-gradient(top, #ff5647 0,#ff776b 50%,#ff1500 50%,#ff5647 100%);
+        background: linear-gradient(to bottom, #ff5647 0,#ff776b 50%,#ff1500 50%,#ff5647 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff5647', endColorstr='#ff776b',GradientType=0 );
+        border: 1px solid #ae0000;
+    }
+
+        .CpnPuls .btnCoupon.sx:hover {
+            background: #ff6a5b;
+            background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmNTY0NyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ZmNzc2YiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ZmMTUwMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZjU2NDciIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+            background: -moz-linear-gradient(top, #ff6a5b 0, #ff8b7f 50%, #ff2914 50%, #ff6a5b 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0,#ff6a5b), color-stop(50%,#ff8b7f), color-stop(50%,#ff2914), color-stop(100%,#ff6a5b));
+            background: -webkit-linear-gradient(top, #ff6a5b 0,#ff8b7f 50%,#ff2914 50%,#ff6a5b 100%);
+            background: -o-linear-gradient(top, #ff6a5b 0,#ff8b7f 50%,#ff2914 50%,#ff6a5b 100%);
+            background: -ms-linear-gradient(top, #ff6a5b 0,#ff8b7f 50%,#ff2914 50%,#ff6a5b 100%);
+            background: linear-gradient(to bottom, #ff6a5b 0,#ff8b7f 50%,#ff2914 50%,#ff6a5b 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff6a5b', endColorstr='#ff8b7f',GradientType=0 );
+            background-position: 50% 5%;
+        }
+
+    .CpnPuls .btnCoupon.mx {
+        float: left;
+        margin-left: 5px;
+        background: #d5d5d5;
+        background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2UwZTBlMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2VhZWFlYSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2Q1ZDVkNSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlMGUwZTAiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+        background: -moz-linear-gradient(top, #d5d5d5 0, #efefef 50%, #c0c0c0 50%, #d5d5d5 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0,#d5d5d5), color-stop(50%,#efefef), color-stop(50%,#c0c0c0), color-stop(100%,#d5d5d5));
+        background: -webkit-linear-gradient(top, #d5d5d5 0,#efefef 50%,#c0c0c0 50%,#d5d5d5 100%);
+        background: -o-linear-gradient(top, #d5d5d5 0,#efefef 50%,#c0c0c0 50%,#d5d5d5 100%);
+        background: -ms-linear-gradient(top, #d5d5d5 0,#efefef 50%,#c0c0c0 50%,#d5d5d5 100%);
+        background: linear-gradient(to bottom, #d5d5d5 0,#efefef 50%,#c0c0c0 50%,#d5d5d5 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5d5d5', endColorstr='#efefef',GradientType=0 );
+        border: 1px solid #666;
+    }
+
+        .CpnPuls .btnCoupon.mx:hover {
+            background: #e9e9e9;
+            background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2UwZTBlMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2VhZWFlYSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2Q1ZDVkNSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlMGUwZTAiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+            background: -moz-linear-gradient(top, #e9e9e9 0, #f9f9f9 50%, #cacaca 50%, #e9e9e9 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0,#d5d5d5), color-stop(50%,#f9f9f9), color-stop(50%,#cacaca), color-stop(100%,#d5d5d5));
+            background: -webkit-linear-gradient(top, #d5d5d5e9e9e9 0,#f9f9f9 50%,#cacaca 50%,#e9e9e9 100%);
+            background: -o-linear-gradient(top, #e9e9e9 0,#f9f9f9 50%,#cacaca 50%,#e9e9e9 100%);
+            background: -ms-linear-gradient(top, #e9e9e9 0,#f9f9f9 50%,#cacaca 50%,#e9e9e9 100%);
+            background: linear-gradient(to bottom, #e9e9e9 0,#f9f9f9 50%,#cacaca 50%,#e9e9e9 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5d5d5', endColorstr='#f9f9f9',GradientType=0 );
+            background-position: 50% 5%;
+        }
+    .de-DE .CpnPuls .btnCoupon.mx {font-size:12px;}
+    .es-ES .CpnPuls .btnCoupon.mx {font-size:10px;}
+    .bg-BG .CpnPuls .btnCoupon.mx {font-size:12px;}
+    .CpnPuls .btnCoupon.dx,
+    .CpnPuls .btnCoupon.dx.disabled:hover {
+        float: right;
+        background: #96cf34;
+        background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzk2Y2YzNCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ExZDU0ZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ExZDU0ZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzdmYzExNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM3YWJhMGMiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+        background: -moz-linear-gradient(top, #96cf34 0, #a1d54f 50%, #7fc116 50%, #96cf34 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0,#96cf34), color-stop(50%,#a1d54f), color-stop(50%,#7fc116), color-stop(100%,#96cf34));
+        background: -webkit-linear-gradient(top, #96cf34 0,#a1d54f 50%,#7fc116 50%,#96cf34 100%);
+        background: -o-linear-gradient(top, #96cf34 0,#a1d54f 50%,#7fc116 50%,#96cf34 100%);
+        background: -ms-linear-gradient(top, #96cf34 0,#a1d54f 50%,#7fc116 50%,#96cf34 100%);
+        background: linear-gradient(to bottom, #96cf34 0,#a1d54f 50%,#7fc116 50%,#96cf34 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#96cf34', endColorstr='#a1d54f',GradientType=0 );
+        border: 1px solid #5b9400;
+    }
+
+    .CpnPuls .btnCoupon.dx.disabled {
+        opacity: 0.5;
+        display: table-cell;
+        vertical-align: middle;
+        font-size: 9px;
+        text-transform: initial;
+        line-height: 12px;
+    }
+
+        .CpnPuls .btnCoupon.dx:hover {
+            background: #aae348;
+            background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzk2Y2YzNCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ExZDU0ZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ExZDU0ZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzdmYzExNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM3YWJhMGMiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+            background: -moz-linear-gradient(top, #aae348 0, #b5e963 50%, #93d52a 50%, #aae348 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0,#aae348), color-stop(50%,#b5e963), color-stop(50%,#93d52a), color-stop(100%,#aae348));
+            background: -webkit-linear-gradient(top, #aae348 0,#b5e963 50%,#93d52a 50%,#aae348 100%);
+            background: -o-linear-gradient(top, #aae348 0,#b5e963 50%,#93d52a 50%,#aae348 100%);
+            background: -ms-linear-gradient(top, #aae348 0,#b5e963 50%,#93d52a 50%,#aae348 100%);
+            background: linear-gradient(to bottom, #aae348 0,#b5e963 50%,#93d52a 50%,#aae348 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#aae348', endColorstr='#b5e963',GradientType=0 );
+        }
+
+    .CpnPuls .btnCoupon.back {
+        float: left;
+        background: #fbde90;
+        background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZiZGU5MCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ZjY2Y1NSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2Y4YjUwMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmYWQ0NmYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+        background: -moz-linear-gradient(top, #fbde90 0, #fccf55 50%, #f8b500 50%, #fbde90 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0,#fbde90), color-stop(50%,#fccf55), color-stop(50%,#f8b500), color-stop(100%,#fbde90));
+        background: -webkit-linear-gradient(top, #fbde90 0,#fccf55 50%,#f8b500 50%,#fbde90 100%);
+        background: -o-linear-gradient(top, #fbde90 0,#fccf55 50%,#f8b500 50%,#fbde90 100%);
+        background: -ms-linear-gradient(top, #fbde90 0,#fccf55 50%,#f8b500 50%,#fbde90 100%);
+        background: linear-gradient(to bottom, #fbde90 0,rgb(252, 207, 85) 50%,#f8b500 50%,#fbde90 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fbde90', endColorstr='#fad46f',GradientType=0 );
+        border: 1px solid #c39007;
+    }
+
+        .CpnPuls .btnCoupon.back:hover {
+            background: #ffe89a;
+            background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZiZGU5MCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ZjY2Y1NSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2Y4YjUwMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmYWQ0NmYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+            background: -moz-linear-gradient(top, #ffe89a 0, #ffd95f 50%, #ffbf0a 50%, #ffe89a 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0,#ffe89a), color-stop(50%,#ffd95f), color-stop(50%,#ffbf0a), color-stop(100%,#ffe89a));
+            background: -webkit-linear-gradient(top, #ffe89a 0,#ffd95f 50%,#ffbf0a 50%,#ffe89a 100%);
+            background: -o-linear-gradient(top, #ffe89a 0,#ffd95f 50%,#ffbf0a 50%,#ffe89a 100%);
+            background: -ms-linear-gradient(top, #ffe89a 0,#ffd95f 50%,#ffbf0a 50%,#ffe89a 100%);
+            background: linear-gradient(to bottom, #ffe89a 0,#ffd95f 50%,#ffbf0a 50%,#ffe89a 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffe89a', endColorstr='#fad46f',GradientType=0 );
+        }
+
+    .CpnPuls .TxtBox {
+        height: 14px;
+        width: 80px;
+        line-height: 14px;
+        font-size: 11px;
+        border: 1px solid #969696;
+        margin: 3px 3px 0 10px;
+        float: left;
+    }
+
+    .CpnPuls .btnCoupon {
+        display: block;
+        background-image: url(couponDivBtn_bg.png);
+        background-position: center bottom;
+        background-repeat: repeat-x;
+        border-radius: 5px;
+        border: 1px solid #e0a403;
+        width: 106px;
+        height: 21px;
+        line-height: 23px;
+        text-decoration: none;
+        color: #000;
+        text-align: center;
+        font-family: open_sansbold, Tahoma, Arial;
+        font-size: 15px;
+        font-weight: normal;
+        text-transform: uppercase;
+    }
+
+        .CpnPuls .btnCoupon:hover {
+            color: #222;
+            background-position: center top;
+        }
+
+.CpnPulsBonus {
+    padding: 3px 3px 0 3px;
+}
+
+    .CpnPulsBonus .btnCoupon.Bonus {
+        display: block;
+        background-image: url(couponDivBtn_Bonus_bg.png);
+        background-repeat: no-repeat;
+        background-position: center top;
+        line-height: 22px;
+        text-decoration: none;
+        color: #ffffff;
+        text-align: center;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+        .CpnPulsBonus .btnCoupon.Bonus:hover {
+            color: #ffde00;
+            background-position: center bottom;
+        }
+
+
+.CouponMainAccepted,
+.CouponMainAccepted.CpnPuls {
+    height: auto;
+    overflow: hidden;
+}
+
+.CouponMainAccepted .btnCoupon.sx,
+.CouponMainAccepted.CpnPuls .btnCoupon.sx {
+    float: left;
+    display: table;
+    margin-left: 0px;
+    width: 48%;
+    line-height: 36px;
+    white-space: normal;
+    background: #96cf34;
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzk2Y2YzNCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ExZDU0ZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ExZDU0ZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzdmYzExNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM3YWJhMGMiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-linear-gradient(top, #96cf34 0, #a1d54f 50%, #7fc116 50%, #96cf34 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0,#96cf34), color-stop(50%,#a1d54f), color-stop(50%,#7fc116), color-stop(100%,#96cf34));
+    background: -webkit-linear-gradient(top, #96cf34 0,#a1d54f 50%,#7fc116 50%,#96cf34 100%);
+    background: -o-linear-gradient(top, #96cf34 0,#a1d54f 50%,#7fc116 50%,#96cf34 100%);
+    background: -ms-linear-gradient(top, #96cf34 0,#a1d54f 50%,#7fc116 50%,#96cf34 100%);
+    background: linear-gradient(to bottom, #96cf34 0,#a1d54f 50%,#7fc116 50%,#96cf34 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#96cf34', endColorstr='#a1d54f',GradientType=0 );
+    border: 1px solid #5b9400;
+}
+
+.CouponMainAccepted .btnCoupon.sx > span,
+.CouponMainAccepted.CpnPuls .btnCoupon.sx > span {
+    display: table-cell;
+    vertical-align: middle;
+    line-height: 18px;
+    padding-bottom: 0;
+} 
+
+.CouponMainAccepted .btnCoupon.sx {
+    width: 48% !important;
+}
+
+.CouponMainAccepted .btnCoupon.sx:hover,
+.CouponMainAccepted.CpnPuls .btnCoupon.sx:hover {
+    background: #aae348;
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzk2Y2YzNCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ExZDU0ZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ExZDU0ZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzdmYzExNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM3YWJhMGMiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-linear-gradient(top, #aae348 0, #b5e963 50%, #93d52a 50%, #aae348 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0,#aae348), color-stop(50%,#b5e963), color-stop(50%,#93d52a), color-stop(100%,#aae348));
+    background: -webkit-linear-gradient(top, #aae348 0,#b5e963 50%,#93d52a 50%,#aae348 100%);
+    background: -o-linear-gradient(top, #aae348 0,#b5e963 50%,#93d52a 50%,#aae348 100%);
+    background: -ms-linear-gradient(top, #aae348 0,#b5e963 50%,#93d52a 50%,#aae348 100%);
+    background: linear-gradient(to bottom, #aae348 0,#b5e963 50%,#93d52a 50%,#aae348 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#aae348', endColorstr='#b5e963',GradientType=0 );
+}
+
+.CouponMainAccepted .btnCoupon.dx,
+.CouponMainAccepted.CpnPuls .btnCoupon.dx {
+    padding: 0 3px;
+    height: 38px;
+    white-space: normal;
+    background: #d5d5d5;
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2UwZTBlMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2VhZWFlYSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2Q1ZDVkNSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlMGUwZTAiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-linear-gradient(top, #d5d5d5 0, #efefef 50%, #c0c0c0 50%, #d5d5d5 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0,#d5d5d5), color-stop(50%,#efefef), color-stop(50%,#c0c0c0), color-stop(100%,#d5d5d5));
+    background: -webkit-linear-gradient(top, #d5d5d5 0,#efefef 50%,#c0c0c0 50%,#d5d5d5 100%);
+    background: -o-linear-gradient(top, #d5d5d5 0,#efefef 50%,#c0c0c0 50%,#d5d5d5 100%);
+    background: -ms-linear-gradient(top, #d5d5d5 0,#efefef 50%,#c0c0c0 50%,#d5d5d5 100%);
+    background: linear-gradient(to bottom, #d5d5d5 0,#efefef 50%,#c0c0c0 50%,#d5d5d5 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5d5d5', endColorstr='#efefef',GradientType=0 );
+    border: 1px solid #666;
+}
+
+.CouponMainAccepted .btnCoupon.dx {
+    width: 48% !important;
+    float: right;
+}
+
+.CouponMainAccepted .btnCoupon.dx:hover,
+.CouponMainAccepted.CpnPuls .btnCoupon.dx:hover {
+    background: #e9e9e9;
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2UwZTBlMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2VhZWFlYSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2Q1ZDVkNSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlMGUwZTAiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: -moz-linear-gradient(top, #e9e9e9 0, #f9f9f9 50%, #cacaca 50%, #e9e9e9 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0,#d5d5d5), color-stop(50%,#f9f9f9), color-stop(50%,#cacaca), color-stop(100%,#d5d5d5));
+    background: -webkit-linear-gradient(top, #d5d5d5e9e9e9 0,#f9f9f9 50%,#cacaca 50%,#e9e9e9 100%);
+    background: -o-linear-gradient(top, #e9e9e9 0,#f9f9f9 50%,#cacaca 50%,#e9e9e9 100%);
+    background: -ms-linear-gradient(top, #e9e9e9 0,#f9f9f9 50%,#cacaca 50%,#e9e9e9 100%);
+    background: linear-gradient(to bottom, #e9e9e9 0,#f9f9f9 50%,#cacaca 50%,#e9e9e9 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5d5d5', endColorstr='#f9f9f9',GradientType=0 );
+    background-position: 50% 5%;
+}
+
+.btnCoupon:disabled,
+.btnCoupon[disabled],
+.btnCoupon:disabled:hover,
+.btnCoupon[disabled]:hover,
+.buttonRollIn[id$="btnPrintCopia"]:disabled,
+.buttonRollIn[id$="btnPrintCopia"][disabled],
+.buttonRollIn[id$="btnPrintCopia"]:disabled:hover,
+.buttonRollIn[id$="btnPrintCopia"][disabled]:hover,
+.buttonRollIn[id$="btnPrint"]:disabled,
+.buttonRollIn[id$="btnPrint"][disabled],
+.buttonRollIn[id$="btnPrint"]:disabled:hover,
+.buttonRollIn[id$="btnPrint"][disabled]:hover {
+    color: rgb(109, 109, 109);
+    background: rgb(165, 163, 163) !important;
+    border: 1px solid rgb(109, 109, 109) !important;
+    cursor: default;
+}
+
+/*RICARICA COUPON*/
+.divCpnTipoRic {
+    padding: 0 0 0 8px;
+    font-size: 12px;
+    font-family: open_sansbold, Tahoma, Arial;
+    text-align: left;
+    margin: 0;
+    height: 21px;
+    line-height: 22px;
+    text-transform: uppercase;
+    color: #000000;
+    background-image: url(couponDivRic.png);
+    background-repeat: repeat-x;
+    background-color: #ecad19;
+    background-position: 0 0px;
+    overflow: hidden;
+}
+
+    .divCpnTipoRic:hover {
+        cursor: default;
+    }
+
+.divCpnTipoRicCnt {
+    padding: 2px 9px 2px 9px;
+    background-color: #ecad19;
+}
+
+    .divCpnTipoRicCnt .ScommRisTRAItem,
+    .divCpnTipoRicCnt .ScommRisTRItem {
+        height: 18px;
+        border-top: 1px solid #a87c05;
+    }
+
+        .divCpnTipoRicCnt .ScommRisTRItem:first-child {
+            border: 0;
+        }
+
+    .divCpnTipoRicCnt a {
+        text-decoration: none;
+        display: block;
+        line-height: 18px;
+        font-weight: bold;
+        color: #000000;
+    }
+
+        .divCpnTipoRicCnt a.sx {
+            float: left;
+        }
+
+        .divCpnTipoRicCnt a.dx {
+            float: right;
+        }
+
+/*COUPON ACCETTATO*/
+.CouponMainAccepted {
+    background-repeat: repeat-y;
+    margin: 0;
+    font-size: 11px;
+    border: 0;
+    color: #000000;
+    background-color: #ecad19;
+    padding: 8px 10px;
+    margin: 0;
+}
+
+    .CouponMainAccepted SPAN {
+        display: block;
+        padding-bottom: 10px;
+    }
+
+    .CouponMainAccepted A {
+        margin: 2px auto 0 auto;
+        display: block;
+    }
+
+    .CouponMainAccepted INPUT {
+        margin: 2px auto 0 auto;
+        display: block;
+    }
+
+    .CouponMainAccepted IMG {
+        float: left;
+    }
+
+    .CouponMainAccepted .addCpnSaveTxt {
+        display: block;
+        padding: 0;
+        margin: 0;
+    }
+
+.divCouponError,
+.divCouponErrorGen {
+    position: relative;
+    border: 1px solid #b60000;
+    border-radius: 5px;
+    background-color: #5c0f00;
+    margin: 0 0 3px 0;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 11px;
+    background-repeat: no-repeat;
+    background-position: 5px center;
+    padding: 10px 5px 10px 45px;
+    z-index: 100;
+}
+
+.divCouponErrorGen {
+    margin: 0 0 -1px 0;
+    padding: 9px 7px 9px 45px;
+    border: 1px solid #ecad19;
+    border-radius: 0;
+}
+
+    .divCouponErrorGen .fillUp {
+        text-decoration: none;
+        color: #CAC4FF;
+    }
+
+    .divCouponErrorGen SPAN SPAN {
+        display: block;
+    }
+
+.CouponUserData .cboUtenti {
+    height: 20px;
+}
+
+    .CouponUserData .cboUtenti .txtUtente {
+        float: left;
+        height: 20px;
+        position: relative;
+    }
+
+        .CouponUserData .cboUtenti .txtUtente INPUT {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+    .CouponUserData .cboUtenti .cboUtente {
+        float: right;
+        width: 135px;
+        overflow: hidden;
+        position: relative;
+        height: 20px;
+    }
+
+.CouponUserData .dropdown.Expanded {
+    width: auto;
+}
+
+.CouponUserData .dropdown {
+    width: 135px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+/**/
+.RiquadroDXUnderCpn {
+    margin-bottom: 6px;
+    margin-top: 10px;
+}
+
+    .RiquadroDXUnderCpn .TopSX {
+        height: 23px;
+        line-height: 23px;
+        padding-left: 8px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        background-image: url(dx_title_bg.png);
+        background-position: center -225px;
+        background-repeat: no-repeat;
+    }
+
+    .RiquadroDXUnderCpn .TopDX {
+        height: 23px;
+        line-height: 23px;
+        position: relative;
+        overflow: hidden;
+        color: #161616;
+        font-weight: normal;
+        letter-spacing: 0px;
+        font-size: 15px;
+    }
+
+        .RiquadroDXUnderCpn .TopDX H3 {
+            padding: 0;
+            margin: 0;
+            font-family: open_sansbold, Tahoma, Arial;
+            font-size: 13px;
+            text-transform: uppercase;
+            font-weight: normal;
+        }
+
+    .RiquadroDXUnderCpn .CntSX {
+        background-color: #ecad19;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+    .RiquadroDXUnderCpn .BtmSX {
+        height: 0px;
+        background-color: #ecad19;
+    }
+
+.divScommRis {
+    margin: 0;
+    padding: 2px 5px 5px 5px;
+    font-size: 11px;
+}
+
+    .divScommRis A,
+    .divScommRic A {
+        text-decoration: none;
+        color: #000;
+        font-weight: bold;
+    }
+
+.ScommRisTRItem,
+.ScommRisTRAItem {
+    color: #000;
+}
+
+.ScommRisTRItem {
+    height: 18px;
+}
+
+.ScommRisTRAItem {
+    height: 18px;
+}
+
+    .ScommRisTRItem TD,
+    .ScommRisTRAItem TD {
+        border-top: 1px solid #a87c05;
+    }
+
+    .ScommRisTRItem:first-child TD,
+    .ScommRisTRAItem:first-child TD {
+        border: 0;
+    }
+
+    .ScommRisTRItem TD IMG,
+    .ScommRisTRAItem TD IMG {
+        margin-top: 2px;
+    }
+
+.ScoRisParzialeA .tdParziale,
+.ScoRisParziale .tdParziale {
+    background-color: #ffd457;
+    padding: 5px;
+    border: 1px solid #b40c0b;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top: 0;
+    color: #000000;
+}
+
+.ScoRisParziale .tdParziale {
+}
+
+.divScommRis .Accettato {
+    color: #000000;
+    font-weight: bold;
+    height: 25px;
+}
+
+.cancCoupon {
+    float: right;
+    margin: 1px 7px 0 0;
+}
+
+.stampaCoupon a:link {
+    float: left;
+    text-decoration: none;
+    color: #000000;
+}
+
+.stampaCoupon a:visited {
+    float: left;
+    text-decoration: none;
+    color: #000000;
+}
+
+.stampaCoupon a:hover {
+    float: left;
+    text-decoration: none;
+    color: #666666;
+}
+
+.btnRosso {
+    float: right;
+    padding-top: 1px;
+}
+
+.divDisclaimerBonus {
+    background-color: #ffd155;
+    color: #000000;
+    margin: 3px;
+    border: 1px solid #c39007;
+    font-size: 11px;
+    padding: 3px;
+}
+
+/*Anti-riciclaggio*/
+.cpnCassa {
+    background-color: #faeeb5;
+}
+
+.divCpnSelectAnagrafica {
+}
+
+    .divCpnSelectAnagrafica INPUT {
+        float: left;
+        margin-right: 4px;
+    }
+
+    .divCpnSelectAnagrafica .Titolo {
+        margin-top: 10px;
+        text-align: center;
+        font-weight: bold;
+        border-bottom: 2px solid #f2b100;
+    }
+
+    .divCpnSelectAnagrafica .Info {
+        padding: 2px 0 5px 0;
+        text-align: center;
+    }
+
+    .divCpnSelectAnagrafica .txtIDAnagrafica {
+        font-size: 11px;
+        width: 40px;
+    }
+
+    .divCpnSelectAnagrafica .txtAnagrafica {
+        font-size: 11px;
+        width: 90px;
+    }
+
+    .divCpnSelectAnagrafica .btnAnagrafica {
+        margin-right: 2px;
+        background-position: -20px top;
+        background-image: url(AntiRic_Anagrafica_Icons.png);
+        display: block;
+        width: 20px;
+        height: 20px;
+        float: left;
+    }
+
+    .divCpnSelectAnagrafica .btnStampa {
+        display: none;
+        background-image: url(AntiRic_Anagrafica_Icons.png);
+        width: 20px;
+        height: 20px;
+        float: left;
+    }
+
+.buttonStampaAnagraficaCoupon {
+    background-image: url('btn_lnk_bg.gif');
+    background-repeat: repeat-x;
+    background-position: center bottom;
+    background-color: #4d4d4d;
+    color: #FFFFFF;
+    border: 1px solid #000000;
+    font-weight: bold;
+    padding: 0 10px 0 10px;
+    height: 20px;
+    font-size: 11px;
+    margin: 0 2px 0 2px;
+    cursor: pointer;
+    width: 128px;
+    line-height: 17px;
+    text-align: center;
+}
+
+.divCouponAsync {
+    min-height: 40px;
+    margin: 0 0 10px 0;
+    background-image: url(Warning.png);
+    background-repeat: no-repeat;
+    background-position: 7px 7px;
+    padding: 5px 5px 30px 45px;
+    color: #000;
+    position: relative;
+    overflow: hidden;
+    background-color: #ffd155;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+    .divCouponAsync > DIV {
+        clear: both;
+        position: absolute;
+        width: 100%;
+        bottom: 6px;
+        text-align: center;
+        left: 0;
+    }
+
+.centerText {
+    text-align: center;
+}
+
+.imgButtonCoupon {
+    padding: 3px 4px 0 7px;
+    vertical-align: top;
+    text-align: center;
+    height: 13px;
+}
+
+.imgButtonCouponSave {
+    /*background-image: url(save.png);*/
+    background-repeat: no-repeat;
+    background-position: 50% 5%;
+}
+
+.divAnimazioneLiveHTML {
+    display: block;
+    width: 198px;
+    height: 100px;
+    text-align: center;
+    background-image: url(pwin365smalllogo.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #ECAD19;
+}
+
+.cpncounter {
+    height: 54px;
+    width: 198px;
+    margin-top: -73px;
+    background-image: url(couponcounter.png);
+    background-repeat: no-repeat;
+    background-position: 72px 42px;
+    margin-left: 1px;
+    opacity: 1;
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+    -webkit-animation-name: counter10secs;
+    animation-name: counter10secs;
+    -webkit-animation-duration: 10s;
+    animation-duration: 10s;
+    -webkit-animation-iteration-count: 1;
+    animation-iteration-count: 1;
+    -webkit-animation-delay: 0s;
+    animation-delay: 0s;
+}
+
+.secs9 {
+    -webkit-animation-delay: -1s !important;
+            animation-delay: -1s !important;
+}
+.secs8 {
+    -webkit-animation-delay: -2s !important;
+            animation-delay: -2s !important;
+}
+.secs7 {
+    -webkit-animation-delay: -3s !important;
+            animation-delay: -3s !important;
+}
+.secs6 {
+    -webkit-animation-delay: -4s !important;
+            animation-delay: -4s !important;
+}
+.secs5 {
+    -webkit-animation-delay: -5s !important;
+            animation-delay: -5s !important;
+}
+.secs4 {
+    -webkit-animation-delay: -6s !important;
+            animation-delay: -6s !important;
+}
+.secs3 {
+    -webkit-animation-delay: -7s !important;
+            animation-delay: -7s !important;
+}
+.secs2 {
+    -webkit-animation-delay: -8s !important;
+            animation-delay: -8s !important;
+}
+.secs1 {
+    -webkit-animation-delay: -9s !important;
+            animation-delay: -9s !important;
+}
+.secs0 {
+    -webkit-animation-delay: -10s !important;
+            animation-delay: -10s !important;
+}
+
+@-webkit-keyframes counter10secs {
+    0%{background-position:72px -12px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    1%{opacity:1}
+    4%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    5%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    6%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    8.5%{background-position:72px -12px;opacity:0}
+    9%{background-position:72px -66px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    10%{opacity:1}
+    13%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    14%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    15%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    17.5%{background-position:72px -66px;opacity:0}
+    18%{background-position:72px -120px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    19%{opacity:1}
+    22%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    23%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    24%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    26.5%{background-position:72px -120px;opacity:0}
+    27%{background-position:72px -174px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    28%{opacity:1}
+    31%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    32%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    33%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    35.5%{background-position:72px -174px;opacity:0}
+    36%{background-position:72px -228px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    37%{opacity:1}
+    40%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    41%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    42%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    44.5%{background-position:72px -228px;opacity:0}
+    45%{background-position:72px -282px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    46%{opacity:1}
+    49%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    50%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    51%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    53.5%{background-position:72px -282px;opacity:0}
+    54%{background-position:72px -336px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    55%{opacity:1}
+    58%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    59%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    60%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    62.5%{background-position:72px -336px;opacity:0}
+    63%{background-position:72px -390px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    64%{opacity:1}
+    67%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    68%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    69%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    71.5%{background-position:72px -390px;opacity:0}
+    72%{background-position:72px -444px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    73%{opacity:1}
+    76%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    77%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    78%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    80.5%{background-position:72px -444px;opacity:0}
+    81%{background-position:72px -498px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    82%{opacity:1}
+    85%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    86%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    87%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    89.5%{background-position:72px -498px;opacity:0}
+    90%{background-position:72px -552px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    91%{opacity:1}
+    94%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    95%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    96%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    98.5%{background-position:72px -552px;opacity:0}
+    100%{opacity:0}
+}
+@keyframes counter10secs {
+    0%{background-position:72px -12px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    1%{opacity:1}
+    4%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    5%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    6%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    8.5%{background-position:72px -12px;opacity:0}
+    9%{background-position:72px -66px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    10%{opacity:1}
+    13%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    14%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    15%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    17.5%{background-position:72px -66px;opacity:0}
+    18%{background-position:72px -120px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    19%{opacity:1}
+    22%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    23%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    24%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    26.5%{background-position:72px -120px;opacity:0}
+    27%{background-position:72px -174px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    28%{opacity:1}
+    31%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    32%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    33%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    35.5%{background-position:72px -174px;opacity:0}
+    36%{background-position:72px -228px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    37%{opacity:1}
+    40%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    41%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    42%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    44.5%{background-position:72px -228px;opacity:0}
+    45%{background-position:72px -282px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    46%{opacity:1}
+    49%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    50%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    51%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    53.5%{background-position:72px -282px;opacity:0}
+    54%{background-position:72px -336px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    55%{opacity:1}
+    58%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    59%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    60%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    62.5%{background-position:72px -336px;opacity:0}
+    63%{background-position:72px -390px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    64%{opacity:1}
+    67%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    68%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    69%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    71.5%{background-position:72px -390px;opacity:0}
+    72%{background-position:72px -444px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    73%{opacity:1}
+    76%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    77%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    78%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    80.5%{background-position:72px -444px;opacity:0}
+    81%{background-position:72px -498px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    82%{opacity:1}
+    85%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    86%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    87%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    89.5%{background-position:72px -498px;opacity:0}
+    90%{background-position:72px -552px;-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:0}
+    91%{opacity:1}
+    94%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8)}
+    95%{-webkit-transform:scale(1,1);transform:scale(1,1)}
+    96%{-webkit-transform:scale(0.8,0.8);transform:scale(0.8,0.8);opacity:1}
+    98.5%{background-position:72px -552px;opacity:0}
+    100%{opacity:0}
+}
+.spinningloader {
+    background-image: url(satelitcic.png);
+    width: 102px;
+    height: 102px;
+    margin: 2px 0 0 50px;
+    position: absolute;
+    -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+    -webkit-animation: load6 2s infinite ease;
+            animation: load6 2s infinite ease;
+}
+
+@-webkit-keyframes load6 {
+    0%{-webkit-transform:rotate(0deg);transform:rotate(0deg);opacity:0}
+    20%{opacity:1}
+    50%{opacity:1}
+    80%{opacity:0}
+    100%{-webkit-transform:rotate(360deg);transform:rotate(360deg);opacity:0}
+}
+@keyframes load6 {
+    0%{-webkit-transform:rotate(0deg);transform:rotate(0deg);opacity:0}
+    20%{opacity:1}
+    50%{opacity:1}
+    80%{opacity:0}
+    100%{-webkit-transform:rotate(360deg);transform:rotate(360deg);opacity:0}
+}

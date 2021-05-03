@@ -1,0 +1,1666 @@
+/* jquery.nicescroll v3.7.6 InuYaksa - MIT - https://nicescroll.areaaperta.com */
+!function (e) { "function" == typeof define && define.amd ? define(["jquery"], e) : "object" == typeof exports ? module.exports = e(require("jquery")) : e(jQuery) }(function (e) { "use strict"; var o = !1, t = !1, r = 0, i = 2e3, s = 0, n = e, l = document, a = window, c = n(a), d = [], u = a.requestAnimationFrame || a.webkitRequestAnimationFrame || a.mozRequestAnimationFrame || !1, h = a.cancelAnimationFrame || a.webkitCancelAnimationFrame || a.mozCancelAnimationFrame || !1; if (u) a.cancelAnimationFrame || (h = function (e) { }); else { var p = 0; u = function (e, o) { var t = (new Date).getTime(), r = Math.max(0, 16 - (t - p)), i = a.setTimeout(function () { e(t + r) }, r); return p = t + r, i }, h = function (e) { a.clearTimeout(e) } } var m = a.MutationObserver || a.WebKitMutationObserver || !1, f = Date.now || function () { return (new Date).getTime() }, g = { zindex: "auto", cursoropacitymin: 0, cursoropacitymax: 1, cursorcolor: "#424242", cursorwidth: "6px", cursorborder: "1px solid #fff", cursorborderradius: "5px", scrollspeed: 40, mousescrollstep: 27, touchbehavior: !1, emulatetouch: !1, hwacceleration: !0, usetransition: !0, boxzoom: !1, dblclickzoom: !0, gesturezoom: !0, grabcursorenabled: !0, autohidemode: !0, background: "", iframeautoresize: !0, cursorminheight: 32, preservenativescrolling: !0, railoffset: !1, railhoffset: !1, bouncescroll: !0, spacebarenabled: !0, railpadding: { top: 0, right: 0, left: 0, bottom: 0 }, disableoutline: !0, horizrailenabled: !0, railalign: "right", railvalign: "bottom", enabletranslate3d: !0, enablemousewheel: !0, enablekeyboard: !0, smoothscroll: !0, sensitiverail: !0, enablemouselockapi: !0, cursorfixedheight: !1, directionlockdeadzone: 6, hidecursordelay: 400, nativeparentscrolling: !0, enablescrollonselection: !0, overflowx: !0, overflowy: !0, cursordragspeed: .3, rtlmode: "auto", cursordragontouch: !1, oneaxismousemode: "auto", scriptpath: function () { var e = l.currentScript || function () { var e = l.getElementsByTagName("script"); return !!e.length && e[e.length - 1] }(), o = e ? e.src.split("?")[0] : ""; return o.split("/").length > 0 ? o.split("/").slice(0, -1).join("/") + "/" : "" }(), preventmultitouchscrolling: !0, disablemutationobserver: !1, enableobserver: !0, scrollbarid: !1 }, v = !1, w = function () { if (v) return v; var e = l.createElement("DIV"), o = e.style, t = navigator.userAgent, r = navigator.platform, i = {}; return i.haspointerlock = "pointerLockElement" in l || "webkitPointerLockElement" in l || "mozPointerLockElement" in l, i.isopera = "opera" in a, i.isopera12 = i.isopera && "getUserMedia" in navigator, i.isoperamini = "[object OperaMini]" === Object.prototype.toString.call(a.operamini), i.isie = "all" in l && "attachEvent" in e && !i.isopera, i.isieold = i.isie && !("msInterpolationMode" in o), i.isie7 = i.isie && !i.isieold && (!("documentMode" in l) || 7 === l.documentMode), i.isie8 = i.isie && "documentMode" in l && 8 === l.documentMode, i.isie9 = i.isie && "performance" in a && 9 === l.documentMode, i.isie10 = i.isie && "performance" in a && 10 === l.documentMode, i.isie11 = "msRequestFullscreen" in e && l.documentMode >= 11, i.ismsedge = "msCredentials" in a, i.ismozilla = "MozAppearance" in o, i.iswebkit = !i.ismsedge && "WebkitAppearance" in o, i.ischrome = i.iswebkit && "chrome" in a, i.ischrome38 = i.ischrome && "touchAction" in o, i.ischrome22 = !i.ischrome38 && i.ischrome && i.haspointerlock, i.ischrome26 = !i.ischrome38 && i.ischrome && "transition" in o, i.cantouch = "ontouchstart" in l.documentElement || "ontouchstart" in a, i.hasw3ctouch = (a.PointerEvent || !1) && (navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0), i.hasmstouch = !i.hasw3ctouch && (a.MSPointerEvent || !1), i.ismac = /^mac$/i.test(r), i.isios = i.cantouch && /iphone|ipad|ipod/i.test(r), i.isios4 = i.isios && !("seal" in Object), i.isios7 = i.isios && "webkitHidden" in l, i.isios8 = i.isios && "hidden" in l, i.isios10 = i.isios && a.Proxy, i.isandroid = /android/i.test(t), i.haseventlistener = "addEventListener" in e, i.trstyle = !1, i.hastransform = !1, i.hastranslate3d = !1, i.transitionstyle = !1, i.hastransition = !1, i.transitionend = !1, i.trstyle = "transform", i.hastransform = "transform" in o || function () { for (var e = ["msTransform", "webkitTransform", "MozTransform", "OTransform"], t = 0, r = e.length; t < r; t++)if (void 0 !== o[e[t]]) { i.trstyle = e[t]; break } i.hastransform = !!i.trstyle }(), i.hastransform && (o[i.trstyle] = "translate3d(1px,2px,3px)", i.hastranslate3d = /translate3d/.test(o[i.trstyle])), i.transitionstyle = "transition", i.prefixstyle = "", i.transitionend = "transitionend", i.hastransition = "transition" in o || function () { i.transitionend = !1; for (var e = ["webkitTransition", "msTransition", "MozTransition", "OTransition", "OTransition", "KhtmlTransition"], t = ["-webkit-", "-ms-", "-moz-", "-o-", "-o", "-khtml-"], r = ["webkitTransitionEnd", "msTransitionEnd", "transitionend", "otransitionend", "oTransitionEnd", "KhtmlTransitionEnd"], s = 0, n = e.length; s < n; s++)if (e[s] in o) { i.transitionstyle = e[s], i.prefixstyle = t[s], i.transitionend = r[s]; break } i.ischrome26 && (i.prefixstyle = t[1]), i.hastransition = i.transitionstyle }(), i.cursorgrabvalue = function () { var e = ["grab", "-webkit-grab", "-moz-grab"]; (i.ischrome && !i.ischrome38 || i.isie) && (e = []); for (var t = 0, r = e.length; t < r; t++) { var s = e[t]; if (o.cursor = s, o.cursor == s) return s } return "url(https://cdnjs.cloudflare.com/ajax/libs/slider-pro/1.3.0/css/images/openhand.cur),n-resize" }(), i.hasmousecapture = "setCapture" in e, i.hasMutationObserver = !1 !== m, e = null, v = i, i }, b = function (e, p) { function v() { var e = T.doc.css(P.trstyle); return !(!e || "matrix" != e.substr(0, 6)) && e.replace(/^.*\((.*)\)$/g, "$1").replace(/px/g, "").split(/, +/) } function b() { var e = T.win; if ("zIndex" in e) return e.zIndex(); for (; e.length > 0;) { if (9 == e[0].nodeType) return !1; var o = e.css("zIndex"); if (!isNaN(o) && 0 !== o) return parseInt(o); e = e.parent() } return !1 } function x(e, o, t) { var r = e.css(o), i = parseFloat(r); if (isNaN(i)) { var s = 3 == (i = I[r] || 0) ? t ? T.win.outerHeight() - T.win.innerHeight() : T.win.outerWidth() - T.win.innerWidth() : 1; return T.isie8 && i && (i += 1), s ? i : 0 } return i } function S(e, o, t, r) { T._bind(e, o, function (r) { var i = { original: r = r || a.event, target: r.target || r.srcElement, type: "wheel", deltaMode: "MozMousePixelScroll" == r.type ? 0 : 1, deltaX: 0, deltaZ: 0, preventDefault: function () { return r.preventDefault ? r.preventDefault() : r.returnValue = !1, !1 }, stopImmediatePropagation: function () { r.stopImmediatePropagation ? r.stopImmediatePropagation() : r.cancelBubble = !0 } }; return "mousewheel" == o ? (r.wheelDeltaX && (i.deltaX = -.025 * r.wheelDeltaX), r.wheelDeltaY && (i.deltaY = -.025 * r.wheelDeltaY), !i.deltaY && !i.deltaX && (i.deltaY = -.025 * r.wheelDelta)) : i.deltaY = r.detail, t.call(e, i) }, r) } function z(e, o, t, r) { T.scrollrunning || (T.newscrolly = T.getScrollTop(), T.newscrollx = T.getScrollLeft(), D = f()); var i = f() - D; if (D = f(), i > 350 ? A = 1 : A += (2 - A) / 10, e = e * A | 0, o = o * A | 0, e) { if (r) if (e < 0) { if (T.getScrollLeft() >= T.page.maxw) return !0 } else if (T.getScrollLeft() <= 0) return !0; var s = e > 0 ? 1 : -1; X !== s && (T.scrollmom && T.scrollmom.stop(), T.newscrollx = T.getScrollLeft(), X = s), T.lastdeltax -= e } if (o) { if (function () { var e = T.getScrollTop(); if (o < 0) { if (e >= T.page.maxh) return !0 } else if (e <= 0) return !0 }()) { if (M.nativeparentscrolling && t && !T.ispage && !T.zoomactive) return !0; var n = T.view.h >> 1; T.newscrolly < -n ? (T.newscrolly = -n, o = -1) : T.newscrolly > T.page.maxh + n ? (T.newscrolly = T.page.maxh + n, o = 1) : o = 0 } var l = o > 0 ? 1 : -1; B !== l && (T.scrollmom && T.scrollmom.stop(), T.newscrolly = T.getScrollTop(), B = l), T.lastdeltay -= o } (o || e) && T.synched("relativexy", function () { var e = T.lastdeltay + T.newscrolly; T.lastdeltay = 0; var o = T.lastdeltax + T.newscrollx; T.lastdeltax = 0, T.rail.drag || T.doScrollPos(o, e) }) } function k(e, o, t) { var r, i; return !(t || !q) || (0 === e.deltaMode ? (r = -e.deltaX * (M.mousescrollstep / 54) | 0, i = -e.deltaY * (M.mousescrollstep / 54) | 0) : 1 === e.deltaMode && (r = -e.deltaX * M.mousescrollstep * 50 / 80 | 0, i = -e.deltaY * M.mousescrollstep * 50 / 80 | 0), o && M.oneaxismousemode && 0 === r && i && (r = i, i = 0, t && (r < 0 ? T.getScrollLeft() >= T.page.maxw : T.getScrollLeft() <= 0) && (i = r, r = 0)), T.isrtlmode && (r = -r), z(r, i, t, !0) ? void (t && (q = !0)) : (q = !1, e.stopImmediatePropagation(), e.preventDefault())) } var T = this; this.version = "3.7.6", this.name = "nicescroll", this.me = p; var E = n("body"), M = this.opt = { doc: E, win: !1 }; if (n.extend(M, g), M.snapbackspeed = 80, e) for (var L in M) void 0 !== e[L] && (M[L] = e[L]); if (M.disablemutationobserver && (m = !1), this.doc = M.doc, this.iddoc = this.doc && this.doc[0] ? this.doc[0].id || "" : "", this.ispage = /^BODY|HTML/.test(M.win ? M.win[0].nodeName : this.doc[0].nodeName), this.haswrapper = !1 !== M.win, this.win = M.win || (this.ispage ? c : this.doc), this.docscroll = this.ispage && !this.haswrapper ? c : this.win, this.body = E, this.viewport = !1, this.isfixed = !1, this.iframe = !1, this.isiframe = "IFRAME" == this.doc[0].nodeName && "IFRAME" == this.win[0].nodeName, this.istextarea = "TEXTAREA" == this.win[0].nodeName, this.forcescreen = !1, this.canshowonmouseevent = "scroll" != M.autohidemode, this.onmousedown = !1, this.onmouseup = !1, this.onmousemove = !1, this.onmousewheel = !1, this.onkeypress = !1, this.ongesturezoom = !1, this.onclick = !1, this.onscrollstart = !1, this.onscrollend = !1, this.onscrollcancel = !1, this.onzoomin = !1, this.onzoomout = !1, this.view = !1, this.page = !1, this.scroll = { x: 0, y: 0 }, this.scrollratio = { x: 0, y: 0 }, this.cursorheight = 20, this.scrollvaluemax = 0, "auto" == M.rtlmode) { var C = this.win[0] == a ? this.body : this.win, N = C.css("writing-mode") || C.css("-webkit-writing-mode") || C.css("-ms-writing-mode") || C.css("-moz-writing-mode"); "horizontal-tb" == N || "lr-tb" == N || "" === N ? (this.isrtlmode = "rtl" == C.css("direction"), this.isvertical = !1) : (this.isrtlmode = "vertical-rl" == N || "tb" == N || "tb-rl" == N || "rl-tb" == N, this.isvertical = "vertical-rl" == N || "tb" == N || "tb-rl" == N) } else this.isrtlmode = !0 === M.rtlmode, this.isvertical = !1; if (this.scrollrunning = !1, this.scrollmom = !1, this.observer = !1, this.observerremover = !1, this.observerbody = !1, !1 !== M.scrollbarid) this.id = M.scrollbarid; else do { this.id = "ascrail" + i++ } while (l.getElementById(this.id)); this.rail = !1, this.cursor = !1, this.cursorfreezed = !1, this.selectiondrag = !1, this.zoom = !1, this.zoomactive = !1, this.hasfocus = !1, this.hasmousefocus = !1, this.railslocked = !1, this.locked = !1, this.hidden = !1, this.cursoractive = !0, this.wheelprevented = !1, this.overflowx = M.overflowx, this.overflowy = M.overflowy, this.nativescrollingarea = !1, this.checkarea = 0, this.events = [], this.saved = {}, this.delaylist = {}, this.synclist = {}, this.lastdeltax = 0, this.lastdeltay = 0, this.detected = w(); var P = n.extend({}, this.detected); this.canhwscroll = P.hastransform && M.hwacceleration, this.ishwscroll = this.canhwscroll && T.haswrapper, this.isrtlmode ? this.isvertical ? this.hasreversehr = !(P.iswebkit || P.isie || P.isie11) : this.hasreversehr = !(P.iswebkit || P.isie && !P.isie10 && !P.isie11) : this.hasreversehr = !1, this.istouchcapable = !1, P.cantouch || !P.hasw3ctouch && !P.hasmstouch ? !P.cantouch || P.isios || P.isandroid || !P.iswebkit && !P.ismozilla || (this.istouchcapable = !0) : this.istouchcapable = !0, M.enablemouselockapi || (P.hasmousecapture = !1, P.haspointerlock = !1), this.debounced = function (e, o, t) { T && (T.delaylist[e] || !1 || (T.delaylist[e] = { h: u(function () { T.delaylist[e].fn.call(T), T.delaylist[e] = !1 }, t) }, o.call(T)), T.delaylist[e].fn = o) }, this.synched = function (e, o) { T.synclist[e] ? T.synclist[e] = o : (T.synclist[e] = o, u(function () { T && (T.synclist[e] && T.synclist[e].call(T), T.synclist[e] = null) })) }, this.unsynched = function (e) { T.synclist[e] && (T.synclist[e] = !1) }, this.css = function (e, o) { for (var t in o) T.saved.css.push([e, t, e.css(t)]), e.css(t, o[t]) }, this.scrollTop = function (e) { return void 0 === e ? T.getScrollTop() : T.setScrollTop(e) }, this.scrollLeft = function (e) { return void 0 === e ? T.getScrollLeft() : T.setScrollLeft(e) }; var R = function (e, o, t, r, i, s, n) { this.st = e, this.ed = o, this.spd = t, this.p1 = r || 0, this.p2 = i || 1, this.p3 = s || 0, this.p4 = n || 1, this.ts = f(), this.df = o - e }; if (R.prototype = { B2: function (e) { return 3 * (1 - e) * (1 - e) * e }, B3: function (e) { return 3 * (1 - e) * e * e }, B4: function (e) { return e * e * e }, getPos: function () { return (f() - this.ts) / this.spd }, getNow: function () { var e = (f() - this.ts) / this.spd, o = this.B2(e) + this.B3(e) + this.B4(e); return e >= 1 ? this.ed : this.st + this.df * o | 0 }, update: function (e, o) { return this.st = this.getNow(), this.ed = e, this.spd = o, this.ts = f(), this.df = this.ed - this.st, this } }, this.ishwscroll) { this.doc.translate = { x: 0, y: 0, tx: "0px", ty: "0px" }, P.hastranslate3d && P.isios && this.doc.css("-webkit-backface-visibility", "hidden"), this.getScrollTop = function (e) { if (!e) { var o = v(); if (o) return 16 == o.length ? -o[13] : -o[5]; if (T.timerscroll && T.timerscroll.bz) return T.timerscroll.bz.getNow() } return T.doc.translate.y }, this.getScrollLeft = function (e) { if (!e) { var o = v(); if (o) return 16 == o.length ? -o[12] : -o[4]; if (T.timerscroll && T.timerscroll.bh) return T.timerscroll.bh.getNow() } return T.doc.translate.x }, this.notifyScrollEvent = function (e) { var o = l.createEvent("UIEvents"); o.initUIEvent("scroll", !1, !1, a, 1), o.niceevent = !0, e.dispatchEvent(o) }; var _ = this.isrtlmode ? 1 : -1; P.hastranslate3d && M.enabletranslate3d ? (this.setScrollTop = function (e, o) { T.doc.translate.y = e, T.doc.translate.ty = -1 * e + "px", T.doc.css(P.trstyle, "translate3d(" + T.doc.translate.tx + "," + T.doc.translate.ty + ",0)"), o || T.notifyScrollEvent(T.win[0]) }, this.setScrollLeft = function (e, o) { T.doc.translate.x = e, T.doc.translate.tx = e * _ + "px", T.doc.css(P.trstyle, "translate3d(" + T.doc.translate.tx + "," + T.doc.translate.ty + ",0)"), o || T.notifyScrollEvent(T.win[0]) }) : (this.setScrollTop = function (e, o) { T.doc.translate.y = e, T.doc.translate.ty = -1 * e + "px", T.doc.css(P.trstyle, "translate(" + T.doc.translate.tx + "," + T.doc.translate.ty + ")"), o || T.notifyScrollEvent(T.win[0]) }, this.setScrollLeft = function (e, o) { T.doc.translate.x = e, T.doc.translate.tx = e * _ + "px", T.doc.css(P.trstyle, "translate(" + T.doc.translate.tx + "," + T.doc.translate.ty + ")"), o || T.notifyScrollEvent(T.win[0]) }) } else this.getScrollTop = function () { return T.docscroll.scrollTop() }, this.setScrollTop = function (e) { T.docscroll.scrollTop(e) }, this.getScrollLeft = function () { return T.hasreversehr ? T.detected.ismozilla ? T.page.maxw - Math.abs(T.docscroll.scrollLeft()) : T.page.maxw - T.docscroll.scrollLeft() : T.docscroll.scrollLeft() }, this.setScrollLeft = function (e) { return setTimeout(function () { if (T) return T.hasreversehr && (e = T.detected.ismozilla ? -(T.page.maxw - e) : T.page.maxw - e), T.docscroll.scrollLeft(e) }, 1) }; this.getTarget = function (e) { return !!e && (e.target ? e.target : !!e.srcElement && e.srcElement) }, this.hasParent = function (e, o) { if (!e) return !1; for (var t = e.target || e.srcElement || e || !1; t && t.id != o;)t = t.parentNode || !1; return !1 !== t }; var I = { thin: 1, medium: 3, thick: 5 }; this.getDocumentScrollOffset = function () { return { top: a.pageYOffset || l.documentElement.scrollTop, left: a.pageXOffset || l.documentElement.scrollLeft } }, this.getOffset = function () { if (T.isfixed) { var e = T.win.offset(), o = T.getDocumentScrollOffset(); return e.top -= o.top, e.left -= o.left, e } var t = T.win.offset(); if (!T.viewport) return t; var r = T.viewport.offset(); return { top: t.top - r.top, left: t.left - r.left } }, this.updateScrollBar = function (e) { var o, t; if (T.ishwscroll) T.rail.css({ height: T.win.innerHeight() - (M.railpadding.top + M.railpadding.bottom) }), T.railh && T.railh.css({ width: T.win.innerWidth() - (M.railpadding.left + M.railpadding.right) }); else { var r = T.getOffset(); if (o = { top: r.top, left: r.left - (M.railpadding.left + M.railpadding.right) }, o.top += x(T.win, "border-top-width", !0), o.left += T.rail.align ? T.win.outerWidth() - x(T.win, "border-right-width") - T.rail.width : x(T.win, "border-left-width"), (t = M.railoffset) && (t.top && (o.top += t.top), t.left && (o.left += t.left)), T.railslocked || T.rail.css({ top: o.top, left: o.left, height: (e ? e.h : T.win.innerHeight()) - (M.railpadding.top + M.railpadding.bottom) }), T.zoom && T.zoom.css({ top: o.top + 1, left: 1 == T.rail.align ? o.left - 20 : o.left + T.rail.width + 4 }), T.railh && !T.railslocked) { o = { top: r.top, left: r.left }, (t = M.railhoffset) && (t.top && (o.top += t.top), t.left && (o.left += t.left)); var i = T.railh.align ? o.top + x(T.win, "border-top-width", !0) + T.win.innerHeight() - T.railh.height : o.top + x(T.win, "border-top-width", !0), s = o.left + x(T.win, "border-left-width"); T.railh.css({ top: i - (M.railpadding.top + M.railpadding.bottom), left: s, width: T.railh.width }) } } }, this.doRailClick = function (e, o, t) { var r, i, s, n; T.railslocked || (T.cancelEvent(e), "pageY" in e || (e.pageX = e.clientX + l.documentElement.scrollLeft, e.pageY = e.clientY + l.documentElement.scrollTop), o ? (r = t ? T.doScrollLeft : T.doScrollTop, s = t ? (e.pageX - T.railh.offset().left - T.cursorwidth / 2) * T.scrollratio.x : (e.pageY - T.rail.offset().top - T.cursorheight / 2) * T.scrollratio.y, T.unsynched("relativexy"), r(0 | s)) : (r = t ? T.doScrollLeftBy : T.doScrollBy, s = t ? T.scroll.x : T.scroll.y, n = t ? e.pageX - T.railh.offset().left : e.pageY - T.rail.offset().top, i = t ? T.view.w : T.view.h, r(s >= n ? i : -i))) }, T.newscrolly = T.newscrollx = 0, T.hasanimationframe = "requestAnimationFrame" in a, T.hascancelanimationframe = "cancelAnimationFrame" in a, T.hasborderbox = !1, this.init = function () { if (T.saved.css = [], P.isoperamini) return !0; if (P.isandroid && !("hidden" in l)) return !0; M.emulatetouch = M.emulatetouch || M.touchbehavior, T.hasborderbox = a.getComputedStyle && "border-box" === a.getComputedStyle(l.body)["box-sizing"]; var e = { "overflow-y": "hidden" }; if ((P.isie11 || P.isie10) && (e["-ms-overflow-style"] = "none"), T.ishwscroll && (this.doc.css(P.transitionstyle, P.prefixstyle + "transform 0ms ease-out"), P.transitionend && T.bind(T.doc, P.transitionend, T.onScrollTransitionEnd, !1)), T.zindex = "auto", T.ispage || "auto" != M.zindex ? T.zindex = M.zindex : T.zindex = b() || "auto", !T.ispage && "auto" != T.zindex && T.zindex > s && (s = T.zindex), T.isie && 0 === T.zindex && "auto" == M.zindex && (T.zindex = "auto"), !T.ispage || !P.isieold) { var i = T.docscroll; T.ispage && (i = T.haswrapper ? T.win : T.doc), T.css(i, e), T.ispage && (P.isie11 || P.isie) && T.css(n("html"), e), !P.isios || T.ispage || T.haswrapper || T.css(E, { "-webkit-overflow-scrolling": "touch" }); var d = n(l.createElement("div")); d.css({ position: "relative", top: 0, float: "right", width: M.cursorwidth, height: 0, "background-color": M.cursorcolor, border: M.cursorborder, "background-clip": "padding-box", "-webkit-border-radius": M.cursorborderradius, "-moz-border-radius": M.cursorborderradius, "border-radius": M.cursorborderradius }), d.addClass("nicescroll-cursors"), T.cursor = d; var u = n(l.createElement("div")); u.attr("id", T.id), u.addClass("nicescroll-rails nicescroll-rails-vr"); var h, p, f = ["left", "right", "top", "bottom"]; for (var g in f) p = f[g], (h = M.railpadding[p] || 0) && u.css("padding-" + p, h + "px"); u.append(d), u.width = Math.max(parseFloat(M.cursorwidth), d.outerWidth()), u.css({ width: u.width + "px", zIndex: T.zindex, background: M.background, cursor: "default" }), u.visibility = !0, u.scrollable = !0, u.align = "left" == M.railalign ? 0 : 1, T.rail = u, T.rail.drag = !1; var v = !1; !M.boxzoom || T.ispage || P.isieold || (v = l.createElement("div"), T.bind(v, "click", T.doZoom), T.bind(v, "mouseenter", function () { T.zoom.css("opacity", M.cursoropacitymax) }), T.bind(v, "mouseleave", function () { T.zoom.css("opacity", M.cursoropacitymin) }), T.zoom = n(v), T.zoom.css({ cursor: "pointer", zIndex: T.zindex, backgroundImage: "url(" + M.scriptpath + "zoomico.png)", height: 18, width: 18, backgroundPosition: "0 0" }), M.dblclickzoom && T.bind(T.win, "dblclick", T.doZoom), P.cantouch && M.gesturezoom && (T.ongesturezoom = function (e) { return e.scale > 1.5 && T.doZoomIn(e), e.scale < .8 && T.doZoomOut(e), T.cancelEvent(e) }, T.bind(T.win, "gestureend", T.ongesturezoom))), T.railh = !1; var w; if (M.horizrailenabled && (T.css(i, { overflowX: "hidden" }), (d = n(l.createElement("div"))).css({ position: "absolute", top: 0, height: M.cursorwidth, width: 0, backgroundColor: M.cursorcolor, border: M.cursorborder, backgroundClip: "padding-box", "-webkit-border-radius": M.cursorborderradius, "-moz-border-radius": M.cursorborderradius, "border-radius": M.cursorborderradius }), P.isieold && d.css("overflow", "hidden"), d.addClass("nicescroll-cursors"), T.cursorh = d, (w = n(l.createElement("div"))).attr("id", T.id + "-hr"), w.addClass("nicescroll-rails nicescroll-rails-hr"), w.height = Math.max(parseFloat(M.cursorwidth), d.outerHeight()), w.css({ height: w.height + "px", zIndex: T.zindex, background: M.background }), w.append(d), w.visibility = !0, w.scrollable = !0, w.align = "top" == M.railvalign ? 0 : 1, T.railh = w, T.railh.drag = !1), T.ispage) u.css({ position: "fixed", top: 0, height: "100%" }), u.css(u.align ? { right: 0 } : { left: 0 }), T.body.append(u), T.railh && (w.css({ position: "fixed", left: 0, width: "100%" }), w.css(w.align ? { bottom: 0 } : { top: 0 }), T.body.append(w)); else { if (T.ishwscroll) { "static" == T.win.css("position") && T.css(T.win, { position: "relative" }); var x = "HTML" == T.win[0].nodeName ? T.body : T.win; n(x).scrollTop(0).scrollLeft(0), T.zoom && (T.zoom.css({ position: "absolute", top: 1, right: 0, "margin-right": u.width + 4 }), x.append(T.zoom)), u.css({ position: "absolute", top: 0 }), u.css(u.align ? { right: 0 } : { left: 0 }), x.append(u), w && (w.css({ position: "absolute", left: 0, bottom: 0 }), w.css(w.align ? { bottom: 0 } : { top: 0 }), x.append(w)) } else { T.isfixed = "fixed" == T.win.css("position"); var S = T.isfixed ? "fixed" : "absolute"; T.isfixed || (T.viewport = T.getViewport(T.win[0])), T.viewport && (T.body = T.viewport, /fixed|absolute/.test(T.viewport.css("position")) || T.css(T.viewport, { position: "relative" })), u.css({ position: S }), T.zoom && T.zoom.css({ position: S }), T.updateScrollBar(), T.body.append(u), T.zoom && T.body.append(T.zoom), T.railh && (w.css({ position: S }), T.body.append(w)) } P.isios && T.css(T.win, { "-webkit-tap-highlight-color": "rgba(0,0,0,0)", "-webkit-touch-callout": "none" }), M.disableoutline && (P.isie && T.win.attr("hideFocus", "true"), P.iswebkit && T.win.css("outline", "none")) } if (!1 === M.autohidemode ? (T.autohidedom = !1, T.rail.css({ opacity: M.cursoropacitymax }), T.railh && T.railh.css({ opacity: M.cursoropacitymax })) : !0 === M.autohidemode || "leave" === M.autohidemode ? (T.autohidedom = n().add(T.rail), P.isie8 && (T.autohidedom = T.autohidedom.add(T.cursor)), T.railh && (T.autohidedom = T.autohidedom.add(T.railh)), T.railh && P.isie8 && (T.autohidedom = T.autohidedom.add(T.cursorh))) : "scroll" == M.autohidemode ? (T.autohidedom = n().add(T.rail), T.railh && (T.autohidedom = T.autohidedom.add(T.railh))) : "cursor" == M.autohidemode ? (T.autohidedom = n().add(T.cursor), T.railh && (T.autohidedom = T.autohidedom.add(T.cursorh))) : "hidden" == M.autohidemode && (T.autohidedom = !1, T.hide(), T.railslocked = !1), P.cantouch || T.istouchcapable || M.emulatetouch || P.hasmstouch) { T.scrollmom = new y(T); T.ontouchstart = function (e) { if (T.locked) return !1; if (e.pointerType && ("mouse" === e.pointerType || e.pointerType === e.MSPOINTER_TYPE_MOUSE)) return !1; if (T.hasmoving = !1, T.scrollmom.timer && (T.triggerScrollEnd(), T.scrollmom.stop()), !T.railslocked) { var o = T.getTarget(e); if (o && /INPUT/i.test(o.nodeName) && /range/i.test(o.type)) return T.stopPropagation(e); var t = "mousedown" === e.type; if (!("clientX" in e) && "changedTouches" in e && (e.clientX = e.changedTouches[0].clientX, e.clientY = e.changedTouches[0].clientY), T.forcescreen) { var r = e; (e = { original: e.original ? e.original : e }).clientX = r.screenX, e.clientY = r.screenY } if (T.rail.drag = { x: e.clientX, y: e.clientY, sx: T.scroll.x, sy: T.scroll.y, st: T.getScrollTop(), sl: T.getScrollLeft(), pt: 2, dl: !1, tg: o }, T.ispage || !M.directionlockdeadzone) T.rail.drag.dl = "f"; else { var i = { w: c.width(), h: c.height() }, s = T.getContentSize(), l = s.h - i.h, a = s.w - i.w; T.rail.scrollable && !T.railh.scrollable ? T.rail.drag.ck = l > 0 && "v" : !T.rail.scrollable && T.railh.scrollable ? T.rail.drag.ck = a > 0 && "h" : T.rail.drag.ck = !1 } if (M.emulatetouch && T.isiframe && P.isie) { var d = T.win.position(); T.rail.drag.x += d.left, T.rail.drag.y += d.top } if (T.hasmoving = !1, T.lastmouseup = !1, T.scrollmom.reset(e.clientX, e.clientY), o && t) { if (!/INPUT|SELECT|BUTTON|TEXTAREA/i.test(o.nodeName)) return P.hasmousecapture && o.setCapture(), M.emulatetouch ? (o.onclick && !o._onclick && (o._onclick = o.onclick, o.onclick = function (e) { if (T.hasmoving) return !1; o._onclick.call(this, e) }), T.cancelEvent(e)) : T.stopPropagation(e); /SUBMIT|CANCEL|BUTTON/i.test(n(o).attr("type")) && (T.preventclick = { tg: o, click: !1 }) } } }, T.ontouchend = function (e) { if (!T.rail.drag) return !0; if (2 == T.rail.drag.pt) { if (e.pointerType && ("mouse" === e.pointerType || e.pointerType === e.MSPOINTER_TYPE_MOUSE)) return !1; T.rail.drag = !1; var o = "mouseup" === e.type; if (T.hasmoving && (T.scrollmom.doMomentum(), T.lastmouseup = !0, T.hideCursor(), P.hasmousecapture && l.releaseCapture(), o)) return T.cancelEvent(e) } else if (1 == T.rail.drag.pt) return T.onmouseup(e) }; var z = M.emulatetouch && T.isiframe && !P.hasmousecapture, k = .3 * M.directionlockdeadzone | 0; T.ontouchmove = function (e, o) { if (!T.rail.drag) return !0; if (e.targetTouches && M.preventmultitouchscrolling && e.targetTouches.length > 1) return !0; if (e.pointerType && ("mouse" === e.pointerType || e.pointerType === e.MSPOINTER_TYPE_MOUSE)) return !0; if (2 == T.rail.drag.pt) { "changedTouches" in e && (e.clientX = e.changedTouches[0].clientX, e.clientY = e.changedTouches[0].clientY); var t, r; if (r = t = 0, z && !o) { var i = T.win.position(); r = -i.left, t = -i.top } var s = e.clientY + t, n = s - T.rail.drag.y, a = e.clientX + r, c = a - T.rail.drag.x, d = T.rail.drag.st - n; if (T.ishwscroll && M.bouncescroll) d < 0 ? d = Math.round(d / 2) : d > T.page.maxh && (d = T.page.maxh + Math.round((d - T.page.maxh) / 2)); else if (d < 0 ? (d = 0, s = 0) : d > T.page.maxh && (d = T.page.maxh, s = 0), 0 === s && !T.hasmoving) return T.ispage || (T.rail.drag = !1), !0; var u = T.getScrollLeft(); if (T.railh && T.railh.scrollable && (u = T.isrtlmode ? c - T.rail.drag.sl : T.rail.drag.sl - c, T.ishwscroll && M.bouncescroll ? u < 0 ? u = Math.round(u / 2) : u > T.page.maxw && (u = T.page.maxw + Math.round((u - T.page.maxw) / 2)) : (u < 0 && (u = 0, a = 0), u > T.page.maxw && (u = T.page.maxw, a = 0))), !T.hasmoving) { if (T.rail.drag.y === e.clientY && T.rail.drag.x === e.clientX) return T.cancelEvent(e); var h = Math.abs(n), p = Math.abs(c), m = M.directionlockdeadzone; if (T.rail.drag.ck ? "v" == T.rail.drag.ck ? p > m && h <= k ? T.rail.drag = !1 : h > m && (T.rail.drag.dl = "v") : "h" == T.rail.drag.ck && (h > m && p <= k ? T.rail.drag = !1 : p > m && (T.rail.drag.dl = "h")) : h > m && p > m ? T.rail.drag.dl = "f" : h > m ? T.rail.drag.dl = p > k ? "f" : "v" : p > m && (T.rail.drag.dl = h > k ? "f" : "h"), !T.rail.drag.dl) return T.cancelEvent(e); T.triggerScrollStart(e.clientX, e.clientY, 0, 0, 0), T.hasmoving = !0 } return T.preventclick && !T.preventclick.click && (T.preventclick.click = T.preventclick.tg.onclick || !1, T.preventclick.tg.onclick = T.onpreventclick), T.rail.drag.dl && ("v" == T.rail.drag.dl ? u = T.rail.drag.sl : "h" == T.rail.drag.dl && (d = T.rail.drag.st)), T.synched("touchmove", function () { T.rail.drag && 2 == T.rail.drag.pt && (T.prepareTransition && T.resetTransition(), T.rail.scrollable && T.setScrollTop(d), T.scrollmom.update(a, s), T.railh && T.railh.scrollable ? (T.setScrollLeft(u), T.showCursor(d, u)) : T.showCursor(d), P.isie10 && l.selection.clear()) }), T.cancelEvent(e) } return 1 == T.rail.drag.pt ? T.onmousemove(e) : void 0 }, T.ontouchstartCursor = function (e, o) { if (!T.rail.drag || 3 == T.rail.drag.pt) { if (T.locked) return T.cancelEvent(e); T.cancelScroll(), T.rail.drag = { x: e.touches[0].clientX, y: e.touches[0].clientY, sx: T.scroll.x, sy: T.scroll.y, pt: 3, hr: !!o }; var t = T.getTarget(e); return !T.ispage && P.hasmousecapture && t.setCapture(), T.isiframe && !P.hasmousecapture && (T.saved.csspointerevents = T.doc.css("pointer-events"), T.css(T.doc, { "pointer-events": "none" })), T.cancelEvent(e) } }, T.ontouchendCursor = function (e) { if (T.rail.drag) { if (P.hasmousecapture && l.releaseCapture(), T.isiframe && !P.hasmousecapture && T.doc.css("pointer-events", T.saved.csspointerevents), 3 != T.rail.drag.pt) return; return T.rail.drag = !1, T.cancelEvent(e) } }, T.ontouchmoveCursor = function (e) { if (T.rail.drag) { if (3 != T.rail.drag.pt) return; if (T.cursorfreezed = !0, T.rail.drag.hr) { T.scroll.x = T.rail.drag.sx + (e.touches[0].clientX - T.rail.drag.x), T.scroll.x < 0 && (T.scroll.x = 0); var o = T.scrollvaluemaxw; T.scroll.x > o && (T.scroll.x = o) } else { T.scroll.y = T.rail.drag.sy + (e.touches[0].clientY - T.rail.drag.y), T.scroll.y < 0 && (T.scroll.y = 0); var t = T.scrollvaluemax; T.scroll.y > t && (T.scroll.y = t) } return T.synched("touchmove", function () { T.rail.drag && 3 == T.rail.drag.pt && (T.showCursor(), T.rail.drag.hr ? T.doScrollLeft(Math.round(T.scroll.x * T.scrollratio.x), M.cursordragspeed) : T.doScrollTop(Math.round(T.scroll.y * T.scrollratio.y), M.cursordragspeed)) }), T.cancelEvent(e) } } } if (T.onmousedown = function (e, o) { if (!T.rail.drag || 1 == T.rail.drag.pt) { if (T.railslocked) return T.cancelEvent(e); T.cancelScroll(), T.rail.drag = { x: e.clientX, y: e.clientY, sx: T.scroll.x, sy: T.scroll.y, pt: 1, hr: o || !1 }; var t = T.getTarget(e); return P.hasmousecapture && t.setCapture(), T.isiframe && !P.hasmousecapture && (T.saved.csspointerevents = T.doc.css("pointer-events"), T.css(T.doc, { "pointer-events": "none" })), T.hasmoving = !1, T.cancelEvent(e) } }, T.onmouseup = function (e) { if (T.rail.drag) return 1 != T.rail.drag.pt || (P.hasmousecapture && l.releaseCapture(), T.isiframe && !P.hasmousecapture && T.doc.css("pointer-events", T.saved.csspointerevents), T.rail.drag = !1, T.cursorfreezed = !1, T.hasmoving && T.triggerScrollEnd(), T.cancelEvent(e)) }, T.onmousemove = function (e) { if (T.rail.drag) { if (1 !== T.rail.drag.pt) return; if (P.ischrome && 0 === e.which) return T.onmouseup(e); if (T.cursorfreezed = !0, T.hasmoving || T.triggerScrollStart(e.clientX, e.clientY, 0, 0, 0), T.hasmoving = !0, T.rail.drag.hr) { T.scroll.x = T.rail.drag.sx + (e.clientX - T.rail.drag.x), T.scroll.x < 0 && (T.scroll.x = 0); var o = T.scrollvaluemaxw; T.scroll.x > o && (T.scroll.x = o) } else { T.scroll.y = T.rail.drag.sy + (e.clientY - T.rail.drag.y), T.scroll.y < 0 && (T.scroll.y = 0); var t = T.scrollvaluemax; T.scroll.y > t && (T.scroll.y = t) } return T.synched("mousemove", function () { T.cursorfreezed && (T.showCursor(), T.rail.drag.hr ? T.scrollLeft(Math.round(T.scroll.x * T.scrollratio.x)) : T.scrollTop(Math.round(T.scroll.y * T.scrollratio.y))) }), T.cancelEvent(e) } T.checkarea = 0 }, P.cantouch || M.emulatetouch) T.onpreventclick = function (e) { if (T.preventclick) return T.preventclick.tg.onclick = T.preventclick.click, T.preventclick = !1, T.cancelEvent(e) }, T.onclick = !P.isios && function (e) { return !T.lastmouseup || (T.lastmouseup = !1, T.cancelEvent(e)) }, M.grabcursorenabled && P.cursorgrabvalue && (T.css(T.ispage ? T.doc : T.win, { cursor: P.cursorgrabvalue }), T.css(T.rail, { cursor: P.cursorgrabvalue })); else { var L = function (e) { if (T.selectiondrag) { if (e) { var o = T.win.outerHeight(), t = e.pageY - T.selectiondrag.top; t > 0 && t < o && (t = 0), t >= o && (t -= o), T.selectiondrag.df = t } if (0 !== T.selectiondrag.df) { var r = -2 * T.selectiondrag.df / 6 | 0; T.doScrollBy(r), T.debounced("doselectionscroll", function () { L() }, 50) } } }; T.hasTextSelected = "getSelection" in l ? function () { return l.getSelection().rangeCount > 0 } : "selection" in l ? function () { return "None" != l.selection.type } : function () { return !1 }, T.onselectionstart = function (e) { T.ispage || (T.selectiondrag = T.win.offset()) }, T.onselectionend = function (e) { T.selectiondrag = !1 }, T.onselectiondrag = function (e) { T.selectiondrag && T.hasTextSelected() && T.debounced("selectionscroll", function () { L(e) }, 250) } } if (P.hasw3ctouch ? (T.css(T.ispage ? n("html") : T.win, { "touch-action": "none" }), T.css(T.rail, { "touch-action": "none" }), T.css(T.cursor, { "touch-action": "none" }), T.bind(T.win, "pointerdown", T.ontouchstart), T.bind(l, "pointerup", T.ontouchend), T.delegate(l, "pointermove", T.ontouchmove)) : P.hasmstouch ? (T.css(T.ispage ? n("html") : T.win, { "-ms-touch-action": "none" }), T.css(T.rail, { "-ms-touch-action": "none" }), T.css(T.cursor, { "-ms-touch-action": "none" }), T.bind(T.win, "MSPointerDown", T.ontouchstart), T.bind(l, "MSPointerUp", T.ontouchend), T.delegate(l, "MSPointerMove", T.ontouchmove), T.bind(T.cursor, "MSGestureHold", function (e) { e.preventDefault() }), T.bind(T.cursor, "contextmenu", function (e) { e.preventDefault() })) : P.cantouch && (T.bind(T.win, "touchstart", T.ontouchstart, !1, !0), T.bind(l, "touchend", T.ontouchend, !1, !0), T.bind(l, "touchcancel", T.ontouchend, !1, !0), T.delegate(l, "touchmove", T.ontouchmove, !1, !0)), M.emulatetouch && (T.bind(T.win, "mousedown", T.ontouchstart, !1, !0), T.bind(l, "mouseup", T.ontouchend, !1, !0), T.bind(l, "mousemove", T.ontouchmove, !1, !0)), (M.cursordragontouch || !P.cantouch && !M.emulatetouch) && (T.rail.css({ cursor: "default" }), T.railh && T.railh.css({ cursor: "default" }), T.jqbind(T.rail, "mouseenter", function () { if (!T.ispage && !T.win.is(":visible")) return !1; T.canshowonmouseevent && T.showCursor(), T.rail.active = !0 }), T.jqbind(T.rail, "mouseleave", function () { T.rail.active = !1, T.rail.drag || T.hideCursor() }), M.sensitiverail && (T.bind(T.rail, "click", function (e) { T.doRailClick(e, !1, !1) }), T.bind(T.rail, "dblclick", function (e) { T.doRailClick(e, !0, !1) }), T.bind(T.cursor, "click", function (e) { T.cancelEvent(e) }), T.bind(T.cursor, "dblclick", function (e) { T.cancelEvent(e) })), T.railh && (T.jqbind(T.railh, "mouseenter", function () { if (!T.ispage && !T.win.is(":visible")) return !1; T.canshowonmouseevent && T.showCursor(), T.rail.active = !0 }), T.jqbind(T.railh, "mouseleave", function () { T.rail.active = !1, T.rail.drag || T.hideCursor() }), M.sensitiverail && (T.bind(T.railh, "click", function (e) { T.doRailClick(e, !1, !0) }), T.bind(T.railh, "dblclick", function (e) { T.doRailClick(e, !0, !0) }), T.bind(T.cursorh, "click", function (e) { T.cancelEvent(e) }), T.bind(T.cursorh, "dblclick", function (e) { T.cancelEvent(e) })))), M.cursordragontouch && (this.istouchcapable || P.cantouch) && (T.bind(T.cursor, "touchstart", T.ontouchstartCursor), T.bind(T.cursor, "touchmove", T.ontouchmoveCursor), T.bind(T.cursor, "touchend", T.ontouchendCursor), T.cursorh && T.bind(T.cursorh, "touchstart", function (e) { T.ontouchstartCursor(e, !0) }), T.cursorh && T.bind(T.cursorh, "touchmove", T.ontouchmoveCursor), T.cursorh && T.bind(T.cursorh, "touchend", T.ontouchendCursor)), M.emulatetouch || P.isandroid || P.isios ? (T.bind(P.hasmousecapture ? T.win : l, "mouseup", T.ontouchend), T.onclick && T.bind(l, "click", T.onclick), M.cursordragontouch ? (T.bind(T.cursor, "mousedown", T.onmousedown), T.bind(T.cursor, "mouseup", T.onmouseup), T.cursorh && T.bind(T.cursorh, "mousedown", function (e) { T.onmousedown(e, !0) }), T.cursorh && T.bind(T.cursorh, "mouseup", T.onmouseup)) : (T.bind(T.rail, "mousedown", function (e) { e.preventDefault() }), T.railh && T.bind(T.railh, "mousedown", function (e) { e.preventDefault() }))) : (T.bind(P.hasmousecapture ? T.win : l, "mouseup", T.onmouseup), T.bind(l, "mousemove", T.onmousemove), T.onclick && T.bind(l, "click", T.onclick), T.bind(T.cursor, "mousedown", T.onmousedown), T.bind(T.cursor, "mouseup", T.onmouseup), T.railh && (T.bind(T.cursorh, "mousedown", function (e) { T.onmousedown(e, !0) }), T.bind(T.cursorh, "mouseup", T.onmouseup)), !T.ispage && M.enablescrollonselection && (T.bind(T.win[0], "mousedown", T.onselectionstart), T.bind(l, "mouseup", T.onselectionend), T.bind(T.cursor, "mouseup", T.onselectionend), T.cursorh && T.bind(T.cursorh, "mouseup", T.onselectionend), T.bind(l, "mousemove", T.onselectiondrag)), T.zoom && (T.jqbind(T.zoom, "mouseenter", function () { T.canshowonmouseevent && T.showCursor(), T.rail.active = !0 }), T.jqbind(T.zoom, "mouseleave", function () { T.rail.active = !1, T.rail.drag || T.hideCursor() }))), M.enablemousewheel && (T.isiframe || T.mousewheel(P.isie && T.ispage ? l : T.win, T.onmousewheel), T.mousewheel(T.rail, T.onmousewheel), T.railh && T.mousewheel(T.railh, T.onmousewheelhr)), T.ispage || P.cantouch || /HTML|^BODY/.test(T.win[0].nodeName) || (T.win.attr("tabindex") || T.win.attr({ tabindex: ++r }), T.bind(T.win, "focus", function (e) { o = T.getTarget(e).id || T.getTarget(e) || !1, T.hasfocus = !0, T.canshowonmouseevent && T.noticeCursor() }), T.bind(T.win, "blur", function (e) { o = !1, T.hasfocus = !1 }), T.bind(T.win, "mouseenter", function (e) { t = T.getTarget(e).id || T.getTarget(e) || !1, T.hasmousefocus = !0, T.canshowonmouseevent && T.noticeCursor() }), T.bind(T.win, "mouseleave", function (e) { t = !1, T.hasmousefocus = !1, T.rail.drag || T.hideCursor() })), T.onkeypress = function (e) { if (T.railslocked && 0 === T.page.maxh) return !0; e = e || a.event; var r = T.getTarget(e); if (r && /INPUT|TEXTAREA|SELECT|OPTION/.test(r.nodeName) && (!(r.getAttribute("type") || r.type || !1) || !/submit|button|cancel/i.tp)) return !0; if (n(r).attr("contenteditable")) return !0; if (T.hasfocus || T.hasmousefocus && !o || T.ispage && !o && !t) { var i = e.keyCode; if (T.railslocked && 27 != i) return T.cancelEvent(e); var s = e.ctrlKey || !1, l = e.shiftKey || !1, c = !1; switch (i) { case 38: case 63233: T.doScrollBy(72), c = !0; break; case 40: case 63235: T.doScrollBy(-72), c = !0; break; case 37: case 63232: T.railh && (s ? T.doScrollLeft(0) : T.doScrollLeftBy(72), c = !0); break; case 39: case 63234: T.railh && (s ? T.doScrollLeft(T.page.maxw) : T.doScrollLeftBy(-72), c = !0); break; case 33: case 63276: T.doScrollBy(T.view.h), c = !0; break; case 34: case 63277: T.doScrollBy(-T.view.h), c = !0; break; case 36: case 63273: T.railh && s ? T.doScrollPos(0, 0) : T.doScrollTo(0), c = !0; break; case 35: case 63275: T.railh && s ? T.doScrollPos(T.page.maxw, T.page.maxh) : T.doScrollTo(T.page.maxh), c = !0; break; case 32: M.spacebarenabled && (l ? T.doScrollBy(T.view.h) : T.doScrollBy(-T.view.h), c = !0); break; case 27: T.zoomactive && (T.doZoom(), c = !0) }if (c) return T.cancelEvent(e) } }, M.enablekeyboard && T.bind(l, P.isopera && !P.isopera12 ? "keypress" : "keydown", T.onkeypress), T.bind(l, "keydown", function (e) { (e.ctrlKey || !1) && (T.wheelprevented = !0) }), T.bind(l, "keyup", function (e) { e.ctrlKey || !1 || (T.wheelprevented = !1) }), T.bind(a, "blur", function (e) { T.wheelprevented = !1 }), T.bind(a, "resize", T.onscreenresize), T.bind(a, "orientationchange", T.onscreenresize), T.bind(a, "load", T.lazyResize), P.ischrome && !T.ispage && !T.haswrapper) { var C = T.win.attr("style"), N = parseFloat(T.win.css("width")) + 1; T.win.css("width", N), T.synched("chromefix", function () { T.win.attr("style", C) }) } if (T.onAttributeChange = function (e) { T.lazyResize(T.isieold ? 250 : 30) }, M.enableobserver && (T.isie11 || !1 === m || (T.observerbody = new m(function (e) { if (e.forEach(function (e) { if ("attributes" == e.type) return E.hasClass("modal-open") && E.hasClass("modal-dialog") && !n.contains(n(".modal-dialog")[0], T.doc[0]) ? T.hide() : T.show() }), T.me.clientWidth != T.page.width || T.me.clientHeight != T.page.height) return T.lazyResize(30) }), T.observerbody.observe(l.body, { childList: !0, subtree: !0, characterData: !1, attributes: !0, attributeFilter: ["class"] })), !T.ispage && !T.haswrapper)) { var R = T.win[0]; !1 !== m ? (T.observer = new m(function (e) { e.forEach(T.onAttributeChange) }), T.observer.observe(R, { childList: !0, characterData: !1, attributes: !0, subtree: !1 }), T.observerremover = new m(function (e) { e.forEach(function (e) { if (e.removedNodes.length > 0) for (var o in e.removedNodes) if (T && e.removedNodes[o] === R) return T.remove() }) }), T.observerremover.observe(R.parentNode, { childList: !0, characterData: !1, attributes: !1, subtree: !1 })) : (T.bind(R, P.isie && !P.isie9 ? "propertychange" : "DOMAttrModified", T.onAttributeChange), P.isie9 && R.attachEvent("onpropertychange", T.onAttributeChange), T.bind(R, "DOMNodeRemoved", function (e) { e.target === R && T.remove() })) } !T.ispage && M.boxzoom && T.bind(a, "resize", T.resizeZoom), T.istextarea && (T.bind(T.win, "keydown", T.lazyResize), T.bind(T.win, "mouseup", T.lazyResize)), T.lazyResize(30) } if ("IFRAME" == this.doc[0].nodeName) { var _ = function () { T.iframexd = !1; var o; try { (o = "contentDocument" in this ? this.contentDocument : this.contentWindow._doc).domain } catch (e) { T.iframexd = !0, o = !1 } if (T.iframexd) return "console" in a && console.log("NiceScroll error: policy restriced iframe"), !0; if (T.forcescreen = !0, T.isiframe && (T.iframe = { doc: n(o), html: T.doc.contents().find("html")[0], body: T.doc.contents().find("body")[0] }, T.getContentSize = function () { return { w: Math.max(T.iframe.html.scrollWidth, T.iframe.body.scrollWidth), h: Math.max(T.iframe.html.scrollHeight, T.iframe.body.scrollHeight) } }, T.docscroll = n(T.iframe.body)), !P.isios && M.iframeautoresize && !T.isiframe) { T.win.scrollTop(0), T.doc.height(""); var t = Math.max(o.getElementsByTagName("html")[0].scrollHeight, o.body.scrollHeight); T.doc.height(t) } T.lazyResize(30), T.css(n(T.iframe.body), e), P.isios && T.haswrapper && T.css(n(o.body), { "-webkit-transform": "translate3d(0,0,0)" }), "contentWindow" in this ? T.bind(this.contentWindow, "scroll", T.onscroll) : T.bind(o, "scroll", T.onscroll), M.enablemousewheel && T.mousewheel(o, T.onmousewheel), M.enablekeyboard && T.bind(o, P.isopera ? "keypress" : "keydown", T.onkeypress), P.cantouch ? (T.bind(o, "touchstart", T.ontouchstart), T.bind(o, "touchmove", T.ontouchmove)) : M.emulatetouch && (T.bind(o, "mousedown", T.ontouchstart), T.bind(o, "mousemove", function (e) { return T.ontouchmove(e, !0) }), M.grabcursorenabled && P.cursorgrabvalue && T.css(n(o.body), { cursor: P.cursorgrabvalue })), T.bind(o, "mouseup", T.ontouchend), T.zoom && (M.dblclickzoom && T.bind(o, "dblclick", T.doZoom), T.ongesturezoom && T.bind(o, "gestureend", T.ongesturezoom)) }; this.doc[0].readyState && "complete" === this.doc[0].readyState && setTimeout(function () { _.call(T.doc[0], !1) }, 500), T.bind(this.doc, "load", _) } }, this.showCursor = function (e, o) { if (T.cursortimeout && (clearTimeout(T.cursortimeout), T.cursortimeout = 0), T.rail) { if (T.autohidedom && (T.autohidedom.stop().css({ opacity: M.cursoropacitymax }), T.cursoractive = !0), T.rail.drag && 1 == T.rail.drag.pt || (void 0 !== e && !1 !== e && (T.scroll.y = e / T.scrollratio.y | 0), void 0 !== o && (T.scroll.x = o / T.scrollratio.x | 0)), T.cursor.css({ height: T.cursorheight, top: T.scroll.y }), T.cursorh) { var t = T.hasreversehr ? T.scrollvaluemaxw - T.scroll.x : T.scroll.x; T.cursorh.css({ width: T.cursorwidth, left: !T.rail.align && T.rail.visibility ? t + T.rail.width : t }), T.cursoractive = !0 } T.zoom && T.zoom.stop().css({ opacity: M.cursoropacitymax }) } }, this.hideCursor = function (e) { T.cursortimeout || T.rail && T.autohidedom && (T.hasmousefocus && "leave" === M.autohidemode || (T.cursortimeout = setTimeout(function () { T.rail.active && T.showonmouseevent || (T.autohidedom.stop().animate({ opacity: M.cursoropacitymin }), T.zoom && T.zoom.stop().animate({ opacity: M.cursoropacitymin }), T.cursoractive = !1), T.cursortimeout = 0 }, e || M.hidecursordelay))) }, this.noticeCursor = function (e, o, t) { T.showCursor(o, t), T.rail.active || T.hideCursor(e) }, this.getContentSize = T.ispage ? function () { return { w: Math.max(l.body.scrollWidth, l.documentElement.scrollWidth), h: Math.max(l.body.scrollHeight, l.documentElement.scrollHeight) } } : T.haswrapper ? function () { return { w: T.doc[0].offsetWidth, h: T.doc[0].offsetHeight } } : function () { return { w: T.docscroll[0].scrollWidth, h: T.docscroll[0].scrollHeight } }, this.onResize = function (e, o) { if (!T || !T.win) return !1; var t = T.page.maxh, r = T.page.maxw, i = T.view.h, s = T.view.w; if (T.view = { w: T.ispage ? T.win.width() : T.win[0].clientWidth, h: T.ispage ? T.win.height() : T.win[0].clientHeight }, T.page = o || T.getContentSize(), T.page.maxh = Math.max(0, T.page.h - T.view.h), T.page.maxw = Math.max(0, T.page.w - T.view.w), T.page.maxh == t && T.page.maxw == r && T.view.w == s && T.view.h == i) { if (T.ispage) return T; var n = T.win.offset(); if (T.lastposition) { var l = T.lastposition; if (l.top == n.top && l.left == n.left) return T } T.lastposition = n } return 0 === T.page.maxh ? (T.hideRail(), T.scrollvaluemax = 0, T.scroll.y = 0, T.scrollratio.y = 0, T.cursorheight = 0, T.setScrollTop(0), T.rail && (T.rail.scrollable = !1)) : (T.page.maxh -= M.railpadding.top + M.railpadding.bottom, T.rail.scrollable = !0), 0 === T.page.maxw ? (T.hideRailHr(), T.scrollvaluemaxw = 0, T.scroll.x = 0, T.scrollratio.x = 0, T.cursorwidth = 0, T.setScrollLeft(0), T.railh && (T.railh.scrollable = !1)) : (T.page.maxw -= M.railpadding.left + M.railpadding.right, T.railh && (T.railh.scrollable = M.horizrailenabled)), T.railslocked = T.locked || 0 === T.page.maxh && 0 === T.page.maxw, T.railslocked ? (T.ispage || T.updateScrollBar(T.view), !1) : (T.hidden || (T.rail.visibility || T.showRail(), T.railh && !T.railh.visibility && T.showRailHr()), T.istextarea && T.win.css("resize") && "none" != T.win.css("resize") && (T.view.h -= 20), T.cursorheight = Math.min(T.view.h, Math.round(T.view.h * (T.view.h / T.page.h))), T.cursorheight = M.cursorfixedheight ? M.cursorfixedheight : Math.max(M.cursorminheight, T.cursorheight), T.cursorwidth = Math.min(T.view.w, Math.round(T.view.w * (T.view.w / T.page.w))), T.cursorwidth = M.cursorfixedheight ? M.cursorfixedheight : Math.max(M.cursorminheight, T.cursorwidth), T.scrollvaluemax = T.view.h - T.cursorheight - (M.railpadding.top + M.railpadding.bottom), T.hasborderbox || (T.scrollvaluemax -= T.cursor[0].offsetHeight - T.cursor[0].clientHeight), T.railh && (T.railh.width = T.page.maxh > 0 ? T.view.w - T.rail.width : T.view.w, T.scrollvaluemaxw = T.railh.width - T.cursorwidth - (M.railpadding.left + M.railpadding.right)), T.ispage || T.updateScrollBar(T.view), T.scrollratio = { x: T.page.maxw / T.scrollvaluemaxw, y: T.page.maxh / T.scrollvaluemax }, T.getScrollTop() > T.page.maxh ? T.doScrollTop(T.page.maxh) : (T.scroll.y = T.getScrollTop() / T.scrollratio.y | 0, T.scroll.x = T.getScrollLeft() / T.scrollratio.x | 0, T.cursoractive && T.noticeCursor()), T.scroll.y && 0 === T.getScrollTop() && T.doScrollTo(T.scroll.y * T.scrollratio.y | 0), T) }, this.resize = T.onResize; var O = 0; this.onscreenresize = function (e) { clearTimeout(O); var o = !T.ispage && !T.haswrapper; o && T.hideRails(), O = setTimeout(function () { T && (o && T.showRails(), T.resize()), O = 0 }, 120) }, this.lazyResize = function (e) { return clearTimeout(O), e = isNaN(e) ? 240 : e, O = setTimeout(function () { T && T.resize(), O = 0 }, e), T }, this.jqbind = function (e, o, t) { T.events.push({ e: e, n: o, f: t, q: !0 }), n(e).on(o, t) }, this.mousewheel = function (e, o, t) { var r = "jquery" in e ? e[0] : e; if ("onwheel" in l.createElement("div")) T._bind(r, "wheel", o, t || !1); else { var i = void 0 !== l.onmousewheel ? "mousewheel" : "DOMMouseScroll"; S(r, i, o, t || !1), "DOMMouseScroll" == i && S(r, "MozMousePixelScroll", o, t || !1) } }; var Y = !1; if (P.haseventlistener) { try { var H = Object.defineProperty({}, "passive", { get: function () { Y = !0 } }); a.addEventListener("test", null, H) } catch (e) { } this.stopPropagation = function (e) { return !!e && ((e = e.original ? e.original : e).stopPropagation(), !1) }, this.cancelEvent = function (e) { return e.cancelable && e.preventDefault(), e.stopImmediatePropagation(), e.preventManipulation && e.preventManipulation(), !1 } } else Event.prototype.preventDefault = function () { this.returnValue = !1 }, Event.prototype.stopPropagation = function () { this.cancelBubble = !0 }, a.constructor.prototype.addEventListener = l.constructor.prototype.addEventListener = Element.prototype.addEventListener = function (e, o, t) { this.attachEvent("on" + e, o) }, a.constructor.prototype.removeEventListener = l.constructor.prototype.removeEventListener = Element.prototype.removeEventListener = function (e, o, t) { this.detachEvent("on" + e, o) }, this.cancelEvent = function (e) { return (e = e || a.event) && (e.cancelBubble = !0, e.cancel = !0, e.returnValue = !1), !1 }, this.stopPropagation = function (e) { return (e = e || a.event) && (e.cancelBubble = !0), !1 }; this.delegate = function (e, o, t, r, i) { var s = d[o] || !1; s || (s = { a: [], l: [], f: function (e) { for (var o = s.l, t = !1, r = o.length - 1; r >= 0; r--)if (!1 === (t = o[r].call(e.target, e))) return !1; return t } }, T.bind(e, o, s.f, r, i), d[o] = s), T.ispage ? (s.a = [T.id].concat(s.a), s.l = [t].concat(s.l)) : (s.a.push(T.id), s.l.push(t)) }, this.undelegate = function (e, o, t, r, i) { var s = d[o] || !1; if (s && s.l) for (var n = 0, l = s.l.length; n < l; n++)s.a[n] === T.id && (s.a.splice(n), s.l.splice(n), 0 === s.a.length && (T._unbind(e, o, s.l.f), d[o] = null)) }, this.bind = function (e, o, t, r, i) { var s = "jquery" in e ? e[0] : e; T._bind(s, o, t, r || !1, i || !1) }, this._bind = function (e, o, t, r, i) { T.events.push({ e: e, n: o, f: t, b: r, q: !1 }), Y && i ? e.addEventListener(o, t, { passive: !1, capture: r }) : e.addEventListener(o, t, r || !1) }, this._unbind = function (e, o, t, r) { d[o] ? T.undelegate(e, o, t, r) : e.removeEventListener(o, t, r) }, this.unbindAll = function () { for (var e = 0; e < T.events.length; e++) { var o = T.events[e]; o.q ? o.e.unbind(o.n, o.f) : T._unbind(o.e, o.n, o.f, o.b) } }, this.showRails = function () { return T.showRail().showRailHr() }, this.showRail = function () { return 0 === T.page.maxh || !T.ispage && "none" == T.win.css("display") || (T.rail.visibility = !0, T.rail.css("display", "block")), T }, this.showRailHr = function () { return T.railh && (0 === T.page.maxw || !T.ispage && "none" == T.win.css("display") || (T.railh.visibility = !0, T.railh.css("display", "block"))), T }, this.hideRails = function () { return T.hideRail().hideRailHr() }, this.hideRail = function () { return T.rail.visibility = !1, T.rail.css("display", "none"), T }, this.hideRailHr = function () { return T.railh && (T.railh.visibility = !1, T.railh.css("display", "none")), T }, this.show = function () { return T.hidden = !1, T.railslocked = !1, T.showRails() }, this.hide = function () { return T.hidden = !0, T.railslocked = !0, T.hideRails() }, this.toggle = function () { return T.hidden ? T.show() : T.hide() }, this.remove = function () { T.stop(), T.cursortimeout && clearTimeout(T.cursortimeout); for (var e in T.delaylist) T.delaylist[e] && h(T.delaylist[e].h); T.doZoomOut(), T.unbindAll(), P.isie9 && T.win[0].detachEvent("onpropertychange", T.onAttributeChange), !1 !== T.observer && T.observer.disconnect(), !1 !== T.observerremover && T.observerremover.disconnect(), !1 !== T.observerbody && T.observerbody.disconnect(), T.events = null, T.cursor && T.cursor.remove(), T.cursorh && T.cursorh.remove(), T.rail && T.rail.remove(), T.railh && T.railh.remove(), T.zoom && T.zoom.remove(); for (var o = 0; o < T.saved.css.length; o++) { var t = T.saved.css[o]; t[0].css(t[1], void 0 === t[2] ? "" : t[2]) } T.saved = !1, T.me.data("__nicescroll", ""); var r = n.nicescroll; r.each(function (e) { if (this && this.id === T.id) { delete r[e]; for (var o = ++e; o < r.length; o++ , e++)r[e] = r[o]; --r.length && delete r[r.length] } }); for (var i in T) T[i] = null, delete T[i]; T = null }, this.scrollstart = function (e) { return this.onscrollstart = e, T }, this.scrollend = function (e) { return this.onscrollend = e, T }, this.scrollcancel = function (e) { return this.onscrollcancel = e, T }, this.zoomin = function (e) { return this.onzoomin = e, T }, this.zoomout = function (e) { return this.onzoomout = e, T }, this.isScrollable = function (e) { var o = e.target ? e.target : e; if ("OPTION" == o.nodeName) return !0; for (; o && 1 == o.nodeType && o !== this.me[0] && !/^BODY|HTML/.test(o.nodeName);) { var t = n(o), r = t.css("overflowY") || t.css("overflowX") || t.css("overflow") || ""; if (/scroll|auto/.test(r)) return o.clientHeight != o.scrollHeight; o = !!o.parentNode && o.parentNode } return !1 }, this.getViewport = function (e) { for (var o = !(!e || !e.parentNode) && e.parentNode; o && 1 == o.nodeType && !/^BODY|HTML/.test(o.nodeName);) { var t = n(o); if (/fixed|absolute/.test(t.css("position"))) return t; var r = t.css("overflowY") || t.css("overflowX") || t.css("overflow") || ""; if (/scroll|auto/.test(r) && o.clientHeight != o.scrollHeight) return t; if (t.getNiceScroll().length > 0) return t; o = !!o.parentNode && o.parentNode } return !1 }, this.triggerScrollStart = function (e, o, t, r, i) { if (T.onscrollstart) { var s = { type: "scrollstart", current: { x: e, y: o }, request: { x: t, y: r }, end: { x: T.newscrollx, y: T.newscrolly }, speed: i }; T.onscrollstart.call(T, s) } }, this.triggerScrollEnd = function () { if (T.onscrollend) { var e = T.getScrollLeft(), o = T.getScrollTop(), t = { type: "scrollend", current: { x: e, y: o }, end: { x: e, y: o } }; T.onscrollend.call(T, t) } }; var B = 0, X = 0, D = 0, A = 1, q = !1; if (this.onmousewheel = function (e) { if (T.wheelprevented || T.locked) return !1; if (T.railslocked) return T.debounced("checkunlock", T.resize, 250), !1; if (T.rail.drag) return T.cancelEvent(e); if ("auto" === M.oneaxismousemode && 0 !== e.deltaX && (M.oneaxismousemode = !1), M.oneaxismousemode && 0 === e.deltaX && !T.rail.scrollable) return !T.railh || !T.railh.scrollable || T.onmousewheelhr(e); var o = f(), t = !1; if (M.preservenativescrolling && T.checkarea + 600 < o && (T.nativescrollingarea = T.isScrollable(e), t = !0), T.checkarea = o, T.nativescrollingarea) return !0; var r = k(e, !1, t); return r && (T.checkarea = 0), r }, this.onmousewheelhr = function (e) { if (!T.wheelprevented) { if (T.railslocked || !T.railh.scrollable) return !0; if (T.rail.drag) return T.cancelEvent(e); var o = f(), t = !1; return M.preservenativescrolling && T.checkarea + 600 < o && (T.nativescrollingarea = T.isScrollable(e), t = !0), T.checkarea = o, !!T.nativescrollingarea || (T.railslocked ? T.cancelEvent(e) : k(e, !0, t)) } }, this.stop = function () { return T.cancelScroll(), T.scrollmon && T.scrollmon.stop(), T.cursorfreezed = !1, T.scroll.y = Math.round(T.getScrollTop() * (1 / T.scrollratio.y)), T.noticeCursor(), T }, this.getTransitionSpeed = function (e) { return 80 + e / 72 * M.scrollspeed | 0 }, M.smoothscroll) if (T.ishwscroll && P.hastransition && M.usetransition && M.smoothscroll) { var j = ""; this.resetTransition = function () { j = "", T.doc.css(P.prefixstyle + "transition-duration", "0ms") }, this.prepareTransition = function (e, o) { var t = o ? e : T.getTransitionSpeed(e), r = t + "ms"; return j !== r && (j = r, T.doc.css(P.prefixstyle + "transition-duration", r)), t }, this.doScrollLeft = function (e, o) { var t = T.scrollrunning ? T.newscrolly : T.getScrollTop(); T.doScrollPos(e, t, o) }, this.doScrollTop = function (e, o) { var t = T.scrollrunning ? T.newscrollx : T.getScrollLeft(); T.doScrollPos(t, e, o) }, this.cursorupdate = { running: !1, start: function () { var e = this; if (!e.running) { e.running = !0; var o = function () { e.running && u(o), T.showCursor(T.getScrollTop(), T.getScrollLeft()), T.notifyScrollEvent(T.win[0]) }; u(o) } }, stop: function () { this.running = !1 } }, this.doScrollPos = function (e, o, t) { var r = T.getScrollTop(), i = T.getScrollLeft(); if (((T.newscrolly - r) * (o - r) < 0 || (T.newscrollx - i) * (e - i) < 0) && T.cancelScroll(), M.bouncescroll ? (o < 0 ? o = o / 2 | 0 : o > T.page.maxh && (o = T.page.maxh + (o - T.page.maxh) / 2 | 0), e < 0 ? e = e / 2 | 0 : e > T.page.maxw && (e = T.page.maxw + (e - T.page.maxw) / 2 | 0)) : (o < 0 ? o = 0 : o > T.page.maxh && (o = T.page.maxh), e < 0 ? e = 0 : e > T.page.maxw && (e = T.page.maxw)), T.scrollrunning && e == T.newscrollx && o == T.newscrolly) return !1; T.newscrolly = o, T.newscrollx = e; var s = T.getScrollTop(), n = T.getScrollLeft(), l = {}; l.x = e - n, l.y = o - s; var a = 0 | Math.sqrt(l.x * l.x + l.y * l.y), c = T.prepareTransition(a); T.scrollrunning || (T.scrollrunning = !0, T.triggerScrollStart(n, s, e, o, c), T.cursorupdate.start()), T.scrollendtrapped = !0, P.transitionend || (T.scrollendtrapped && clearTimeout(T.scrollendtrapped), T.scrollendtrapped = setTimeout(T.onScrollTransitionEnd, c)), T.setScrollTop(T.newscrolly), T.setScrollLeft(T.newscrollx) }, this.cancelScroll = function () { if (!T.scrollendtrapped) return !0; var e = T.getScrollTop(), o = T.getScrollLeft(); return T.scrollrunning = !1, P.transitionend || clearTimeout(P.transitionend), T.scrollendtrapped = !1, T.resetTransition(), T.setScrollTop(e), T.railh && T.setScrollLeft(o), T.timerscroll && T.timerscroll.tm && clearInterval(T.timerscroll.tm), T.timerscroll = !1, T.cursorfreezed = !1, T.cursorupdate.stop(), T.showCursor(e, o), T }, this.onScrollTransitionEnd = function () { if (T.scrollendtrapped) { var e = T.getScrollTop(), o = T.getScrollLeft(); if (e < 0 ? e = 0 : e > T.page.maxh && (e = T.page.maxh), o < 0 ? o = 0 : o > T.page.maxw && (o = T.page.maxw), e != T.newscrolly || o != T.newscrollx) return T.doScrollPos(o, e, M.snapbackspeed); T.scrollrunning && T.triggerScrollEnd(), T.scrollrunning = !1, T.scrollendtrapped = !1, T.resetTransition(), T.timerscroll = !1, T.setScrollTop(e), T.railh && T.setScrollLeft(o), T.cursorupdate.stop(), T.noticeCursor(!1, e, o), T.cursorfreezed = !1 } } } else this.doScrollLeft = function (e, o) { var t = T.scrollrunning ? T.newscrolly : T.getScrollTop(); T.doScrollPos(e, t, o) }, this.doScrollTop = function (e, o) { var t = T.scrollrunning ? T.newscrollx : T.getScrollLeft(); T.doScrollPos(t, e, o) }, this.doScrollPos = function (e, o, t) { var r = T.getScrollTop(), i = T.getScrollLeft(); ((T.newscrolly - r) * (o - r) < 0 || (T.newscrollx - i) * (e - i) < 0) && T.cancelScroll(); var s = !1; if (T.bouncescroll && T.rail.visibility || (o < 0 ? (o = 0, s = !0) : o > T.page.maxh && (o = T.page.maxh, s = !0)), T.bouncescroll && T.railh.visibility || (e < 0 ? (e = 0, s = !0) : e > T.page.maxw && (e = T.page.maxw, s = !0)), T.scrollrunning && T.newscrolly === o && T.newscrollx === e) return !0; T.newscrolly = o, T.newscrollx = e, T.dst = {}, T.dst.x = e - i, T.dst.y = o - r, T.dst.px = i, T.dst.py = r; var n = 0 | Math.sqrt(T.dst.x * T.dst.x + T.dst.y * T.dst.y), l = T.getTransitionSpeed(n); T.bzscroll = {}; var a = s ? 1 : .58; T.bzscroll.x = new R(i, T.newscrollx, l, 0, 0, a, 1), T.bzscroll.y = new R(r, T.newscrolly, l, 0, 0, a, 1); f(); var c = function () { if (T.scrollrunning) { var e = T.bzscroll.y.getPos(); T.setScrollLeft(T.bzscroll.x.getNow()), T.setScrollTop(T.bzscroll.y.getNow()), e <= 1 ? T.timer = u(c) : (T.scrollrunning = !1, T.timer = 0, T.triggerScrollEnd()) } }; T.scrollrunning || (T.triggerScrollStart(i, r, e, o, l), T.scrollrunning = !0, T.timer = u(c)) }, this.cancelScroll = function () { return T.timer && h(T.timer), T.timer = 0, T.bzscroll = !1, T.scrollrunning = !1, T }; else this.doScrollLeft = function (e, o) { var t = T.getScrollTop(); T.doScrollPos(e, t, o) }, this.doScrollTop = function (e, o) { var t = T.getScrollLeft(); T.doScrollPos(t, e, o) }, this.doScrollPos = function (e, o, t) { var r = e > T.page.maxw ? T.page.maxw : e; r < 0 && (r = 0); var i = o > T.page.maxh ? T.page.maxh : o; i < 0 && (i = 0), T.synched("scroll", function () { T.setScrollTop(i), T.setScrollLeft(r) }) }, this.cancelScroll = function () { }; this.doScrollBy = function (e, o) { z(0, e) }, this.doScrollLeftBy = function (e, o) { z(e, 0) }, this.doScrollTo = function (e, o) { var t = o ? Math.round(e * T.scrollratio.y) : e; t < 0 ? t = 0 : t > T.page.maxh && (t = T.page.maxh), T.cursorfreezed = !1, T.doScrollTop(e) }, this.checkContentSize = function () { var e = T.getContentSize(); e.h == T.page.h && e.w == T.page.w || T.resize(!1, e) }, T.onscroll = function (e) { T.rail.drag || T.cursorfreezed || T.synched("scroll", function () { T.scroll.y = Math.round(T.getScrollTop() / T.scrollratio.y), T.railh && (T.scroll.x = Math.round(T.getScrollLeft() / T.scrollratio.x)), T.noticeCursor() }) }, T.bind(T.docscroll, "scroll", T.onscroll), this.doZoomIn = function (e) { if (!T.zoomactive) { T.zoomactive = !0, T.zoomrestore = { style: {} }; var o = ["position", "top", "left", "zIndex", "backgroundColor", "marginTop", "marginBottom", "marginLeft", "marginRight"], t = T.win[0].style; for (var r in o) { var i = o[r]; T.zoomrestore.style[i] = void 0 !== t[i] ? t[i] : "" } T.zoomrestore.style.width = T.win.css("width"), T.zoomrestore.style.height = T.win.css("height"), T.zoomrestore.padding = { w: T.win.outerWidth() - T.win.width(), h: T.win.outerHeight() - T.win.height() }, P.isios4 && (T.zoomrestore.scrollTop = c.scrollTop(), c.scrollTop(0)), T.win.css({ position: P.isios4 ? "absolute" : "fixed", top: 0, left: 0, zIndex: s + 100, margin: 0 }); var n = T.win.css("backgroundColor"); return ("" === n || /transparent|rgba\(0, 0, 0, 0\)|rgba\(0,0,0,0\)/.test(n)) && T.win.css("backgroundColor", "#fff"), T.rail.css({ zIndex: s + 101 }), T.zoom.css({ zIndex: s + 102 }), T.zoom.css("backgroundPosition", "0 -18px"), T.resizeZoom(), T.onzoomin && T.onzoomin.call(T), T.cancelEvent(e) } }, this.doZoomOut = function (e) { if (T.zoomactive) return T.zoomactive = !1, T.win.css("margin", ""), T.win.css(T.zoomrestore.style), P.isios4 && c.scrollTop(T.zoomrestore.scrollTop), T.rail.css({ "z-index": T.zindex }), T.zoom.css({ "z-index": T.zindex }), T.zoomrestore = !1, T.zoom.css("backgroundPosition", "0 0"), T.onResize(), T.onzoomout && T.onzoomout.call(T), T.cancelEvent(e) }, this.doZoom = function (e) { return T.zoomactive ? T.doZoomOut(e) : T.doZoomIn(e) }, this.resizeZoom = function () { if (T.zoomactive) { var e = T.getScrollTop(); T.win.css({ width: c.width() - T.zoomrestore.padding.w + "px", height: c.height() - T.zoomrestore.padding.h + "px" }), T.onResize(), T.setScrollTop(Math.min(T.page.maxh, e)) } }, this.init(), n.nicescroll.push(this) }, y = function (e) { var o = this; this.nc = e, this.lastx = 0, this.lasty = 0, this.speedx = 0, this.speedy = 0, this.lasttime = 0, this.steptime = 0, this.snapx = !1, this.snapy = !1, this.demulx = 0, this.demuly = 0, this.lastscrollx = -1, this.lastscrolly = -1, this.chkx = 0, this.chky = 0, this.timer = 0, this.reset = function (e, t) { o.stop(), o.steptime = 0, o.lasttime = f(), o.speedx = 0, o.speedy = 0, o.lastx = e, o.lasty = t, o.lastscrollx = -1, o.lastscrolly = -1 }, this.update = function (e, t) { var r = f(); o.steptime = r - o.lasttime, o.lasttime = r; var i = t - o.lasty, s = e - o.lastx, n = o.nc.getScrollTop() + i, l = o.nc.getScrollLeft() + s; o.snapx = l < 0 || l > o.nc.page.maxw, o.snapy = n < 0 || n > o.nc.page.maxh, o.speedx = s, o.speedy = i, o.lastx = e, o.lasty = t }, this.stop = function () { o.nc.unsynched("domomentum2d"), o.timer && clearTimeout(o.timer), o.timer = 0, o.lastscrollx = -1, o.lastscrolly = -1 }, this.doSnapy = function (e, t) { var r = !1; t < 0 ? (t = 0, r = !0) : t > o.nc.page.maxh && (t = o.nc.page.maxh, r = !0), e < 0 ? (e = 0, r = !0) : e > o.nc.page.maxw && (e = o.nc.page.maxw, r = !0), r ? o.nc.doScrollPos(e, t, o.nc.opt.snapbackspeed) : o.nc.triggerScrollEnd() }, this.doMomentum = function (e) { var t = f(), r = e ? t + e : o.lasttime, i = o.nc.getScrollLeft(), s = o.nc.getScrollTop(), n = o.nc.page.maxh, l = o.nc.page.maxw; o.speedx = l > 0 ? Math.min(60, o.speedx) : 0, o.speedy = n > 0 ? Math.min(60, o.speedy) : 0; var a = r && t - r <= 60; (s < 0 || s > n || i < 0 || i > l) && (a = !1); var c = !(!o.speedy || !a) && o.speedy, d = !(!o.speedx || !a) && o.speedx; if (c || d) { var u = Math.max(16, o.steptime); if (u > 50) { var h = u / 50; o.speedx *= h, o.speedy *= h, u = 50 } o.demulxy = 0, o.lastscrollx = o.nc.getScrollLeft(), o.chkx = o.lastscrollx, o.lastscrolly = o.nc.getScrollTop(), o.chky = o.lastscrolly; var p = o.lastscrollx, m = o.lastscrolly, g = function () { var e = f() - t > 600 ? .04 : .02; o.speedx && (p = Math.floor(o.lastscrollx - o.speedx * (1 - o.demulxy)), o.lastscrollx = p, (p < 0 || p > l) && (e = .1)), o.speedy && (m = Math.floor(o.lastscrolly - o.speedy * (1 - o.demulxy)), o.lastscrolly = m, (m < 0 || m > n) && (e = .1)), o.demulxy = Math.min(1, o.demulxy + e), o.nc.synched("domomentum2d", function () { if (o.speedx) { o.nc.getScrollLeft(); o.chkx = p, o.nc.setScrollLeft(p) } if (o.speedy) { o.nc.getScrollTop(); o.chky = m, o.nc.setScrollTop(m) } o.timer || (o.nc.hideCursor(), o.doSnapy(p, m)) }), o.demulxy < 1 ? o.timer = setTimeout(g, u) : (o.stop(), o.nc.hideCursor(), o.doSnapy(p, m)) }; g() } else o.doSnapy(o.nc.getScrollLeft(), o.nc.getScrollTop()) } }, x = e.fn.scrollTop; e.cssHooks.pageYOffset = { get: function (e, o, t) { var r = n.data(e, "__nicescroll") || !1; return r && r.ishwscroll ? r.getScrollTop() : x.call(e) }, set: function (e, o) { var t = n.data(e, "__nicescroll") || !1; return t && t.ishwscroll ? t.setScrollTop(parseInt(o)) : x.call(e, o), this } }, e.fn.scrollTop = function (e) { if (void 0 === e) { var o = !!this[0] && (n.data(this[0], "__nicescroll") || !1); return o && o.ishwscroll ? o.getScrollTop() : x.call(this) } return this.each(function () { var o = n.data(this, "__nicescroll") || !1; o && o.ishwscroll ? o.setScrollTop(parseInt(e)) : x.call(n(this), e) }) }; var S = e.fn.scrollLeft; n.cssHooks.pageXOffset = { get: function (e, o, t) { var r = n.data(e, "__nicescroll") || !1; return r && r.ishwscroll ? r.getScrollLeft() : S.call(e) }, set: function (e, o) { var t = n.data(e, "__nicescroll") || !1; return t && t.ishwscroll ? t.setScrollLeft(parseInt(o)) : S.call(e, o), this } }, e.fn.scrollLeft = function (e) { if (void 0 === e) { var o = !!this[0] && (n.data(this[0], "__nicescroll") || !1); return o && o.ishwscroll ? o.getScrollLeft() : S.call(this) } return this.each(function () { var o = n.data(this, "__nicescroll") || !1; o && o.ishwscroll ? o.setScrollLeft(parseInt(e)) : S.call(n(this), e) }) }; var z = function (e) { var o = this; if (this.length = 0, this.name = "nicescrollarray", this.each = function (e) { return n.each(o, e), o }, this.push = function (e) { o[o.length] = e, o.length++ }, this.eq = function (e) { return o[e] }, e) for (var t = 0; t < e.length; t++) { var r = n.data(e[t], "__nicescroll") || !1; r && (this[this.length] = r, this.length++) } return this }; !function (e, o, t) { for (var r = 0, i = o.length; r < i; r++)t(e, o[r]) }(z.prototype, ["show", "hide", "toggle", "onResize", "resize", "remove", "stop", "doScrollPos"], function (e, o) { e[o] = function () { var e = arguments; return this.each(function () { this[o].apply(this, e) }) } }), e.fn.getNiceScroll = function (e) { return void 0 === e ? new z(this) : this[e] && n.data(this[e], "__nicescroll") || !1 }, (e.expr.pseudos || e.expr[":"]).nicescroll = function (e) { return void 0 !== n.data(e, "__nicescroll") }, n.fn.niceScroll = function (e, o) { void 0 !== o || "object" != typeof e || "jquery" in e || (o = e, e = !1); var t = new z; return this.each(function () { var r = n(this), i = n.extend({}, o); if (e) { var s = n(e); i.doc = s.length > 1 ? n(e, r) : s, i.win = r } !("doc" in i) || "win" in i || (i.win = r); var l = r.data("__nicescroll") || !1; l || (i.doc = i.doc || r, l = new b(i, r), r.data("__nicescroll", l)), t.push(l) }), 1 === t.length ? t[0] : t }, a.NiceScroll = { getjQuery: function () { return e } }, n.nicescroll || (n.nicescroll = new z, n.nicescroll.options = g) });
+$(document).ready(function () {
+
+/*--------------------------- UserInactivity  ----------------------------*/
+    var startIdleTime = Date.now();
+    var inactiveTimeByUser = getInactiveTime();
+    var inactiveTimeTimer = null;
+
+    if (inactiveTimeByUser != null && inactiveTimeByUser != 0) {
+        //Zero the idle timer on user activity.
+        $(this).on("mousemove", function (e) {
+            resetInactiveTime();
+        });
+        $(this).on("keypress", function (e) {
+            resetInactiveTime();
+        });
+        $(this).on("click", function (e) {
+            resetInactiveTime();
+        });
+        $(this).on("scroll", function (e) {
+            resetInactiveTime();
+        });
+        $(window).on("activity", function (e) {
+ 			resetInactiveTime();
+        });
+
+        setInactiveTimeTimer();
+    }
+
+    function setInactiveTimeTimer() {
+        inactiveTimeTimer = setInterval(timerIncrement, 1000);
+    };
+
+    function resetInactiveTime() {
+        startIdleTime = Date.now();
+        $(".SessionExp").hide();
+    };
+
+    function timerIncrement() {
+        var currentTime = Date.now();
+        var differenceTime = currentTime - startIdleTime;
+        var minuteExpired = Math.floor((differenceTime) / (1000 * 60));
+
+        if (minuteExpired >= inactiveTimeByUser - 1) {
+            if (minuteExpired == inactiveTimeByUser - 1) {
+                $(".SessionExp").show();
+            }
+            else {
+                $.ajax({
+                    type: "GET",
+                    url: "/InactiveTimeHandler.ashx?Action=LogOut",
+                    contentType: "text/html",
+                    dataType: "html",
+                    async: false,
+                    success: function (data) {
+                        document.location.href = '/SessionTimeout.aspx'
+                    }
+                });
+            }
+        }
+    };
+
+    function getInactiveTime() {
+        var output;
+        $.ajax({
+            type: "GET",
+            url: "/InactiveTimeHandler.ashx?Action=GetTime",
+            contentType: "text/html",
+            dataType: "html",
+            async: false,
+            success: function (data) {
+                output = data;
+            }
+        });
+        return output;
+    };  
+    /* ------------------------------------------------------------------------*/
+
+    /*handling middle and right button click on casino/poker links*/
+    $(document).on("mousedown", ".jurisdiction", function (event) {
+
+        if (document.addEventListener) { 
+            var elements = document.getElementsByClassName('jurisdiction');
+
+            for (i = 0; i < elements.length; i++) {
+                document.getElementsByClassName('jurisdiction')[i].addEventListener('contextmenu', function (e) {
+                    jurisdictionOtherBtnHandlers(e);
+                    event.preventDefault();
+                }, false);
+            }
+        }
+
+        if (event.which == 2) {
+            jurisdictionOtherBtnHandlers(event);
+        }
+
+        function jurisdictionOtherBtnHandlers(event) {
+            event.preventDefault();
+            jurisdictionChangeConfirm(event);
+            return false;
+        }
+    });
+    /*--------------------------------------------------*/
+
+    var goToTop = (function () {
+        if ($(".goToTop").length === 0) {
+            return;
+        } else {
+        if (!($(".bodyLanding").length > 0)) {
+            var couponRect = $("#divCoupon")[0] || $("#divHeader")[0]; //if there is no coupon, check for header
+            var backToTopRect = $(".goToTop")[0];
+
+            //all the footers
+            var footerRect = $("#divFooter")[0];
+            var mainFooterRect = $(".mainFooter")[0];
+
+            var btnBottomOffset = 60;
+            var initialScrollTop = $(document).scrollTop();
+            var currentScrollPoss;
+            var btnScrollAppear = 200;
+
+            function fireToggleButtonVisibilityFunction() {
+                currentScrollPoss = $(document).scrollTop();
+                toggleButtonVisibility();
+            }
+
+            function initBtnPosition(element, btnBottomOffset) {
+
+                currentScrollPoss = $(document).scrollTop();
+
+                if (currentScrollPoss > btnScrollAppear) {
+                    $(element).css('top', $(window).height() - btnBottomOffset);
+                    $(element).css('opacity', '1');
+                }
+            }
+
+            function toggleButtonVisibility() {
+                //always position the button above window bottom border
+                initBtnPosition(backToTopRect, btnBottomOffset);
+
+                //hide button if it overlaps with coupon or if it is above threshold
+                if (checkForOverlap(couponRect, backToTopRect) || (currentScrollPoss < btnScrollAppear)) {
+                    $(backToTopRect).css('opacity', '0');
+                } else {
+                    $(backToTopRect).css('opacity', '1');
+                }
+
+
+                //fixed position if it overlaps the footer
+                if ($(".bodyMainLive").length > 0) { //for live
+
+                    var tblMainLiveRect = $("#tblMainLive")[0];
+
+                    if (!(checkForOverlap(tblMainLiveRect, backToTopRect))) {
+                        $(backToTopRect).css('top', tblMainLiveRect.getBoundingClientRect().bottom - btnBottomOffset);
+                    }
+
+                } else { //for all the rest
+                    var footerTopPos = footerRect.getBoundingClientRect().top;
+
+                    if (checkForOverlap(footerRect, backToTopRect) || checkForOverlap(mainFooterRect, backToTopRect)) {
+                        $(backToTopRect).css('top', footerTopPos - btnBottomOffset);
+                    }
+                }
+            }
+
+        initBtnPosition(backToTopRect, btnBottomOffset);
+
+        $(window).on("scroll", function () { fireToggleButtonVisibilityFunction(); });
+        $(window).on("load", function () { fireToggleButtonVisibilityFunction(); });
+
+        }
+    }
+    })();
+
+});
+
+/* ------------- NewUserWide: Client side validation functions ------------*/
+
+function validateUsername(source, arguments) {
+    $.ajax({
+        type: "POST",
+        url: "../RegistrationFormHandler.ashx",
+        data: { 'Username': arguments.Value, 'ControlId': source.id },
+        async: false,
+        success: function (data) {
+            valid = data
+        }
+    })
+    arguments.IsValid = (valid == "True");
+}
+
+function validatePassword(source, arguments) {
+    $.ajax({
+        type: "POST",
+        url: "../RegistrationFormHandler.ashx",
+        data: { 'Password': arguments.Value, 'ControlId': source.id },
+        async: false,
+        success: function (data) {
+            valid = data
+        }
+    })
+    arguments.IsValid = (valid == "True");
+}
+
+function validateEmail(source, arguments) {
+    $.ajax({
+        type: "POST",
+        url: "../RegistrationFormHandler.ashx",
+        data: { 'Email': arguments.Value, 'ControlId': source.id },
+        async: false,
+        success: function (data) {
+            valid = data
+        }
+    })
+    arguments.IsValid = (valid == "True");
+}
+
+function clearMsgs(msgsElements) {
+    for (var i = 0; i < msgsElements.length; i++){
+        $("[id$=" + msgsElements[i] + "]").hide();
+    }
+}
+/* ------------------------------------------------------------------------*/
+
+function getKeyPress(e) {
+    var code;
+    if (e.keyCode) code = e.keyCode;
+    else if (e.which) code = e.which;
+
+    if (e && code)
+        return code;
+    else
+        return -1;
+}
+
+//Funzione per ottenere coordinate x e y di un elemento
+function ObjectPosition(obj) {
+    var curleft = 0;
+    var curtop = 0;
+
+    if (obj.offsetParent) {
+        do {
+            curleft += obj.offsetLeft;
+            curtop += obj.offsetTop;
+        } while (obj = obj.offsetParent);
+    }
+    return [curleft, curtop];
+}
+
+//Aggiunge una quota al Coupon
+function AddCoupon(linkID, txtID, IDQuota) {
+    //Verifico che il coupon non sia in attesa
+    var objHid = document.getElementById(sHidAttesa);
+    if (objHid.value != 0) return;
+
+    var link = document.getElementById(linkID);
+    var txt = document.getElementById(txtID);
+
+    txt.value = IDQuota;
+
+    link.click();
+}
+
+function AddQuota(txtID, IDQuota) {
+    var objHid = document.getElementById(sHidAttesa);
+    if (objHid.value != 0) return;
+
+    var txt = document.getElementById(txtID);
+
+    txt.value = IDQuota;
+
+    var IDQuotaCombo = $(document.getElementById("li_" + IDQuota));
+    var IDQuotaBasic = "";
+    if (IDQuotaCombo.length == 0) {
+        IDQuotaBasic = $(document.getElementById("td_" + IDQuota));
+    }
+    var IDQuotaDetail = $(document.getElementById("div_" + IDQuota));
+    if (IDQuotaBasic.length > 0) {
+        $('#' + sHidIDSottoEvento).val(IDQuotaBasic.closest('[data-sottoevento-id]').attr('data-sottoevento-id'));
+        $('#' + sHidSottoEventName).val(IDQuotaBasic.closest('[data-sottoevento-name]').attr('data-sottoevento-name'));
+        $('#' + sHidQuota).val(IDQuotaBasic.find('div>a').text());
+        $('#' + sHidCodPubblicazione).val(IDQuotaBasic.closest('[data-sottoevento-id]').find('.codInc').text());
+        $('#' + sHidGiocabilita).val(IDQuotaBasic.closest('[data-giocabilita]').attr('data-giocabilita'));
+        $('#' + sHidTipoQuota).val(IDQuotaBasic.closest('[data-tipoquota]').attr('data-tipoquota'));
+        $('#' + sHidIDTipoEvento).val(IDQuotaBasic.closest('[data-idtipoevento]').attr('data-idtipoevento'));
+        $('#' + sHidIDTipoQuota).val(IDQuotaBasic.closest('[data-idtipoquota]').attr('data-idtipoquota'));
+        $('#' + sHidEventName).val(IDQuotaBasic.closest('[data-event-name]').attr('data-event-name'));
+        $('#' + sHidIDEvento).val(IDQuotaBasic.closest('[data-event-id]').attr('data-event-id'));
+        $('#' + sHidDataSottoEvento).val(IDQuotaBasic.closest('[data-datainizio]').attr('data-datainizio'));
+    }
+    else if (IDQuotaDetail.length > 0) {
+        $('#' + sHidIDSottoEvento).val($(document.getElementById("div_" + IDQuota)).parent().parent().parent().parent().parent().parent().parent().prev().attr('data-sottoevento-id'));
+        $('#' + sHidSottoEventName).val(IDQuotaDetail.parent().parent().parent().parent().parent().parent().parent().prev().find('.nmInc>div>span').text());
+        $('#' + sHidQuota).val(IDQuotaDetail.find('a').text())
+        $('#' + sHidCodPubblicazione).val($(document.getElementById("div_" + IDQuota)).parent().parent().parent().parent().parent().parent().parent().prev().find('.codInc').text());
+        $('#' + sHidGiocabilita).val(IDQuotaDetail.attr('data-giocabilita'));
+        $('#' + sHidTipoQuota).val(IDQuotaDetail.attr('data-tipoquota') + ' ' + IDQuotaDetail.parent().parent().attr('data-hnd'));
+        $('#' + sHidIDTipoEvento).val(IDQuotaDetail.closest('tr.dett').attr('data-idtipoevento'));
+        $('#' + sHidIDTipoQuota).val(IDQuotaDetail.closest('[data-idtipoquota]').attr('data-idtipoquota'));
+        $('#' + sHidEventName).val(IDQuotaDetail.closest('[data-event-name]').attr('data-event-name'));
+        $('#' + sHidIDEvento).val(IDQuotaDetail.closest('[data-event-id]').attr('data-event-id'));
+        $('#' + sHidDataSottoEvento).val(IDQuotaDetail.closest('[data-datainizio]').attr('data-datainizio'));
+    }
+    else if (IDQuotaCombo.length > 0) {
+        $('#' + sHidIDSottoEvento).val(IDQuotaCombo.closest('[data-idsottoeventoddl]').attr('data-idsottoeventoddl'));
+        $('#' + sHidSottoEventName).val(IDQuotaCombo.closest('[data-sottoeventnameddl]').attr('data-sottoeventnameddl'));
+        $('#' + sHidQuota).val(IDQuotaCombo.attr('data-quotaddl'));
+        $('#' + sHidCodPubblicazione).val(IDQuotaCombo.closest('[data-codpubblicazioneddl]').attr('data-codpubblicazioneddl'));
+        $('#' + sHidGiocabilita).val(IDQuotaCombo.attr('data-giocabilitaddl'));
+        $('#' + sHidIDTipoQuota).val(IDQuotaCombo.attr('data-idtipoquotaddl'));
+        var hndVal = IDQuotaCombo.attr('data-hndddl');
+        if (hndVal == 0) {
+            $('#' + sHidTipoQuota).val(IDQuotaCombo.attr('data-tipoquotaddl'));
+        } else {
+            $('#' + sHidTipoQuota).val(IDQuotaCombo.attr('data-tipoquotaddl') + ' (' + IDQuotaCombo.attr('data-hndddl') +')');
+        }
+        $('#' + sHidIDTipoEvento).val(IDQuotaCombo.closest('[data-idtipoeventoddl]').attr('data-idtipoeventoddl'));
+        var eventName = IDQuotaCombo.closest('[data-eventddl]').attr('data-eventddl');
+        $('#' + sHidEventName).val(eventName);
+        var eventId = IDQuotaCombo.closest('[data-ideventoddl]').attr('data-ideventoddl');
+        $('#' + sHidIDEvento).val(eventId);
+        $('#' + sHidDataSottoEvento).val(IDQuotaCombo.closest('[data-datainizioddl]').attr('data-datainizioddl'));
+    }
+
+    if (IDQuotaBasic.length > 0 || IDQuotaDetail.length > 0 || IDQuotaCombo.length > 0)
+        $('#' + sHidAddQuota).trigger("click");
+}
+
+//Aggiunge una quota al Coupon
+function AddAsync(IDQuota) {
+    //Verifico che il coupon non sia in attesa
+    var objHid = $('#' + sHidAttesa);
+    if (objHid.val() != 0) return;
+
+    var link = $('#' + sCPbtn);
+    var txt = $('#' + sCPqt);
+
+    txt.val(IDQuota);
+    link.trigger("click");
+}
+
+
+//Visualizza eventi effettuando una chiamata asincrona nella pagina
+function ShowEvent(txtID, linkID, IDEvento, node) {
+    var link = document.getElementById(linkID);
+    var txt = document.getElementById(txtID);
+
+    //Prima di aggiungere l'IDEvento verifico che non sia già presente
+    if (txt.value != "") {
+        var IDs = new Array();
+        IDs = txt.value.split(",");
+        for (i = 0; i < IDs.length; i++) {
+            if (IDs[i] == IDEvento) {
+                //Se lo trovo rimuovo la selezione
+                IDs.splice(i, 1);
+
+                //Seleziona la check
+                if (node != null) node.UnCheck();
+
+                txt.value = IDs.join(",");
+                link.click();
+                return
+            }
+        }
+
+        var strIDEventoOld = txt.value
+        txt.value = IDEvento + "," + strIDEventoOld;
+    } else {
+        txt.value = IDEvento;
+    }
+
+    link.click();
+
+    //Seleziona la check
+    if (node != null) node.Check();
+}
+
+
+
+//Visualizza eventi selezionati effettuando una chiamata asincrona
+function ShowEvents(txtID, linkID, nodes) {
+    var link = document.getElementById(linkID);
+    var txt = document.getElementById(txtID);
+
+    var nodeValue = '';
+    var events = '';
+
+    //Elenco degli eventi
+    for (var i = 0; i < nodes.length; i++) {
+        nodeValue = nodes[i].value;
+
+        if (nodeValue != null) {
+            events += nodeValue + ',';
+        }
+    }
+
+    if (events.length > 0) {
+        txt.value = events.substring(0, events.length - 1);
+        link.click();
+    }
+}
+
+// Nasconde / visualizza un oggetto
+function ShowHideObject(id) {
+    var obj = document.getElementById(id);
+
+    if (obj.style.display == 'none')
+        obj.style.display = 'inline';
+    else
+        obj.style.display = 'none';
+}
+
+
+// Visualizza / Nasconde il riquadro con l'area di ricerca e visualizza le immagini relative
+function ShowHideSearch(id, imgHideID, imgShowID) {
+    ShowHideObject(id);
+    ShowHideObject(imgHideID);
+    ShowHideObject(imgShowID);
+}
+
+function showPopUpCentered(url, w, h, scrollbars, resizable) {
+    var top = (screen.height / 2) - (h / 2);
+    var left = (screen.width / 2) - (w / 2);
+    if (scrollbars == "") scrollbars = no;
+    if (resizable == "") resizable = no;
+
+    window.open(url, null, "top=" + top + ",left=" + left + ",height=" + h + ",width=" + w + ",status=no,toolbar=no,menubar=no,location=no,scrollbars=" + scrollbars + ",resizable=" + resizable);
+}
+
+function showPopupCenteredDS(url, title, w, h) { /*for dual screens*/
+    var loginPopup;
+
+    // Fixes dual-screen position
+    var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+    var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;
+
+    var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+    var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+    var left = ((width / 2) - (w / 2)) + dualScreenLeft;
+    var top = ((height / 2) - (h / 2)) + dualScreenTop;
+    loginPopup = window.open(url, title, 'scrollbars=yes, toolbar=no, menubar=no, location=no, status=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+
+    // Puts focus on the newWindow
+    if (window.focus) {
+        loginPopup.focus();
+    }
+
+    $('html').on('click', '#aspnetForm', function () {
+        if (loginPopup) {
+            loginPopup.close();
+        }
+    });
+}
+
+
+//Cambia la selezione nelle combo Cashier
+function changeSel(destCbo, sourceCbo) {
+    var oDestCbo = document.getElementById(destCbo);
+    var oSourceCbo = document.getElementById(sourceCbo);
+
+    if (oDestCbo != null) {
+        if (oSourceCbo.selectedIndex == 0) {
+            oDestCbo.selectedIndex = 1;
+        } else {
+            oDestCbo.selectedIndex = 0;
+        }
+    }
+}
+
+    //Visualizza la pop up per la selezione dell'utente
+    function openUserPopUp(Url, idFieldName, autoPostBack, VisualizzaSottoAgenti, NascondiUtentiDisabilitati) {
+        var urlToOpen = Url + '?valField=' + idFieldName;
+
+        if (autoPostBack == 'True')
+            urlToOpen = urlToOpen + '&AutoPostBack=1';
+        if (VisualizzaSottoAgenti == 'True')
+            urlToOpen = urlToOpen + '&VisualizzaSottoAgenti=1';
+        if (NascondiUtentiDisabilitati == 'True')
+            urlToOpen = urlToOpen + '&NascondiUtentiDisabilitati=1';
+
+        var winUser = window.open(urlToOpen, 'userpopup_window', 'width=400,height=350,left=430px,top=450px');
+        winUser.focus();
+    }
+
+    // Visualizza la pop up per la selezione dell'utente
+    function openUserPopUpRete(Url, idFieldName, descFieldName, userFilter) {
+        var urlToOpen = Url + '?valField=' + idFieldName + '&descField=' + descFieldName + '&userFilter=' + userFilter;
+
+        var winUser = window.open(urlToOpen, 'userpopup_window', 'width=600,height=450,left=330px,top=300px');
+        winUser.focus();
+    }
+
+    // Visualizza la pop up per la selezione dell'anagrafica
+    function openAnagraficaPopUp(Url, txtIdAnagrafica_clientId, txtAnagraficaDesc_clientId, hidIdAnagrafica_clientId, hidAnagraficaCognome_clientId, hidAnagraficaNome_clientId, btnSblocca_clientId,  idUtente, codiceCoupon, tipiAntiriciclaggio) {
+        var urlToOpen = Url + '?txtIdAnagrafica=' + txtIdAnagrafica_clientId + '&txtAnagraficaDesc=' + txtAnagraficaDesc_clientId
+            + '&hidAnagraficaID=' + hidIdAnagrafica_clientId
+            + '&hidAnagraficaCognome=' + hidAnagraficaCognome_clientId + '&hidAnagraficaNome=' + hidAnagraficaNome_clientId
+            + '&btnSblocca=' + btnSblocca_clientId
+            + '&idUtente=' + idUtente + '&codiceCoupon=' + codiceCoupon + '&tipiAntiriciclaggio=' + tipiAntiriciclaggio;
+
+        var idAnagrafica = document.getElementById(hidIdAnagrafica_clientId);
+        urlToOpen = urlToOpen + '&idAnagraficaValue=' + idAnagrafica.value;
+
+        showPopUpCentered(urlToOpen, 1050, 687, "yes", "yes");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    function CouponPageResize() {
+
+        //se il coupone e' piu' lungo della pagina, alzo la pagina
+        var tblMain = document.getElementById("tblMainContent");
+        var objCpn = document.getElementById("divCoupon");
+        var sliderContainer = document.getElementById("FastGamesSliderWrapper");
+        var tblMainOldHeight;
+
+        if (tblMain == null || objCpn == null || sliderContainer == null) return;
+
+        var objCpnClHgh = objCpn.clientHeight;
+        tblMainOldHeight = tblMain.clientHeight;
+
+        //if FastGames widget is expanded, set height of divCoupon according to FG widget's collapsed height
+        if ($(sliderContainer).hasClass("expanded")) {
+            objCpnClHgh = (objCpnClHgh - (sliderContainer.clientHeight - 185));
+        };
+
+        if ((objCpnClHgh - heightFooter) > tblMain.clientHeight) {
+            tblMain.style.height = (objCpnClHgh - heightFooter) + "px";
+        } /*else if (tblMain.clientHeight > objCpn.clientHeight) {
+            tblMain.style.height = ""
+        }*/ else {
+            tblMain.style.height = objCpnClHgh + "px";
+        }
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    //Funzione usata in un timer per controllare la posizione del coupon e della treeview
+    function checkLocation() {
+
+        if (typeof (couponPositionCSSFixed) == 'undefined') { CouponPageResize(); }
+
+        if (divCouponTopPosition == null) return
+        if (divCouponTopPosition <= 0) return
+
+        if (typeof (couponPositionCSSFixed) == 'undefined') {
+            setTop("divCoupon", divCouponTopPosition);
+        } else {
+            setTopCSSFixed("divCoupon", divCouponTopPosition);
+        }
+
+    }
+
+    //adjust coupon position on window scroll or window resize
+
+    $(window).on('scroll resize', function () {
+        if (typeof (sLnkBlocca) != 'undefined') {
+            var lnkID = '#' + sLnkBlocca;
+            if ($(lnkID).hasClass('lnkSblocca')) {
+                checkLocation();
+            }
+        }
+    });
+    $('body').on('resize', '#divCoupon', function () {
+        if (typeof (sLnkBlocca) != 'undefined') {
+            var lnkID = '#' + sLnkBlocca;
+            if ($(lnkID).hasClass('lnkSblocca')) {
+                checkLocation();
+            }
+        }
+    });
+
+    function setTopCSSFixed(documentId, minOffset) {
+
+        var obj = document.getElementById(documentId);
+        if (obj == null) return;
+
+        var bodyHeight = 0;
+
+        if (typeof (window.innerWidth) == 'number') {
+            //Non-IE
+            bodyHeight = window.innerHeight;
+        } else if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
+            //IE 6+ in 'standards compliant mode'
+            bodyHeight = document.documentElement.clientHeight;
+        } else if (document.body && (document.body.clientWidth || document.body.clientHeight)) {
+            //IE 4 compatible
+            bodyHeight = document.body.clientHeight;
+        }
+
+        var scrollTopVal = 0
+        if (pageYOffset) {
+            scrollTopVal = pageYOffset
+        } else {
+            var doc = document.documentElement ? document.documentElement : document.body;
+            scrollTopVal = doc.scrollTop
+        }
+
+
+        if (scrollTopVal == 0) {
+            if ($('#' + documentId).height() >= bodyHeight - divCouponTopPosition) {
+                $('#' + documentId).css('top', bodyHeight - $('#' + documentId).height());
+            } else {
+                $('#' + documentId).css('top', divCouponTopPosition);
+            }
+        } else {
+            if (scrollTopVal < divCouponTopPosition) {
+
+                if ($('#' + documentId).height() >= bodyHeight - mindivCouponTopPosition) {
+                    $('#' + documentId).css('top', bodyHeight - $('#' + documentId).height());
+                } else {
+
+                    if (mindivCouponTopPosition + (scrollTopVal - divCouponTopPosition) <= 0) {
+                        $('#' + documentId).css('top', divCouponTopPosition - scrollTopVal);
+                    } else { $('#' + documentId).css('top', mindivCouponTopPosition); }
+
+                }
+            } else {
+
+                if ($('#' + documentId).height() >= bodyHeight - mindivCouponTopPosition) {
+                    $('#' + documentId).css('top', bodyHeight - $('#' + documentId).height());
+                } else {
+                    $('#' + documentId).css('top', mindivCouponTopPosition);
+                }
+            }
+        }
+
+    }
+
+    function setTop(documentId, minOffset) {
+        var obj = document.getElementById(documentId);
+        if (obj == null) return;
+
+        var divMainHeight = $("#tblMainContent").height();
+        var y = minOffset;
+        var offsetY = 0;
+        var posY = 0;
+        var couponTotal = 0
+        var CpnTop = 0
+
+        var bodyHeight = 0;
+        if (typeof (window.innerWidth) == 'number') {
+            //Non-IE
+            bodyHeight = window.innerHeight;
+        } else if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
+            //IE 6+ in 'standards compliant mode'
+            bodyHeight = document.documentElement.clientHeight;
+        } else if (document.body && (document.body.clientWidth || document.body.clientHeight)) {
+            //IE 4 compatible
+            bodyHeight = document.body.clientHeight;
+        }
+
+        if (navigator.appName == "Netscape") {
+            if ((window.pageYOffset > minOffset) && (bodyHeight > obj.clientHeight)) {
+                obj.style.top = (window.pageYOffset) + "px";
+                CpnTop = window.pageYOffset
+            } else {
+                if ((window.pageYOffset < minOffset) || ((window.pageYOffset - (obj.clientHeight - bodyHeight)) < minOffset)) {
+                    obj.style.top = minOffset + "px";
+                    CpnTop = minOffset
+                } else {
+                    obj.style.top = window.pageYOffset - (obj.clientHeight - bodyHeight) + "px";
+                    CpnTop = window.pageYOffset - (obj.clientHeight - bodyHeight)
+                }
+            }
+        }
+        else {
+            var doc = document.documentElement ? document.documentElement : document.body;
+
+
+            if ((doc.scrollTop > minOffset) && (bodyHeight > (obj.clientHeight))) {
+                //coupon da spostare più basso della pagina
+                obj.style.pixelTop = doc.scrollTop;
+                CpnTop = doc.scrollTop;
+
+            } else {
+                if ((doc.scrollTop < minOffset) || ((doc.scrollTop - (obj.clientHeight - bodyHeight)) < minOffset)) {
+                    //coupon in alto
+                    obj.style.pixelTop = minOffset;
+                    CpnTop = minOffset;
+                } else {
+
+                    //coupon da spostare più alto della pagina
+                    obj.style.pixelTop = doc.scrollTop - (obj.clientHeight - bodyHeight);
+                    CpnTop = doc.scrollTop - (obj.clientHeight - bodyHeight);
+                }
+            }
+        }
+
+        if (CpnTop >= minOffset) {
+            obj.style.top = CpnTop + "px";
+        }
+
+        if ((obj.clientHeight + CpnTop - minOffset) >= divMainHeight) {
+            obj.style.top = (divMainHeight + minOffset - obj.clientHeight) + "px";
+        } 
+
+
+        /*if ((obj.clientHeight + CpnTop) >= divMainHeight) {
+            $('#divCoupon').css('padding-bottom', heightFooter + 'px');
+        } else { $('#divCoupon').css('padding-bottom', '0px'); }*/
+
+
+
+        
+        /*if ((obj.clientHeight + CpnTop) >= divMainHeight && obj.offsetTop - heightFooter > divCouponTopPosition) {
+            obj.style.top = (obj.offsetTop - heightFooter) + "px"; 
+        }*/
+
+
+
+    
+    }
+
+    function getScrollTop() {
+        if (typeof pageYOffset != 'undefined') {
+            //most browsers        
+            return pageYOffset;
+        } else {
+            var B = document.body;
+            //IE 'quirks'        
+            var D = document.documentElement;
+            //IE with doctype
+            D = (D.clientHeight) ? D : B; return D.scrollTop;
+        }
+    }
+
+    //centering modal PopUp
+    function centerPopup(IDPopup, IDBackground) {
+        //request data for centering
+        var windowWidth = document.documentElement.clientWidth;
+        var windowHeight = document.documentElement.clientHeight;
+        var popupHeight = $("#" + IDPopup).height();
+        var popupWidth = $("#" + IDPopup).width();
+
+        var scrollHeight = getScrollTop();
+
+        //centering
+        $("#" + IDPopup).css({
+            "position": "fixed",
+            "top": windowHeight / 2 - popupHeight / 2,
+            "left": windowWidth / 2 - popupWidth / 2
+        });
+
+        //only need force for IE6
+        $("#" + IDBackground).css({
+            "height": windowHeight
+        });
+    }
+
+    function loadPopup(IDPopup, IDBackground) {
+        //loads popup only if it is disabled
+        $("#" + IDBackground).css({
+            "opacity": "0.7"
+        });
+        $("#" + IDBackground).fadeIn("slow");
+        $("#" + IDPopup).fadeIn("slow");
+    }
+
+    function disablePopup(IDPopup, IDBackground) {
+        //disables popup only if it is enabled
+        $("#" + IDBackground).fadeOut("slow");
+        $("#" + IDPopup).fadeOut("slow");
+    }
+
+    function initializePopup(closebtn, IDPopup, IDBackground) {
+        //CLOSING POPUP
+        //Click the x event!
+        $("#" + closebtn).on("click", function () {
+            disablePopup(IDPopup, IDBackground);
+        });
+        //Click out event!
+        $("#" + IDBackground).on("click", function () {
+            disablePopup(IDPopup, IDBackground);
+        });
+        //Press Escape event!
+        $(document).on("keypress", function (e) {
+            if (e.keyCode == 27) {
+                disablePopup(IDPopup, IDBackground);
+            }
+        });
+
+    }
+
+    function initializeModalPopup(closebtn, IDPopup, IDBackground) {
+        //CLOSING POPUP
+        //Click the x event!
+        $("#" + closebtn).on("click", function () {
+            disablePopup(IDPopup, IDBackground);
+        });
+        //Click out event!
+        //$("#" + IDBackground).on("click", function () {
+        //    disablePopup(IDPopup, IDBackground);
+        //});
+        //Press Escape event!
+        //$(document).on("keypress", function (e) {
+        //    if (e.keyCode == 27) {
+        //        disablePopup(IDPopup, IDBackground);
+        //    }
+        //});
+
+    }
+
+
+    //Funzioni per assegnare lo stile al bottone (on MouseOver  e on MouseOut)
+    function RollIn(button, classname) {
+        button.className = classname;
+    }
+
+    function RollOut(button, classname) {
+        button.className = classname;
+    }
+
+
+    function getWindowHeight() {
+        var bodyHeight = 0;
+        if (typeof (window.innerWidth) == 'number') {
+            //Non-IE
+            bodyHeight = window.innerHeight;
+        } else if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
+            //IE 6+ in 'standards compliant mode'
+            bodyHeight = document.documentElement.clientHeight;
+        } else if (document.body && (document.body.clientWidth || document.body.clientHeight)) {
+            //IE 4 compatible
+            bodyHeight = document.body.clientHeight;
+        }
+        return bodyHeight
+    }
+
+    /* Funzioni usate per verificare la lunghezza delle textbox multiline */
+    function checkTextAreaMaxLength(textBox, e, mLen) {
+        var maxLength = parseInt(mLen);
+        if (!checkSpecialKeys(e)) {
+            if (textBox.value.length > maxLength - 1) {
+                if (window.event)//IE
+                    e.returnValue = false;
+                else//Firefox
+                    e.preventDefault();
+            }
+        }
+    }
+    function checkSpecialKeys(e) {
+        if (e.keyCode != 8 && e.keyCode != 46 && e.keyCode != 37 && e.keyCode != 38 && e.keyCode != 39 && e.keyCode != 40)
+            return false;
+        else
+            return true;
+    }
+
+		/**
+		* Toast notifications.
+		* Max 5 messages can be shown simultaneously. If a new 6th message is going to appear, the fist one is removed from the top.
+		* Styles can be found in visual-uplift-toast-notification.(s)css files.
+		*
+		* Methods have the last "options" optional parameter that is used to configure the toast,
+		* add additional functionality and/or change its appearance:
+		* <code>
+		*    {
+		*        clickHandler: function() {...} // If a click handler is set, the toast is made clickable.
+		*    }
+		* </code>
+		*
+		* These toasts have lower priority than notifications displayed by showCouponMessage from schedinaUP.js,
+		* thus the toasts are removed when CouponMessage is shown.
+		*/
+		var toastNotification = (function () {
+			'use strict';
+			const NotificationContainerHtml =
+				'<div id="toastNotificationContainer" class="toast-notification-container"></div>';
+			const ToastIdPrefix = "toastNotification_";
+			const ClickEvent = 'click';
+
+			const DisplayedToastsNumberLimit = 5;
+			const MaxToastIdValue = 10; // must be greater than DisplayedToastsNumberLimit to maintain the uniqueness of IDs among the displayed toasts.
+
+			const ToastNotificationTemplate =
+				'<div id="{id}" class="toast-notification">\
+								<div class="toast-notification-image">\
+										<div class="toast-notification__image"></div>\
+								</div>\
+								<div class="toast-notification__message"></div>\
+								<div class="toast-notification-right-symbol">\
+										<div class="toast-notification__right-symbol"></div>\
+                                </div>\
+                                <div class="toast-closeButton"></div>\
+						 </div>';
+
+			document.body.insertAdjacentHTML('afterbegin', NotificationContainerHtml);
+			const notificationContainer = $("#toastNotificationContainer").first();
+
+			// Subscription on the event triggered by the showCouponMessage function from schedinaUP.js.
+			// showCouponMessage displays toast messages with the highest priority and because of that
+			// we have to hide our toasts to provide enough space for important notifications.
+			// By some reason the old toasts have not been considered for migration yet.
+            $(document).on("sks.toast.urgent", removeAllToasts);
+
+			// Dictionary of displayed toast properties: { toastId: {timerId, removeFunction}} .
+			const toasts = {};
+			let idCounter = 0;
+
+			function getToastsCount() {
+				return notificationContainer.children().length;
+			}
+
+			function getNextIdNumber() {
+				if (getToastsCount() === 0 || idCounter === MaxToastIdValue) {
+					idCounter = 1;
+					return idCounter;
+				}
+				return ++idCounter;
+			}
+
+			function createToastElement(message, modifiers) {
+				const id = ToastIdPrefix + getNextIdNumber().toString();
+				const toastHtml = ToastNotificationTemplate.replace('{id}', id);
+				const toastElement = $(toastHtml);
+
+				toastElement
+					.find('.toast-notification__message')
+					.first()
+                    .text(message);
+
+				for (var i = 0; i < modifiers.length; i++) {
+					toastElement.addClass(modifiers[i]);
+				}
+
+				notificationContainer.append(toastElement);
+				return toastElement;
+			}
+
+			function addClickHandler(toastElement, clickHandler) {
+				toastElement.on(
+					ClickEvent,
+					'*',
+					function (e) {
+						e.stopPropagation();
+						clickHandler();
+                    });
+			}
+
+			function removeAllToasts() {
+				while (getToastsCount() > 0) {
+					removeFirstToast();
+				}
+			}
+
+			function removeFirstToast() {
+				const firstToastId = notificationContainer
+					.children()
+					.first()
+					.attr('id');
+
+				const firstToast = toasts[firstToastId];
+				if (firstToast) {
+					clearTimeout(firstToast.timerId);
+					firstToast.remove();
+				}
+			}
+
+			function showInfiniteToast(message, modifiers, options) {
+				const toastElement = createToastElement(message, modifiers);
+
+				const isClickable = options && options.clickHandler;
+				if (isClickable) {
+					toastElement.addClass('toast-notification--clickable');
+					addClickHandler(toastElement, options.clickHandler);
+				}
+
+				if (getToastsCount() > DisplayedToastsNumberLimit) {
+					removeFirstToast();
+				}
+
+				toastElement.slideDown();
+			}
+
+			function showToast(message, timeout, modifiers, options) {
+                const toastElement = createToastElement(message, modifiers);
+                
+                $(toastElement.find('.toast-closeButton')[0]).on('click', function() {
+                    removeFirstToast();
+                })
+
+				const isClickable = options && options.clickHandler;
+				if (isClickable) {
+					toastElement.addClass('toast-notification--clickable');
+					addClickHandler(toastElement, options.clickHandler);
+				}
+
+				if (getToastsCount() > DisplayedToastsNumberLimit) {
+					removeFirstToast();
+				}
+
+				const elementId = toastElement.attr('id');
+
+				const removeToast = function () {
+					if (isClickable) {
+						toastElement.off(ClickEvent);
+					}
+
+					delete toasts[elementId];
+					toastElement.remove();
+				};
+
+				toastElement.slideDown();
+				const timerId = setTimeout(removeToast, timeout);
+
+				toasts[elementId] = {
+					timerId: timerId,
+					remove: removeToast
+				};
+			}
+
+			/**
+			 * Shows information toast notification.
+			 * @param {string} message - The message, plain text.
+			 * @param {number} timeout - The timeout, in ms.
+			 * @param {object} options - Additional options, optional parameter.
+			 * @param {boolean} isInfinite - is notification infinite.
+			 */
+			function info(message, timeout, options, isInfinite) {
+				if (isInfinite) {
+					showInfiniteToast(message, ['toast-notification--information'], options);
+				}
+				else {
+					showToast(message, timeout, ['toast-notification--information'], options);
+				}
+			}
+
+			/**
+			* Shows success toast notification.
+			* @param {string} message - The message, plain text.
+			* @param {number} timeout - The timeout, in ms.
+			* @param {object} options - Additional options, optional parameter.
+			*/
+			function success(message, timeout, options) {
+				showToast(message, timeout, ['toast-notification--success'], options);
+			}
+
+			return {
+				info: info,
+				success: success
+			}
+		})();
+
+    //Funzione per il "fading" dei banner
+    function FadeBanner(classDiv) {
+        //se ho un solo bannere non animo
+        if ($('.' + classDiv + ' A').length == 1) return
+
+
+        var $active = $('.' + classDiv + ' A.active');
+        if ($active.length == 0) $active = $('.' + classDiv + ' A:last');
+
+        var $next = $active.next().length ? $active.next() : $('.' + classDiv + ' A:first');
+        $active.addClass('last-active');
+        $next.css({ opacity: 0.0 })
+                .addClass('active')
+                .animate({ opacity: 1.0 }, 1000, function () {
+                    $active.removeClass('active last-active');
+                });
+    }
+
+    function HideErrorCF() {
+        $("body").on("click", function () {
+            $(".ErrCodiceFiscale").hide();
+        });
+    }
+
+    function miniSitePopup(url) {
+        new_win = window.open(url, "new_win", "status=0, menubar=0,toolbar=0, scrollbars=1, resizable=0, height=700,width=820");
+    }
+
+    function miniSiteBigPopup(url) {
+        new_win = window.open(url, "new_win", "status=0, menubar=0,toolbar=0, scrollbars=1, resizable=0, height=700,width=1270");
+    }
+    
+    function miniSiteNewTab(url) {
+        new_win = window.open(url, '_blank');
+    }
+
+    function expandCollapse(divClicked, divToExpand) {
+        $(divToExpand).slideToggle(500, function () {
+            $(divClicked).toggleClass('Sel');
+        });
+    }
+
+    /*stampa anagrafica*/
+    function stampaAnagrafica(urlToOpen, IDAnagrafica, IDTipoAntiriciclaggio, IDCoupon) {
+        if (IDAnagrafica != "") {
+            var winUser = window.open(urlToOpen + '?IDAnagrafica=' + IDAnagrafica + '&IDTipoAntiriciclaggio=' + IDTipoAntiriciclaggio + '&IDCoupon=' + IDCoupon, 'userPrint_window', 'scrollbars=1, menubar=1,width=800,height=450,left=330px,top=300px');
+            winUser.focus();
+        }
+    }
+
+    function getNumberFromString(myNumber) {
+        return parseFloat(myNumber.replace(sepDec, "."));
+    }
+
+    /* belgium */
+    // check the domain extension and set for .rs domain sr-LAT and for .at DE
+    var extension = location.hostname.split(".");
+    extension = extension[extension.length - 1];
+    $(document).ready(function () {
+        if (extension == 'be') {
+            $(".ContentStatistiche").addClass("BelgiumHideContent");
+            $(".statsDivReg").addClass("BelgiumHideBtn");
+        }
+    });
+
+    //palace777 no-betting message for Italy 
+    function noBettingAlert() {
+        if ($('body').hasClass('it-IT')){
+            alert('Palace777 non accetta le scommesse dal territorio italiano.');
+        }
+    };
+
+    function cropAndCenterImages(imageWrappersSelector) {
+        var $imageWrappers = $(imageWrappersSelector);
+
+        $imageWrappers.each(function () {
+            var $imgWrapper = $(this);
+            var imgWrapperWidth = $imgWrapper.width();
+            var imgWrapperHeight = $imgWrapper.height();
+
+            var $image = $imgWrapper.find("img");
+            $image.removeAttr("width");
+            $image.removeAttr("height");
+            var imageHeight = $image.height();
+            var imageWidth = $image.width();
+
+            if (imageHeight > imageWidth) {
+                var ratio = imgWrapperWidth / imageWidth;
+                imageWidth = imgWrapperWidth;
+                imageHeight = imageHeight * ratio;
+
+                var topOffset = (imgWrapperHeight - imageHeight) / 2;
+                $image.css("top", topOffset + "px");
+            }
+            else {
+                var ratio = imgWrapperHeight / imageHeight;
+                imageHeight = imgWrapperHeight;
+                imageWidth = imageWidth * ratio;
+
+                var leftOffset = (imgWrapperWidth - imageWidth) / 2;
+                $image.css("left", leftOffset + "px");
+            }
+
+            $image.width(imageWidth);
+            $image.height(imageHeight);
+
+            //var imgWrapperHeight = imageHeight;
+            //if (imageHeight > maxImageHeight) {
+            //    imgWrapperHeight = maxImageHeight;
+            //    var topOffset = (imgWrapperHeight - imageHeight) / 2;
+
+            //    $image.css("top", topOffset + "px");
+            //}
+
+            //$imgWrapper.height(imgWrapperHeight);
+        });
+    }
+
+    function multiLineEllipsis(elementsSelector) {
+        var $elements = $(elementsSelector);
+        $elements.dotdotdot({
+            ellipsis: '... ',
+            wrap: 'letter',
+            lastCharacter: {
+                remove: [' ', ',', ';', '.', ':', '!', '?', '-', '–'],
+                noEllipsis: []
+            }
+        });
+    }
+
+    function getChatButton(languageCode, chatUrl) {
+        var languageParams;
+        var link;
+        var chatButton;
+        var chatButtonImage;
+        var chatServerAddress;
+        var features = 'width=540,height=760,left=0,top=0,resizable=yes,menubar=no,location=no,status=yes,scrollbars=yes';
+
+        if (typeof chatUrl !== "undefined") {
+            chatServerAddress = chatUrl || "https://chat.planetwin365.com/chat.php";
+        } else {
+            chatServerAddress = "https://chat.planetwin365.com/chat.php";
+        }
+
+        switch (languageCode) {
+            case "it-IT":
+                languageParams = 'intgroup=Q1NJVA__&hg=Pw__&el=aXQ_&hcgs=MQ__&htgs=MQ__&ckf=YjMzZjhmMDZhZmY2NGNiODUzODkyYWI4ZWYzNWMwMWM_';
+                break;            
+            case "en-GB":
+                languageParams = 'intgroup=Q1NFTkc_&hg=Pw__&el=ZW4tZ2I_&hcgs=MQ__&htgs=MQ__&grot=MQ__&ckf=ZDA5OWY3ZTI0NGNjN2M3NmViMjVjNzI4YTE5NzRmOTg_';
+                break;
+            case "sr-Latn-CS":
+                languageParams = 'intgroup=Q1NTUg__&hg=Pw__&el=c3I_&grot=MQ__&ckf=U1IgS0I_';
+                break;
+            case "es-ES":
+                languageParams = 'intgroup=Q1NFUw__&hg=Pw__&el=ZXM_';
+                break;
+            case "bg-BG":
+                languageParams = 'intgroup=Q1NCRw__&hg=Pw__&el=Ymc_&ckf=YTcyNGFjOTc5Nzk4NDZjZDJkNzQ1YTIxZjdlYzQ0ZDQ_';
+                break;
+            case "es-PE":
+                languageParams = 'intgroup=Q1NFUw__&hg=Pw__&el=ZXM_';
+                break;
+            case "es-EC":
+                languageParams = 'intgroup=Q1NFUw__&hg=Pw__&el=ZXM_';
+                break;
+            case "fr-FR":
+                languageParams = 'intgroup=Q1NGUg__&hg=Pw__&el=ZnI_&grot=MQ__&ckf=RnJlbmNoIEtC';
+                break;            
+            case "de-DE":
+                languageParams = 'intgroup=Q1NERQ__&hg=Pw__&el=ZGU_&ckf=YWMwMzJhYmUwOTJhNTVhZmJkMWMzOGFiMDRhZDc5MTA_';
+                break;
+        }
+        link = "javascript:void(window.open('" + chatServerAddress + "?" + languageParams + "','','" + features + "'))";
+
+        chatButton = document.createElement('a');
+        chatButtonImage = document.createElement('img');
+        chatButtonImage.className = "ChatButton";
+        chatButton.href = link;
+        chatButton.appendChild(chatButtonImage);
+
+        return chatButton.outerHTML;
+    }
+
+var retainScrollPos = (function () { /*retains scroll position on page load*/
+
+        function init(sScrollerPosition) {
+            $(window).on('scroll', function () {
+                $topOffset = $(this).scrollTop();
+                $('#' + sScrollerPosition).val($topOffset);
+            });
+            scrollToPosititon(sScrollerPosition);
+        }
+
+        function scrollToPosititon(sScrollerPosition) {
+            var scrollPosition = parseInt($('#' + sScrollerPosition).val());
+            if (!isNaN(scrollPosition)) {
+                $(window).scrollTop(scrollPosition);
+            }
+        }
+
+        return {
+            init: init
+        };
+
+})();
+
+
+var removeClassThatContains = function (element, classString) {
+    var elem = $(element);
+    var className = classString;
+
+    elem.each(function () {
+        var arrClasses = $(this).attr('class').split(' ');
+
+        for (var i = 0; i < arrClasses.length; i++) {
+            if (arrClasses[i].indexOf(className) != -1) {
+                $(this).removeClass(arrClasses[i]);
+            }
+        }
+    });
+}
+
+function loadCookieConsent(consentConfig) {
+    var scriptExists = document.getElementById('cookieConsentScript');
+    var consentConfig = JSON.stringify(consentConfig);
+    var onloadScript = "showCookieConsent(" + consentConfig + ");";
+
+    if (scriptExists) {
+        return
+    }
+
+    var script = document.createElement("script");
+    script.setAttribute("src", "/Scripts/jquery-eu-cookie-law-popup.js");
+    script.setAttribute("type", "text/javascript");
+    script.setAttribute("id", "cookieConsentScript");
+    script.setAttribute("onload", onloadScript);
+    var head = document.getElementsByTagName('head')[0];
+    var body = document.getElementsByTagName('body')[0];
+
+    if (head) {
+        head.appendChild(script);
+        body.className += " eupopup eupopup-bottom";
+    }
+}
+
+function showCookieConsent(consentConfig) {
+    if ($(".eupopup").length > 0) {
+        $(document).euCookieLawPopup().init(consentConfig);
+    }
+};
+
+var createPagineMiniWS = (function () {
+
+    function createHandlers() {
+
+        $('.menulist').parent().addClass('PagineMiniWS');
+
+        $('.menulist a').on('click', function (e) {
+
+            e.preventDefault();
+
+            $(".page, .section, .subsection").hide();
+
+            var $id = $(this).attr('href');
+
+            $($id).parents().show();
+
+            makePageLinkActive($id);
+        });
+    }
+
+    function preparePagineDOM() {
+
+        $("#MainContent").prepend("<div class='menulist'></div>");
+
+        var $menulist = $(".menulist");
+
+        $(".page").each(function (index) {
+            var $page = $(this);
+
+            var $firstLevelLink = $page.find(".title").first();
+            var $firstLevelLinkText = $firstLevelLink.text().replace(/\s|\,|\./g, '');
+
+            $firstLevelLink.attr('id', $firstLevelLinkText);
+
+            var $pageMenu = $("<ul/>").addClass('first-level').append("<li><a href='#" + $firstLevelLinkText  + "'>" + $firstLevelLink.text() + "</a></li>");
+
+                $page.find('.section').each(function (index) {
+
+                    var $section = $(this);
+                    var $secondLevelLink = $section.find(".title").first();
+                    var $secondLevelLinkText = $secondLevelLink.text().replace(/\s|\,|\./g, '');
+
+                    $secondLevelLink.attr('id', $firstLevelLinkText + "-" + $secondLevelLinkText);
+
+                    if ($page.hasClass("showsub")) {
+                        var $sectionMenu = $("<ul/>").addClass('second-level').append("<li><a href='#" + $firstLevelLinkText + "-" + $secondLevelLinkText + "'>" + $secondLevelLink.text() + "</a></li>");
+                    } else {
+                        var $sectionMenu = $("<ul/>").addClass('second-level').append("<li><span>" + $secondLevelLink.text() + "</span></li>");
+                    }
+
+                    var $subSectionMenu = $("<ul/>").addClass('third-level');
+
+                        $section.find('.subsection').each(function (index) {
+
+                            var $subsection = $(this);               
+                            var $thirdLevelLink = $subsection.find(".title").first();
+                            var $thirdLevelLinkText = ($thirdLevelLink.text().replace(/\s|\,|\./g, ''));
+
+                            $thirdLevelLink.attr('id', $firstLevelLinkText + "-" + $secondLevelLinkText + "-" + $thirdLevelLinkText);
+
+                            $subSectionMenu.append("<li><a href='#" + $firstLevelLinkText + "-" + $secondLevelLinkText + "-" + $thirdLevelLinkText + "'>" + $thirdLevelLink.text() + "</a></li>");
+
+                            $sectionMenu.append($subSectionMenu);
+                        });                   
+                        $pageMenu.append($sectionMenu);
+                });
+                $menulist.append($pageMenu);           
+        });    
+    }
+
+    function loadFromUrl() {
+        var show = getParameterByName('show');
+        if (show) {
+            var id = show.replace(/\s|\,|\./g, '');
+            $("#" + id).parents().show();
+            makePageLinkActive("#" + id);
+        }
+    }
+
+    function scrollToAnchor() {
+        var whereToScroll = getParameterByName('scroll');
+        if (typeof (whereToScroll) !== 'undefined' && whereToScroll) {
+            var $target = $('#' + whereToScroll);
+            if ($target.length === 1) {
+                setTimeout(function () { $('body').scrollTo($target); }, 0);                
+            }
+        }
+    }
+
+    function getParameterByName(name, url) {
+        if (!url) {
+            url = window.location.href;
+        }
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    function makePageLinkActive($id) {
+        var pageId = $($id).parents('.page').find('.title').first().attr('id');
+        $(".first-level, .menulist").removeClass('active');
+        $(".menulist").find("[href='#" + pageId + "']").parents('.first-level').addClass("active");
+    }
+
+    return {
+        createHandlers: createHandlers,
+        preparePagineDOM: preparePagineDOM,
+        loadFromUrl: loadFromUrl,
+        scrollToAnchor: scrollToAnchor
+    };
+
+})();
+
+function jurisdictionChangeConfirm(event) {
+    if (event.which <= 2 || event.which == 3) {
+
+        var url_to_open;
+
+        if ($('.bodyLanding').length > 0) {
+            url_to_open = event.target.href;
+        } else {
+            url_to_open = event.currentTarget.href || event.currentTarget.activeElement.href || event.target.href;
+        }
+        var win = event.target.target;
+        var jurisdictionMessage = $('.jurisdictionMessage').html();
+
+        event.preventDefault();
+        customConfirm(jurisdictionMessage, url_to_open, win);
+    }
+}
+
+function customAlertLive(message, url_to_open, win) {
+
+    var alertableConfig = {
+        html: true,
+        okButton: '<button class="button okButton" type="submit">OK</button>',
+        modal: '<form class="alertable"><div class="alertable-message"></div><div class="alertable-prompt"></div><div class="alertable-buttons"></div></form>'
+    };
+
+
+    $.alertable.alert(message, alertableConfig).then(function () {
+        window.open(url_to_open, "_self");
+    }, function () {
+        return false;
+    });
+};
+
+function customAlert(message, url_to_open, win) {
+
+    var alertableConfig = {
+        html: true,
+        okButton: '<button class="button okButton" type="submit">OK</button>',
+        modal: '<form class="alertable"><div class="alertable-message"></div><div class="alertable-prompt"></div><div class="alertable-buttons"></div></form>'
+    };
+
+
+    $.alertable.alert(message, alertableConfig).then(function () {
+        window.open(url_to_open, win);
+    }, function () {
+        return false;
+    });
+};
+
+function customAlertVirtual(message) {
+
+	var alertableConfig = {
+		html: true,
+		okButton: '<button class="button okButton" type="submit">OK</button>',
+		modal: '<form class="alertable"><div class="alertable-message"></div><div class="alertable-prompt"></div><div class="alertable-buttons"></div></form>'
+	};
+
+
+	$.alertable.alert(message, alertableConfig).then(function () {
+		return false;
+	});
+};
+
+
+function customConfirm(message, url_to_open, win) {
+
+    var alertableConfig = {
+        html: true,
+        cancelButton: '<button class="button cancelButton" type="button">Cancel</button>',
+        okButton: '<button class="button okButton" type="submit">OK</button>',
+        modal: '<form class="alertable"><div class="alertable-image"></div><div class="alertable-message"></div><div class="alertable-prompt"></div><div class="alertable-buttons"></div></form>'
+    };
+
+
+    $.alertable.confirm(message, alertableConfig).then(function () {
+        window.open(url_to_open, win);
+    }, function () {
+        return false;
+    });
+};
+
+function altConfirm(msg, options, actionAfterOK, actionAfterCancel, actionAfterDismiss) {
+    if (typeof ($.alertable) !== 'undefined') {
+        var defaults = { html: true };
+        var opts = $.extend({}, defaults, options);
+        var actionOK = function () { return true; }
+        var actionCancel = function () { return false; }
+        var actionAlways = function () { return false; }
+
+        if (typeof (actionAfterOK) === 'function') { actionOK = actionAfterOK; };
+        if (typeof (actionAfterCancel) === 'function') { actionCancel = actionAfterCancel; };
+        if (typeof (actionAfterDismiss) === 'function') { actionAlways = actionAfterDismiss; };
+
+        $.alertable.confirm(msg, opts).then(actionOK, actionCancel).always(actionAlways);
+
+    } else {
+        confirm(msg);
+    }
+}
+
+function customAlertInfo(message) {
+
+    var alertableConfig = {
+        html: true,
+        okButton: '<button class="button okButton" type="submit">OK</button>',
+        modal: '<form class="alertable"><div class="alertable-message"></div><div class="alertable-prompt"></div><div class="alertable-buttons"></div></form>'
+    };
+
+
+    $.alertable.alert(message, alertableConfig).then(function () {
+        return false;
+    });
+};
+
+function checkForOverlap(el1, el2) {
+    if ((typeof (el1) === 'undefined') || (typeof (el2) === 'undefined')) {
+        return;
+    } else {
+
+    var rect1 = el1.getBoundingClientRect();
+    var rect2 = el2.getBoundingClientRect();
+
+    var overlap = !(rect1.right < rect2.left ||
+        rect1.left > rect2.right ||
+        rect1.bottom < rect2.top ||
+        rect1.top > rect2.bottom)
+    return overlap;
+    }
+}
+
+
+function scrollToTop() {
+    $("html, body").animate({ scrollTop: 0 }, "slow");
+    return false;
+}
+
+Sys.Browser.WebKit = {};
+if (navigator.userAgent.indexOf('WebKit/') > -1) {
+    Sys.Browser.agent = Sys.Browser.WebKit;
+    Sys.Browser.version = parseFloat(navigator.userAgent.match(/WebKit\/(\d+(\.\d+)?)/)[1]);
+    Sys.Browser.name = 'WebKit';
+}
+
+function LiveServiceInitialized(message, action) {
+    if (typeof action == "undefined") {
+        customAlertLive(message, "../Sport/");
+    } else {
+        var actionAfterAlert = action;
+
+        $.alertable.alertLive(message).always(function () {
+            actionAfterAlert();
+        });
+    }
+}
+function isThisIframe() {
+    try {
+        return window.self !== window.top;
+    } catch (e) {
+        return true;
+    }
+}
+function openLinkInNewTab(link) {
+    window.open(link, "_blank");
+}
+function checkBrowserCompatibility(updatemessage, title, text) {
+    var upgradeDismissed = localStorage.getItem('upgrade_dismissed');
+    var browserFeatures = ['js', 'postmessage', 'rgba', 'backgroundsize', 'borderradius', 'boxshadow', 'textshadow', 'opacity', 'cssanimations', 'cssgradients', 'csstransforms', 'csstransitions', 'fontface', 'video', 'audio', 'localstorage', 'sessionstorage', 'svg', 'inlinesvg'];
+    $.each(browserFeatures, function (index, feature) {
+        if ($('html').hasClass(feature)) {
+            return true;
+        } else {
+            if (typeof upgradeDismissed == 'object' && upgradeDismissed !== true) {
+
+            $.alertable.alert('', {
+                html: true,
+                modal: '<form class="alertable" id="browserUpgradePop"><div class="upgradeTop"><h3>'+updatemessage+'</h3><img  class="browserIcons" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAABNCAYAAAGgfo1WAAAACXBIWXMAAAsTAAALEwEAmpwYAAAWsmlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDAgNzkuMTYwNDUxLCAyMDE3LzA1LzA2LTAxOjA4OjIxICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtbG5zOnRpZmY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vdGlmZi8xLjAvIiB4bWxuczpleGlmPSJodHRwOi8vbnMuYWRvYmUuY29tL2V4aWYvMS4wLyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxOCAoTWFjaW50b3NoKSIgeG1wOkNyZWF0ZURhdGU9IjIwMTgtMDQtMjVUMTU6MjQ6NTErMDI6MDAiIHhtcDpNb2RpZnlEYXRlPSIyMDE4LTA5LTI2VDEzOjI0OjIwKzAyOjAwIiB4bXA6TWV0YWRhdGFEYXRlPSIyMDE4LTA5LTI2VDEzOjI0OjIwKzAyOjAwIiBkYzpmb3JtYXQ9ImltYWdlL3BuZyIgcGhvdG9zaG9wOkNvbG9yTW9kZT0iMyIgcGhvdG9zaG9wOklDQ1Byb2ZpbGU9InNSR0IgSUVDNjE5NjYtMi4xIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjVjZDliYTgwLWVmOGYtNDM1Yy1iODMzLTM4Mjg3MzQzOWZkYiIgeG1wTU06RG9jdW1lbnRJRD0iYWRvYmU6ZG9jaWQ6cGhvdG9zaG9wOjMyYjUyMGJkLThjZTYtOTc0OS05N2M2LTFmODIyMWQ3OWJlMiIgeG1wTU06T3JpZ2luYWxEb2N1bWVudElEPSJ4bXAuZGlkOjAwNDNjNDY3LTNiZjYtNDM5Yi04MjZhLTNjNzY3NTVjZjFlYiIgdGlmZjpPcmllbnRhdGlvbj0iMSIgdGlmZjpYUmVzb2x1dGlvbj0iNzIwMDAwLzEwMDAwIiB0aWZmOllSZXNvbHV0aW9uPSI3MjAwMDAvMTAwMDAiIHRpZmY6UmVzb2x1dGlvblVuaXQ9IjIiIGV4aWY6Q29sb3JTcGFjZT0iMSIgZXhpZjpQaXhlbFhEaW1lbnNpb249IjE5MjAiIGV4aWY6UGl4ZWxZRGltZW5zaW9uPSIxMDgwIj4gPHBob3Rvc2hvcDpEb2N1bWVudEFuY2VzdG9ycz4gPHJkZjpCYWc+IDxyZGY6bGk+MTU3QkQwMjYwNTFBNEUyQTg3M0Q3RDQzOTBFQjIxQUQ8L3JkZjpsaT4gPHJkZjpsaT43QzMyMkE3MkQyOTk1QjRBMEUwNzRBQUFGMjVFNDZEMTwvcmRmOmxpPiA8cmRmOmxpPkQ0MTQyNTEzQzQwQjE1MDJBRDBGNTUxMjY5RDNDOUNFPC9yZGY6bGk+IDxyZGY6bGk+RTAxQjk3MjBDODIxM0JGMTUzRTE5NUNCNEM5NTJBRTY8L3JkZjpsaT4gPHJkZjpsaT5GNEEwNDM3RjA1NzIyQkQwN0I5RjJBQjdBRjkyMUVBMDwvcmRmOmxpPiA8cmRmOmxpPmFkb2JlOmRvY2lkOnBob3Rvc2hvcDowNTg2NWYxMS01OTFjLWM2NGQtOTI5Ny1hNzU2Y2E0OWE4NWE8L3JkZjpsaT4gPHJkZjpsaT5hZG9iZTpkb2NpZDpwaG90b3Nob3A6MTEyNjY5MTctOTE4OC02MjRhLTlhY2YtN2NkMjJlZTdhY2UxPC9yZGY6bGk+IDxyZGY6bGk+YWRvYmU6ZG9jaWQ6cGhvdG9zaG9wOjIwZjA0MDE3LTViNWYtOTY0MC1hN2U5LWEyNWZmZTg0MjYzMzwvcmRmOmxpPiA8cmRmOmxpPmFkb2JlOmRvY2lkOnBob3Rvc2hvcDozNjIwMTg4OS1lNDA5LTcyNDktYjRkZi0wZDhmNDA3YTI5MDI8L3JkZjpsaT4gPHJkZjpsaT5hZG9iZTpkb2NpZDpwaG90b3Nob3A6NDk3ZmNmOGEtZmIwNC0yNTQ0LWI2MGEtZDFmMmY0NTJlOTg1PC9yZGY6bGk+IDxyZGY6bGk+YWRvYmU6ZG9jaWQ6cGhvdG9zaG9wOjUzNjhmOTgxLWZlNGYtOTk0OS1hMDA0LWFlN2JkZGEzM2M3ZDwvcmRmOmxpPiA8cmRmOmxpPmFkb2JlOmRvY2lkOnBob3Rvc2hvcDo1ZTZkZGQ1NC1mY2U2LTExZTctOTlhZi1hOTI4MWZiNjBhMWE8L3JkZjpsaT4gPHJkZjpsaT5hZG9iZTpkb2NpZDpwaG90b3Nob3A6NzAzZjVlY2QtODBlNS03MTRjLWIzYzUtNzVjNDBiNWVjYzY3PC9yZGY6bGk+IDxyZGY6bGk+YWRvYmU6ZG9jaWQ6cGhvdG9zaG9wOjgwYTg5NGZhLTYwYjAtYzY0OS05MDkwLTQzNDEwNjFhNGIwMDwvcmRmOmxpPiA8cmRmOmxpPmFkb2JlOmRvY2lkOnBob3Rvc2hvcDphYmM0YWEyOC02NGY1LTFiNDYtOGU0Yi03NGNiMDE0NGVkMDA8L3JkZjpsaT4gPHJkZjpsaT5hZG9iZTpkb2NpZDpwaG90b3Nob3A6YWY5OTE4MDAtMGJjNS0xNjQ3LTk1ZTEtMmJjMDU4YmM2YmM0PC9yZGY6bGk+IDxyZGY6bGk+YWRvYmU6ZG9jaWQ6cGhvdG9zaG9wOmFmOWY4YTUwLTdlYTUtNWI0Zi1hMjYzLTZiZDY5OTc5NDMwODwvcmRmOmxpPiA8cmRmOmxpPmFkb2JlOmRvY2lkOnBob3Rvc2hvcDpjMmJhNDkwOC0yNGZlLWZjNGMtYmExMC1iOGNlNzBkNTUxZWI8L3JkZjpsaT4gPHJkZjpsaT5hZG9iZTpkb2NpZDpwaG90b3Nob3A6YzMzOTAxNmMtNmJhNS1hNDQ4LWI1NGEtODFhN2IzOTJlYjZiPC9yZGY6bGk+IDxyZGY6bGk+YWRvYmU6ZG9jaWQ6cGhvdG9zaG9wOmM4MjdjNGUyLTgzZTEtMzM0OS04Mzg2LTg3YWI3NzdkYTQ1OTwvcmRmOmxpPiA8cmRmOmxpPmFkb2JlOmRvY2lkOnBob3Rvc2hvcDpkNzE1NjA3Ny03NjBjLTBlNDUtYTA5My0zMWFlZDQyMDFkYTE8L3JkZjpsaT4gPHJkZjpsaT5hZG9iZTpkb2NpZDpwaG90b3Nob3A6ZWNkZDQyNTktYjU0Zi05ZTRhLThhMzQtNTk4NWU2ZWQ2YmM0PC9yZGY6bGk+IDxyZGY6bGk+dXVpZDo5QkQ5QUMyRENGQTFERDExQTFGREZGOEY0NDEwRkFCODwvcmRmOmxpPiA8cmRmOmxpPnhtcC5kaWQ6MDA0M2M0NjctM2JmNi00MzliLTgyNmEtM2M3Njc1NWNmMWViPC9yZGY6bGk+IDxyZGY6bGk+eG1wLmRpZDozNThEMTlERjUwMUQxMUU2ODc4NTkyOEJEMDEyNDY3NjwvcmRmOmxpPiA8cmRmOmxpPnhtcC5kaWQ6NEZDNjFEMEZERjJDMTFFNzhBRDlCOTFFMzEzMkU0QkE8L3JkZjpsaT4gPHJkZjpsaT54bXAuZGlkOjU4NjU1YjYwLWUxZTItNGFlNS04ZmM0LWIyZWJlMDRlMjE3YzwvcmRmOmxpPiA8cmRmOmxpPnhtcC5kaWQ6NTkxOUU1MjQ1MDFEMTFFNkI0QTdCNkVBQThDOERERDc8L3JkZjpsaT4gPHJkZjpsaT54bXAuZGlkOjYyMTFERjNEQjlGODExRTFBOTFBRkVBQTdBNzY3NDYxPC9yZGY6bGk+IDxyZGY6bGk+eG1wLmRpZDo2RjM3MUZFRkRGMkMxMUU3QjJGREU3OUU2ODYxMzM3NTwvcmRmOmxpPiA8cmRmOmxpPnhtcC5kaWQ6NzY4REI2MjQ1MDFEMTFFNkE3MEJBNDkzQ0MxOTM4Qjc8L3JkZjpsaT4gPHJkZjpsaT54bXAuZGlkOjhCNzQ3MEFCQjMxQTExRTJBM0VGQTgxQUVDRkYwRTVBPC9yZGY6bGk+IDxyZGY6bGk+eG1wLmRpZDo4RjFFMENDMDBBNjIxMUU4OTk1MDhDNzQ5Mjc5NEZCMTwvcmRmOmxpPiA8cmRmOmxpPnhtcC5kaWQ6OEY2NDYxMkE3QTExMTFFMzlFNDZENzg0NEVFQjBGMTY8L3JkZjpsaT4gPHJkZjpsaT54bXAuZGlkOjlERkNDOEYwQzU4MTExRTRBM0Y1Q0NGOTBGREUyRkM0PC9yZGY6bGk+IDxyZGY6bGk+eG1wLmRpZDpBNjhCNTg5NkIzMUExMUUyODlDNERFMDcyRDlCNTA0RDwvcmRmOmxpPiA8cmRmOmxpPnhtcC5kaWQ6QUUwOTQ4QTJCMEI5MTFFMkJDQjNFNzIxMEFEQjhDRDE8L3JkZjpsaT4gPHJkZjpsaT54bXAuZGlkOkFGRjA5NjA4RkFGMDExRTBCMzU0QjM3QkJDNTg1Q0I5PC9yZGY6bGk+IDxyZGY6bGk+eG1wLmRpZDpDMjQzQzcxMEIwQkExMUUyOUQ0RDhCNUJFQjAwN0Y4QzwvcmRmOmxpPiA8cmRmOmxpPnhtcC5kaWQ6Q0Y2OTg3MkZGMzE2MTFFMEJCMDZDRDdGREM0MDk1RTc8L3JkZjpsaT4gPHJkZjpsaT54bXAuZGlkOkNGQzhGQTYzRTUxQjExRTE5NUM5ODA5RDAwREYwQjczPC9yZGY6bGk+IDxyZGY6bGk+eG1wLmRpZDpENkRGQkEyRkIzMUExMUUyODg4NUFCREEwMUY5NUU4OTwvcmRmOmxpPiA8cmRmOmxpPnhtcC5kaWQ6RTNGQkJFREVEOEJDMTFFNkJEMDdBQ0JBQTdDQ0FGQkQ8L3JkZjpsaT4gPHJkZjpsaT54bXAuZGlkOkU5OTc0QURFRDhCQzExRTZCRjg0RUU3RTkyQUE3NDQzPC9yZGY6bGk+IDxyZGY6bGk+eG1wLmRpZDpkNzJhZDhhOC1jNjFmLTQ0YjMtYmM3Zi02YWU1MWMyZWVmODk8L3JkZjpsaT4gPC9yZGY6QmFnPiA8L3Bob3Rvc2hvcDpEb2N1bWVudEFuY2VzdG9ycz4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY3JlYXRlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDowMDQzYzQ2Ny0zYmY2LTQzOWItODI2YS0zYzc2NzU1Y2YxZWIiIHN0RXZ0OndoZW49IjIwMTgtMDQtMjVUMTU6MjQ6NTErMDI6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDQyAyMDE4IChNYWNpbnRvc2gpIi8+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJjb252ZXJ0ZWQiIHN0RXZ0OnBhcmFtZXRlcnM9ImZyb20gaW1hZ2UvcG5nIHRvIGFwcGxpY2F0aW9uL3ZuZC5hZG9iZS5waG90b3Nob3AiLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249InNhdmVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOjVmMGY1MTY4LWEzNmEtNGIxZi1hM2NkLThlMDE0OTgwYWRlYyIgc3RFdnQ6d2hlbj0iMjAxOC0wNC0yNVQxNToyOTo0MCswMjowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTggKE1hY2ludG9zaCkiIHN0RXZ0OmNoYW5nZWQ9Ii8iLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249InNhdmVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOmI1ZGE0Zjc2LWY0ZWEtNGRiMi04NWI3LTg4MzhjOTE2NjVmMSIgc3RFdnQ6d2hlbj0iMjAxOC0wOS0yNlQxMzoyNDoyMCswMjowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTggKE1hY2ludG9zaCkiIHN0RXZ0OmNoYW5nZWQ9Ii8iLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249ImNvbnZlcnRlZCIgc3RFdnQ6cGFyYW1ldGVycz0iZnJvbSBhcHBsaWNhdGlvbi92bmQuYWRvYmUucGhvdG9zaG9wIHRvIGltYWdlL3BuZyIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iZGVyaXZlZCIgc3RFdnQ6cGFyYW1ldGVycz0iY29udmVydGVkIGZyb20gYXBwbGljYXRpb24vdm5kLmFkb2JlLnBob3Rvc2hvcCB0byBpbWFnZS9wbmciLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249InNhdmVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOjVjZDliYTgw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"/></div><div class="upgradeBottom"><h5>'+title+'</h5><p>'+text+'</p></div><div class="alertable-buttons" id="dismissUpgrade"></div></form>',
+                okButton: '<button type="submit" class="dismissBrowserUpgrade">x</button>'
+            }).always(function () {
+                localStorage.setItem('upgrade_dismissed', true);
+            })
+            return false;
+            }
+        }
+    });
+}
+
+function pushEventToGTM(event) {
+    if (typeof dataLayer !== "undefined" && typeof event === "object") {
+        dataLayer.push(event);
+    }
+}
+; (function ($) {
+
+    $.easyProgress = function (el, options) {
+
+        var defaults = {
+            achieved: 0,
+            goal: 100,
+            achievedColor: 'yellow',
+            goalColor: 'white',
+            tooltipColor: 'green',
+            tooltipFontColor: 'white',
+            tooltipText: '',
+        }
+
+        var plugin = this;
+
+        plugin.settings = {}
+
+        var init = function () {
+            // console.log(options)
+            plugin.settings = $.extend(true, defaults, options);
+            plugin.el = el;
+            if (!isNaN(plugin.settings.achieved) && parseFloat(plugin.settings.achieved) >= 0 && !isNaN(plugin.settings.goal) && parseFloat(plugin.settings.goal) > 0) {
+                var completeWidth = $(plugin.el.selector).innerWidth();
+                var left = 0;
+                console.log(completeWidth)
+                var achievedWidth = (completeWidth * plugin.settings.achieved) / plugin.settings.goal;
+                var remainingWidth = (completeWidth * (plugin.settings.goal - plugin.settings.achieved - 1)) / plugin.settings.goal;
+                // console.log(achievedWidth);
+                if (achievedWidth < (2 * (completeWidth / 3))) {
+                    left = 'left:' + achievedWidth + 'px;';
+                } else {
+                    left = 'right:0px;';
+                }
+                $(plugin.el.selector).append('<span class="progress_tooltip" style="background:' + plugin.settings.tooltipColor + ';color:' + plugin.settings.tooltipFontColor + ';' + left + '">' + parseFloat(plugin.settings.achieved).toFixed(2) + ' / ' + parseFloat(plugin.settings.goal).toFixed(2) + ' ' + plugin.settings.tooltipText + '</span><div class="progress_achieved" style="width:' + achievedWidth + 'px;background: ' + plugin.settings.achievedColor + ';"></div><div class="progress_remaining" style="width:' + remainingWidth + 'px;background:' + plugin.settings.goalColor + ';"></div>');
+            } else {
+                alert('Data you provided can\'t be used! Please check the values provided for progress plugin setup.');
+            }
+            // code goes here
+        }
+
+        plugin.refreshProgress = function () {
+
+            if (!isNaN(plugin.settings.achieved) && parseFloat(plugin.settings.achieved) >= 0 && !isNaN(plugin.settings.goal) && parseFloat(plugin.settings.goal) > 0 && parseFloat(plugin.settings.achieved) <= parseFloat(plugin.settings.goal)) {
+                var completeWidth = $(plugin.el.selector).innerWidth();
+                var achievedWidth = (completeWidth * plugin.settings.achieved) / plugin.settings.goal;
+                var remainingWidth = (completeWidth * (plugin.settings.goal - plugin.settings.achieved - 1)) / plugin.settings.goal;
+                // console.log(achievedWidth);
+                $(plugin.el.selector).append('<div class="progress_achieved" style="width:' + achievedWidth + 'px;background: ' + plugin.settings.achievedColor + ';"><span class="progress_tooltip" style="background:' + plugin.settings.tooltipColor + ';color:' + plugin.settings.tooltipFontColor + ';">' + parseFloat(plugin.settings.achieved).toFixed(2) + ' / ' + parseFloat(plugin.settings.goal).toFixed(2) + ' ' + plugin.settings.tooltipText + '</span></div><div class="progress_remaining" style="width:' + remainingWidth + 'px;background:' + plugin.settings.goalColor + ';"></div>');
+            } else {
+                alert('Data you provided can\'t be used! Please check the values provided for progress plugin setup.');
+            }
+
+
+        }
+
+        init();
+
+    }
+
+})(jQuery);
